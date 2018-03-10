@@ -1,0 +1,11 @@
+{
+  "name": "watchout-common-functions",
+  "version": "0.0.1",
+  "description": "Common functions across Watchout Commons",
+  "main": "index.js",
+  "author": "Department of Technology at Watchout <dev@watchout.tw>",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^0.3.16"
+  }
+}
