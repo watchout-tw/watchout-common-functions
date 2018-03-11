@@ -8,13 +8,15 @@
       <img class="image" :src="actionImage"/>
       <div class="text">{{ action.text }}</div>
     </div>
-    <div class="close white" @click.stop.prevent="close"></div>
+    <div class="close white" @click.stop.prevent="toggleShowSupport(false)"></div>
   </a>
 </div>
 </template>
 
 <script>
 import env from 'watchout-common-assets/environment'
+import knowsWindowManagement from '../interfaces/knowsWindowManagement' // FIXME: no relative paths
+
 const supportPackages = {
   ask: {
     channel: 'ask',
@@ -55,7 +57,8 @@ const supportPackages = {
 }
 
 export default {
-  props: ['showSupport', 'id'],
+  mixins: [knowsWindowManagement],
+  props: ['id'],
   data() {
     return supportPackages[this.id]
   },
@@ -65,11 +68,6 @@ export default {
     },
     actionImage() {
       return require('watchout-common-assets/images/support/' + this.action.image + '.png')
-    }
-  },
-  methods: {
-    close() {
-      this.$emit('update:showSupport', false)
     }
   }
 }
