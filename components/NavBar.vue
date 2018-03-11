@@ -1,6 +1,6 @@
 <template>
 <nav :class="navClasses">
-  <div class="nav-item switcher" v-if="channel.showSwitcher" :style="switcherStyles"></div>
+  <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles"></div>
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
     <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)"/>
   </nuxt-link>
@@ -32,7 +32,7 @@ export default {
     },
     switcherStyles() {
       return {
-        backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.channel.isDark ? 'dark' : 'light') + '.png') + ')'
+        backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.channel.switcher.dark ? 'dark' : 'light') + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
       }
     }
   },

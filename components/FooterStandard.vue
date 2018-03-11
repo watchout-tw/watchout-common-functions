@@ -15,7 +15,7 @@
     <div class="cluster d-flex flex-row justify-content-center">
       <div v-for="group of cluster" class="group">
         <div class="title">
-          <h5>{{ group.title }}</h5>
+          <h5 class="font-weight-normal">{{ group.title }}</h5>
         </div>
         <div class="item" v-for="item of group.links" :key="item.link">
           <a :href="item.link" class="a-text">{{ item.title }}</a>
