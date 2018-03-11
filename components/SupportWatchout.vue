@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import env from 'watchout-common-assets/environment'
-import knowsWindowManagement from '../interfaces/knowsWindowManagement' // FIXME: no relative paths
+import { env } from 'watchout-common-assets'
+import { knowsWindowManagement } from '../interfaces' // FIXME: no relative paths
 
 const supportPackages = {
   ask: {

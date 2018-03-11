@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import env from 'watchout-common-assets/environment'
+import { env } from 'watchout-common-assets'
 
 const social = [
   {

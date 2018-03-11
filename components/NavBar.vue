@@ -1,6 +1,6 @@
 <template>
 <nav :class="navClasses">
-  <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles"></div>
+  <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles" @click="addModal('transporter')"></div>
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
     <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)"/>
   </nuxt-link>
@@ -14,12 +14,11 @@
 
 <script>
 // FIXME: perhaps better not use relative path
-import knowsWatchout from '../interfaces/knowsWatchout'
-import knowsAuth from '../interfaces/knowsAuth'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../interfaces'
 import Avatar from './Avatar'
 
 export default {
-  mixins: [knowsWatchout, knowsAuth],
+  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   props: ['channel'],
   computed: {
     whichSide() {
