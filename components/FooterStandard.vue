@@ -6,7 +6,7 @@
   <div class="earth bedrock">
     <div class="social">
       <div v-for="group of cptSocialGroups" class="group d-flex flex-row justify-content-around" :class="group.platform">
-        <a v-for="item of group.items" :href="item.link" class="link a-block" target="social" :key="item.link">
+        <a v-for="item of group.items" :href="item.link" class="link a-block" target="_blank" :key="item.link">
           <img class="image" :src="item.image" />
           <label class="text a-target">{{ item.text }}</label>
         </a>
