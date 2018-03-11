@@ -1,4 +1,4 @@
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
@@ -7,8 +7,8 @@ export default {
     })
   },
   methods: {
-    toggleIsCitizen(value) {
-      this.$store.dispatch('auth/toggle', value)
-    }
+    ...mapActions({
+      toggleIsCitizen: 'auth/toggle'
+    })
   }
 }

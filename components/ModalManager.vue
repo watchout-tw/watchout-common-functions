@@ -1,20 +1,47 @@
 <template>
 <div class="modal-manager">
-  <div class="modal-overlay" v-for="modal of modals" :key="modal"></div>
+  <transition name="modal" appear v-for="modal of modals" :key="modal">
+    <div class="modal-overlay"  @click.self="removeModal(modal)">
+      <component :is="modal"></component>
+    </div>
+  </transition>
 </div>
 </template>
 
 <script>
 import { knowsWindowManagement } from '../interfaces' // FIXME: no relative paths
+import { Auth, Transporter } from './modal'
 export default {
-  mixins: [knowsWindowManagement]
+  mixins: [knowsWindowManagement],
+  components: {
+    Auth,
+    Transporter
+  }
 }
 </script>
 
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 
+// for vue transition
+.modal-enter { // this also applies to initial render of elements with "appear" attr
+  opacity: 0;
+  .modal {
+    transform: scale(1.1);
+  }
+}
+.modal-leave-to {
+  opacity: 0;
+  .modal {
+    transform: scale(1.1);
+  }
+}
+
+$animation-parameters: .25s ease;
 .modal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   z-index: $z-modal;
   top: 0;
@@ -22,6 +49,9 @@ export default {
   width: 100%;
   height: 100%;
   background: $color-modal-overlay-white;
-  transition: opacity .3s ease;
+  transition: opacity $animation-parameters;
+  > .modal {
+    transition: transform $animation-parameters;
+  }
 }
 </style>

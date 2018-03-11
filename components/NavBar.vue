@@ -6,7 +6,7 @@
   </nuxt-link>
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
-  <div class="nav-item avatar-container" @click="toggleIsCitizen(!isCitizen)">
+  <div class="nav-item avatar-container" @click="addModal('auth')">
     <avatar :is-citizen="isCitizen" />
   </div>
 </nav>

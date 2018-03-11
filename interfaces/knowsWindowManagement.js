@@ -1,18 +1,25 @@
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapGetters({
       showSupport: 'windowManagement/showSupport',
-      modals: 'windowManagement/modals'
+      modals: 'windowManagement/modals',
+      joinOrLogin: 'windowManagement/joinOrLogin'
     })
   },
   methods: {
-    toggleShowSupport(value) {
-      this.$store.dispatch('windowManagement/toggleShowSupport', value)
-    },
-    addModal(id) {
-      this.$store.dispatch('windowManagement/addModal', id)
+    ...mapActions({
+      toggleShowSupport: 'windowManagement/toggleShowSupport',
+      addModal: 'windowManagement/addModal',
+      removeModal: 'windowManagement/removeModal',
+      showJoin: 'windowManagement/showJoin',
+      showLogin: 'windowManagement/showLogin'
+    }),
+    removeModalAfter(id, time) {
+      setTimeout(() => {
+        this.removeModal(id)
+      }, time)
     }
   }
 }
