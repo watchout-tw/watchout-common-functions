@@ -219,6 +219,7 @@ footer.standard {
         margin: 2rem;
         > .link {
           position: relative;
+          text-align: center;
           &:after {
             content: '';
             display: block;
@@ -232,11 +233,10 @@ footer.standard {
           }
           > .image {
             display: block;
-            margin: 0 auto;
+            margin: 0 auto 0.25rem;
             width: 5.625rem;
           }
           > .text {
-            margin: 0.25rem 0;
             color: $color-generic-grey;
           }
         }
