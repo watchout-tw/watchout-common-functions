@@ -6,7 +6,7 @@
         <h2>成為草民</h2>
       </div>
       <div class="content" v-if="joinOrLogin === 'join'">
-        <form>
+        <form onkeypress="return event.keyCode != 13;">
           <div class="field with-button">
             <input type="text" name="id" placeholder="草民代號" v-model="credentials.join.handle" />
             <button class="button small park" @click.prevent="generateHandle">隨機</button>
