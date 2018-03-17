@@ -80,11 +80,12 @@ export default {
   position: fixed;
   bottom: 0;
   width: 100%;
+  max-width: $bp-xs;
   left: 50%;
   transform: translateX(-50%);
   z-index: $z-fixed;
   @include bp-sm-up {
-    width: $bp-sm;
+    max-width: $bp-sm;
   }
 
   > .container {
