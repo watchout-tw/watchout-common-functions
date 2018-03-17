@@ -12,8 +12,8 @@
         </a>
       </div>
     </div>
-    <div class="cluster d-flex flex-row justify-content-center">
-      <div v-for="group of cluster" class="group">
+    <div class="links d-flex flex-row justify-content-center">
+      <div v-for="group of links" class="group">
         <div class="title">
           <h5 class="font-weight-normal">{{ group.title }}</h5>
         </div>
@@ -24,9 +24,11 @@
     </div>
   </div>
   <div class="elements">
-    <div class="grass d-flex align-items-end justify-content-between">
-      <div v-for="i in patchCount()" class="patch" :class="patchSize()" :style="patchStyles(i)" :key="i"></div>
-    </div>
+    <no-ssr>
+      <div class="grass d-flex align-items-end justify-content-between">
+        <div v-for="i in patchCount" class="patch" :class="patchSize()" :style="patchStyles()" :key="i"></div>
+      </div>
+    </no-ssr>
     <img v-for="tree of trees" :src="getTreeImage(tree)" :class="getTreeClasses(tree)" :key="tree.name" />
   </div>
 </footer>
@@ -55,7 +57,7 @@ const social = [
     link: 'https://store.line.me/stickershop/product/1224270/zh-Hant'
   }
 ]
-const cluster = [
+const links = [
   {
     title: '沃草產品',
     links: [
@@ -133,27 +135,24 @@ const trees = [
 export default {
   data() {
     return {
-      social: social,
-      cluster: cluster,
-      trees: trees
+      social,
+      links,
+      trees
     }
   },
   methods: {
-    patchCount: function() {
-      return 4 + Math.round(Math.random() * 2)
-    },
-    patchSize: function() {
+    patchSize() {
       return Math.random() > 0.5 ? 'large' : 'small'
     },
-    patchStyles: function(i) {
+    patchStyles() {
       return {
         transform: 'translateX(' + (Math.round(Math.random()) * 2 - 1) * Math.round(Math.random() * 16) + 'rem)'
       }
     },
-    getTreeImage: function(tree) {
+    getTreeImage(tree) {
       return require('watchout-common-assets/images/footer/' + tree.type + '/' + tree.name + '.gif')
     },
-    getTreeClasses: function(tree) {
+    getTreeClasses(tree) {
       return [tree.type, tree.type + '-' + tree.name]
     }
   },
@@ -171,6 +170,9 @@ export default {
         platforms[cur.platform].items.push(cur)
       }
       return result
+    },
+    patchCount() {
+      return 4 + Math.round(Math.random() * 2)
     }
   }
 }
@@ -248,7 +250,7 @@ footer.standard {
         }
       }
     }
-    > .cluster {
+    > .links {
       > .group {
         margin: 0 1rem;
         text-align: left;
