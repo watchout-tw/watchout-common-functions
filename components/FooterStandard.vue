@@ -12,13 +12,13 @@
         </a>
       </div>
     </div>
-    <div class="links d-flex flex-row justify-content-center">
-      <div v-for="group of links" class="group">
+    <div class="link-groups d-flex flex-row justify-content-center">
+      <div v-for="group of linkGroups" class="group">
         <div class="title">
           <h5 class="font-weight-normal">{{ group.title }}</h5>
         </div>
-        <div class="item" v-for="item of group.links" :key="item.link">
-          <a :href="item.link" class="a-text">{{ item.title }}</a>
+        <div class="item" v-for="item of group.links" :key="item.url">
+          <a :href="item.url" class="a-text">{{ item.title }}</a>
         </div>
       </div>
     </div>
@@ -57,29 +57,29 @@ const social = [
     link: 'https://store.line.me/stickershop/product/1224270/zh-Hant'
   }
 ]
-const links = [
+const linkGroups = [
   {
     title: '沃草產品',
     links: [
       {
         title: '國會無雙',
-        link: env.channels.musou.links.home
+        url: env.channels.musou.links.home
       },
       {
         title: '媒體實驗',
-        link: env.channels['musou-media-experiment'].links.home
+        url: env.channels['musou-media-experiment'].links.home
       },
       {
         title: '給問擂台',
-        link: env.channels.ask.links.home
+        url: env.channels.ask.links.home
       },
       {
         title: '議題實驗室',
-        link: env.channels.lab.links.home
+        url: env.channels.lab.links.home
       },
       {
         title: '公民學院',
-        link: env.channels.edu.links.home
+        url: env.channels.edu.links.home
       }
     ]
   },
@@ -88,27 +88,33 @@ const links = [
     links: [
       {
         title: 'English',
-        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'overseas'
+        url: 'overseas',
+        relative: true
       },
       {
         title: '歷年影響力報告',
-        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'impact'
+        url: 'impact',
+        relative: true
       },
       {
         title: '透明報告',
-        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'transparency/2014'
+        url: 'transparency/2014',
+        relative: true
       },
       {
         title: '編輯獨立宣言',
-        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'editorial-independence'
+        url: 'editorial-independence',
+        relative: true
       },
       {
         title: '授權條款',
-        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'license'
+        url: 'license',
+        relative: true
       },
       {
         title: '聯絡我們',
-        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'contact'
+        url: 'contact',
+        relative: true
       }
     ]
   }
@@ -145,10 +151,19 @@ const trees = [
 ]
 
 export default {
+  props: ['isAtHome'],
   data() {
+    linkGroups.forEach(group => {
+      group.links = group.links.map(link => {
+        if(link.relative === true) {
+          link.url = (this.isAtHome ? '/' : env.links.home) + link.url
+        }
+        return link
+      })
+    })
     return {
       social,
-      links,
+      linkGroups,
       trees
     }
   },
@@ -262,7 +277,7 @@ footer.standard {
         }
       }
     }
-    > .links {
+    > .link-groups {
       > .group {
         margin: 0 1rem;
         text-align: left;
