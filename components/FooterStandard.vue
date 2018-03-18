@@ -66,6 +66,10 @@ const links = [
         link: env.channels.musou.links.home
       },
       {
+        title: '媒體實驗',
+        link: env.channels['musou-media-experiment'].links.home
+      },
+      {
         title: '給問擂台',
         link: env.channels.ask.links.home
       },
@@ -82,6 +86,10 @@ const links = [
   {
     title: '關於沃草',
     links: [
+      {
+        title: 'English',
+        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'overseas'
+      },
       {
         title: '歷年影響力報告',
         link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'impact'
