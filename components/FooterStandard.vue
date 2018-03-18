@@ -84,19 +84,23 @@ const links = [
     links: [
       {
         title: '歷年影響力報告',
-        link: env.links.home + 'impact'
+        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'impact'
       },
       {
         title: '透明報告',
-        link: env.links.home + 'transparency/2014'
+        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'transparency/2014'
+      },
+      {
+        title: '編輯獨立宣言',
+        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'editorial-independence'
       },
       {
         title: '授權條款',
-        link: env.links.home + 'license'
+        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'license'
       },
       {
         title: '聯絡我們',
-        link: env.links.home + 'contact'
+        link: (process.env.NODE_ENV === 'production' ? env.links.home : '/') + 'contact'
       }
     ]
   }
