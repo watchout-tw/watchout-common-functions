@@ -18,7 +18,7 @@
           <h5 class="font-weight-normal">{{ group.title }}</h5>
         </div>
         <div class="item" v-for="item of group.links" :key="item.url">
-          <nuxt-link :to="item.url" class="a-text">{{ item.title }}</nuxt-link>
+          <component :is="item.is" :to="item.to" :href="item.href" class="a-text">{{ item.title }}</component>
         </div>
       </div>
     </div>
@@ -156,7 +156,16 @@ export default {
     linkGroups.forEach(group => {
       group.links = group.links.map(link => {
         if(link.relative === true) {
-          link.url = (this.isAtHome ? '/' : env.links.home) + link.url
+          if(this.isAtHome) {
+            link.is = 'nuxt-link'
+            link.to = '/' + link.url
+          } else {
+            link.is = 'a'
+            link.href = env.links.home + link.url
+          }
+        } else {
+          link.is = 'a'
+          link.href = link.url
         }
         return link
       })
