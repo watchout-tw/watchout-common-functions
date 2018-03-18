@@ -156,7 +156,7 @@ export default {
     linkGroups.forEach(group => {
       group.links = group.links.map(link => {
         if(link.relative === true) {
-          if(this.isAtHome) {
+          if(this.isAtHome === true) {
             link.is = 'nuxt-link'
             link.to = '/' + link.url
           } else {
