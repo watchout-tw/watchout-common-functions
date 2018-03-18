@@ -18,7 +18,7 @@
           <h5 class="font-weight-normal">{{ group.title }}</h5>
         </div>
         <div class="item" v-for="item of group.links" :key="item.url">
-          <a :href="item.url" class="a-text">{{ item.title }}</a>
+          <nuxt-link :to="item.url" class="a-text">{{ item.title }}</nuxt-link>
         </div>
       </div>
     </div>
