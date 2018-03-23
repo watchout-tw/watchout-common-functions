@@ -40,7 +40,7 @@ export default {
       return document ? document.getElementById(this.scrollElementID) : null
     },
     scrollLeft() {
-      return this.currentPage * this.scrollElement.offsetWidth // getBoundingClientRect().width
+      return this.scrollElement ? this.currentPage * this.scrollElement.offsetWidth : 0
     }
   },
   watch: {
