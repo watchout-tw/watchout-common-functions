@@ -1,7 +1,7 @@
 <template>
 <div class="carousel">
   <div class="content">
-    <div class="pages" :id="scrollElementID">
+    <div class="pages">
       <div class="page" v-for="page of pages" :style="pageStyles(page)"></div>
     </div>
   </div>
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-const genID = require('uuid/v4')
 /* FIXME: Current assumptions
 
 - A carousel sets its own size ONLY at DOM ready
@@ -28,7 +27,7 @@ export default {
         sm: 576
       },
       currentPage: 0,
-      scrollElementID: genID(),
+      scrollElement: null,
       windowSize: {
         width: 0,
         height: 0
@@ -36,9 +35,6 @@ export default {
     }
   },
   computed: {
-    scrollElement() {
-      return document ? document.getElementById(this.scrollElementID) : null
-    },
     scrollLeft() {
       return this.scrollElement ? this.currentPage * this.scrollElement.offsetWidth : 0
     }
@@ -70,6 +66,7 @@ export default {
   },
   mounted() {
     this.updateWindowSize()
+    this.scrollElement = this.$el.querySelector('.pages')
   }
 }
 </script>
