@@ -2,7 +2,7 @@
 <div class="text-editor">
   <div class="tools"></div>
   <div class="content">
-    <textarea :placeholder="placeholder"></textarea>
+    <textarea rows="4" :placeholder="placeholder"></textarea>
   </div>
 </div>
 </template>
