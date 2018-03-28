@@ -1,5 +1,5 @@
 <template>
-<div class="carousel">
+<div class="carousel" :class="responsive ? 'responsive' : ''">
   <div class="content">
     <div class="pages">
       <div class="page" v-for="page of pages" :style="pageStyles(page)"></div>
@@ -20,7 +20,7 @@
 
 */
 export default {
-  props: ['pages'],
+  props: ['responsive', 'pages'],
   data() {
     return {
       bp: {
@@ -56,7 +56,7 @@ export default {
     pageStyles(page) {
       var styles = {}
       if(page.type === 'image') {
-        styles.backgroundImage = `url(${this.windowSize.width > this.bp.sm ? page.urls.wide : page.urls.default})`
+        styles.backgroundImage = `url(${this.responsive && this.windowSize.width > this.bp.sm ? page.urls.wide : page.urls.default})`
       }
       return styles
     },
@@ -77,8 +77,10 @@ export default {
   position: relative;
   background-color: $color-very-light-grey;
   @include rect(2/1)
-  @include tcl-md {
-    @include rect(4/1)
+  &.responsive {
+    @include tcl-md {
+      @include rect(4/1)
+    }
   }
   > .content {
     > .pages {
