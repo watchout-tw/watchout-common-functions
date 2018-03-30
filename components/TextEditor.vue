@@ -2,14 +2,20 @@
 <div class="text-editor">
   <div class="tools"></div>
   <div class="content">
-    <textarea rows="4" :placeholder="placeholder"></textarea>
+    <textarea rows="4" ref="contentInput" :placeholder="placeholder" :value="content" @input="updateContent()"></textarea>
   </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['placeholder']
+  props: ['placeholder', 'content'],
+  methods: {
+    updateContent () {
+      const text = this.$refs.contentInput.value
+      this.$emit('input', text)
+    }
+  }
 }
 </script>
 
