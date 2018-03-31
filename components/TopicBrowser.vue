@@ -1,32 +1,35 @@
 <template>
 <div class="topic-browser form-field-many-inputs">
-  <button class="input button toggle park" v-for="topic of topics" :class="topic.selected ? 'active' : 'inactive'" @click="toggle(topic)">{{ topic.label }}</button>
+  <button class="input button toggle park" v-for="topic of topicSet" :class="topic.selected ? 'active' : 'inactive'" @click="toggle(topic)">{{ topic.title }}</button>
 </div>
 </template>
 
 <script>
-var topics = ['教育', '性別', '勞工', '產業', '基礎建設', '環保', '開放政府']
-topics = topics.map(topic => ({
-  label: topic,
-  selected: false
-}))
-
 export default {
-  props: ['allowMultiple', 'selectedTopics'],
-  data() {
+  props: ['allowMultiple', 'topics', 'selectedTopics'],
+  beforeMount () {
+    this.init()
+  },
+  data () {
     return {
-      topics
+      topicSet: []
     }
   },
   methods: {
+    init () {
+      this.topicSet = this.topics.map(topic => ({
+        ...topic,
+        selected: false
+      }))
+    },
     toggle(topic) {
       if(this.allowMultiple !== true) {
-        this.topics.forEach(topic => {
+        this.topicSet.forEach(topic => {
           topic.selected = false
         })
       }
       topic.selected = !topic.selected
-      this.$emit('update:selectedTopics', this.topics.filter(topic => topic.selected).map(topic => topic.label))
+      this.$emit('update:selectedTopics', this.topicSet.filter(topic => topic.selected).map(topic => topic.title))
     }
   }
 }
