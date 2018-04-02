@@ -7,21 +7,20 @@
 <script>
 export default {
   props: ['allowMultiple', 'topics', 'selectedTopics'],
-  beforeMount () {
-    this.init()
-  },
   data () {
     return {
       topicSet: []
     }
   },
-  methods: {
-    init () {
-      this.topicSet = this.topics.map(topic => ({
+  watch: {
+    'topics' (val) {
+      this.topicSet = val.map(topic => ({
         ...topic,
         selected: false
       }))
-    },
+    }
+  },
+  methods: {
     toggle(topic) {
       if(this.allowMultiple !== true) {
         this.topicSet.forEach(topic => {
