@@ -4,13 +4,18 @@
     <template v-if="platform === 'youtube'">
       <iframe class="content" width="100%" height="100%" :src="`https://www.youtube.com/embed/${id}?rel=0&amp;controls=0&amp;showinfo=0`" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </template>
+    <template v-else-if="filetype === 'mp4'">
+      <video class="content" controls>
+        <source :src="src" type="video/mp4">
+      </video>
+    </template>
   </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['platform', 'id', 'classes'],
+  props: ['platform', 'id', 'filetype', 'src', 'classes'],
   computed: {
   }
 }
@@ -28,6 +33,11 @@ export default {
     @include rect(16/9);
   }
 
+  &.shadow {
+    > .player {
+      box-shadow: 0 2px 16px 0 rgba(black, 0.35);
+    }
+  }
   &.shadow-hard {
     > .player {
       box-shadow: 0 2px 16px 0 $color-video-player-shadow-black;
