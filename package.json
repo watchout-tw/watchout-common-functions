@@ -6,6 +6,7 @@
   "author": "Department of Technology at Watchout <dev@watchout.tw>",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.17.1",
     "marked": "^0.3.16",
     "project-name-generator": "^2.1.4"
   }
