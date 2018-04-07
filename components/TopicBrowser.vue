@@ -28,7 +28,7 @@ export default {
         })
       }
       topic.selected = !topic.selected
-      this.$emit('update:selectedTopics', this.topicSet.filter(topic => topic.selected).map(topic => topic.title))
+      this.$emit('update:selectedTopics', this.topicSet.filter(topic => topic.selected).map(topic => topic.id))
     }
   }
 }
