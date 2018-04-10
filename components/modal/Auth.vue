@@ -62,12 +62,16 @@
 </template>
 
 <script>
-import { knowsWindowManagement } from '../../interfaces'
+import axios from 'axios'
+import * as util from '../..//lib/util'
+import { knowsWindowManagement, knowsAuth } from '../../interfaces'
+
+axios.defaults.baseURL = 'https://dev.core.watchout.tw'
 
 const nameGenerator = require('project-name-generator')
 
 export default {
-  mixins: [knowsWindowManagement],
+  mixins: [knowsAuth, knowsWindowManagement],
   data() {
     return {
       credentials: {
@@ -85,9 +89,29 @@ export default {
     }
   },
   methods: {
-    join() {
+    onLoginSuccessful (response) {
+      this.loginSuccessful = true
+      localStorage.setItem('watchout-token', response.data.token)
+      localStorage.setItem('watchout-citizen-handle', response.data.handle)
+      localStorage.setItem('watchout-citizen-roles', util.makeCitizenRoleString(response.data.roles))
+      localStorage.setItem('watchout-citizen-personas', response.data.personas)
+      util.authenticateAxios()
+      // util.getCitizen(this.$store)
+      this.$store.dispatch('auth/toggle', true)
+      this.removeModalAfter('auth', 1500)
     },
-    login() {
+    join () {
+    },
+    login () {
+      var loginObj = /^.+@.+$/.test(this.credentials.login.account)
+        ? { email: this.credentials.login.account }
+        : { handle: this.credentials.login.account }
+      loginObj.password = this.credentials.login.password
+      axios.post('/auth/login', loginObj).then(response => {
+        this.onLoginSuccessful(response)
+      }).catch(error => {
+        console.error(error)
+      })
     },
     generateHandle() {
       this.credentials.join.handle = nameGenerator({ words: Math.ceil(Math.random() * 2) + 1 }).raw.join('_')

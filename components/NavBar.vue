@@ -14,6 +14,7 @@
 
 <script>
 // FIXME: perhaps better not use relative path
+import * as util from '../lib/util'
 import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../interfaces'
 import Avatar from './Avatar'
 
@@ -33,6 +34,11 @@ export default {
       return {
         backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.channel.switcher.dark ? 'dark' : 'light') + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
       }
+    }
+  },
+  created () {
+    if (util.hasJWTToken()) {
+      this.$store.dispatch('auth/toggle', true)
     }
   },
   components: {
