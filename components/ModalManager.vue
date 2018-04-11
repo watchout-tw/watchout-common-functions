@@ -10,11 +10,12 @@
 
 <script>
 import { knowsWindowManagement } from '../interfaces' // FIXME: no relative paths
-import { Auth, Transporter } from './modal'
+import { Auth, SwissKnife, Transporter } from './modal'
 export default {
   mixins: [knowsWindowManagement],
   components: {
     Auth,
+    SwissKnife,
     Transporter
   }
 }

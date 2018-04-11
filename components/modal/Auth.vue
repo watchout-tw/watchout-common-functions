@@ -63,7 +63,8 @@
 
 <script>
 import axios from 'axios'
-import * as util from '../..//lib/util'
+import * as util from '../../lib/util'
+import * as localStorage from '../../lib/localStorage'
 import { knowsWindowManagement, knowsAuth } from '../../interfaces'
 
 axios.defaults.baseURL = 'https://dev.core.watchout.tw'
@@ -91,10 +92,13 @@ export default {
   methods: {
     onLoginSuccessful (response) {
       this.loginSuccessful = true
-      localStorage.setItem('watchout-token', response.data.token)
-      localStorage.setItem('watchout-citizen-handle', response.data.handle)
-      localStorage.setItem('watchout-citizen-roles', util.makeCitizenRoleString(response.data.roles))
-      localStorage.setItem('watchout-citizen-personas', response.data.personas)
+      localStorage.token.set(response.data.token)
+      localStorage.citizenID.set(response.data.citizen_id)
+      localStorage.handle.set(response.data.handle)
+      localStorage.albumID.set(response.data.album_id)
+      localStorage.personaID.set(response.data.persona_id)
+      localStorage.roles.set(response.data.roles)
+      localStorage.personas.set(response.data.personas)
       util.authenticateAxios()
       // util.getCitizen(this.$store)
       this.$store.dispatch('auth/toggle', true)

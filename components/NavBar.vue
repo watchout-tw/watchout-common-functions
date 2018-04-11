@@ -6,7 +6,7 @@
   </nuxt-link>
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
-  <div class="nav-item avatar-container" @click="addModal('auth')">
+  <div class="nav-item avatar-container" @click="addModal(isCitizen ? 'swiss-knife' : 'auth')">
     <avatar :is-citizen="isCitizen" />
   </div>
 </nav>
@@ -37,7 +37,7 @@ export default {
     }
   },
   created () {
-    if (util.hasJWTToken()) {
+    if (util.hasJWT()) {
       this.$store.dispatch('auth/toggle', true)
     }
   },
