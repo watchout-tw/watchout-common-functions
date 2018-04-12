@@ -22,7 +22,7 @@
             <label class="form-field-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意使用條款</span></label>
           </div>
           <div class="field">
-            <button class="button park" @click.prevent="join">註冊</button>
+            <submit-button :classes="['park']" label="註冊" :state="states.join" @click.native="join" />
           </div>
         </form>
       </div>
@@ -32,7 +32,7 @@
         <h2>草民登入</h2>
       </div>
       <div class="content" v-if="joinOrLogin === 'login'">
-        <form>
+        <form @keyup.13="login">
           <div class="field">
             <input type="text" name="account" placeholder="草民代號或Email" v-model="credentials.login.account" />
           </div>
@@ -40,7 +40,7 @@
             <input type="password" name="password" placeholder="密碼" v-model="credentials.login.password" />
           </div>
           <div class="field">
-            <button class="button park" @click.prevent="login">登入</button>
+            <submit-button :classes="['park']" label="登入" :state="states.login" @click.native="login" />
           </div>
         </form>
       </div>
@@ -64,8 +64,10 @@
 <script>
 import axios from 'axios'
 import * as util from '../../lib/util'
+import * as STATES from '../../lib/states'
 import * as localStorage from '../../lib/localStorage'
 import { knowsWindowManagement, knowsAuth } from '../../interfaces'
+import SubmitButton from '../button/Submit.vue'
 
 axios.defaults.baseURL = 'https://dev.core.watchout.tw'
 
@@ -86,12 +88,18 @@ export default {
           account: null,
           password: null
         }
+      },
+      states: {
+        join: STATES.DEFAULT,
+        login: STATES.DEFAULT
       }
     }
   },
   methods: {
     onLoginSuccessful (response) {
       this.loginSuccessful = true
+      this.states.login = STATES.SUCCESS
+
       localStorage.token.set(response.data.token)
       localStorage.citizenID.set(response.data.citizen_id)
       localStorage.handle.set(response.data.handle)
@@ -99,27 +107,36 @@ export default {
       localStorage.personaID.set(response.data.persona_id)
       localStorage.roles.set(response.data.roles)
       localStorage.personas.set(response.data.personas)
+
       util.authenticateAxios()
       // util.getCitizen(this.$store)
       this.$store.dispatch('auth/toggle', true)
       this.removeModalAfter('auth', 1500)
     },
-    join () {
+    join() {
+      this.states.join = STATES.LOADING
     },
-    login () {
+    login() {
       var loginObj = /^.+@.+$/.test(this.credentials.login.account)
         ? { email: this.credentials.login.account }
         : { handle: this.credentials.login.account }
       loginObj.password = this.credentials.login.password
+      this.states.login = STATES.LOADING
+
       axios.post('/auth/login', loginObj).then(response => {
         this.onLoginSuccessful(response)
       }).catch(error => {
+        this.states.login = STATES.FAILED
         console.error(error)
+        setTimeout(() => { this.states.login = STATES.DEFAULT }, 1500)
       })
     },
     generateHandle() {
       this.credentials.join.handle = nameGenerator({ words: Math.ceil(Math.random() * 2) + 1 }).raw.join('_')
     }
+  },
+  components: {
+    SubmitButton
   }
 }
 </script>
