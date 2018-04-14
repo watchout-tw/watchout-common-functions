@@ -6,7 +6,8 @@ export default {
     ...mapGetters({
       isCitizen: 'auth/isCitizen'
     }),
-    citizenID() {
+    activePersona() {
+      return localStorage.activePersona.get()
     }
   },
   methods: {

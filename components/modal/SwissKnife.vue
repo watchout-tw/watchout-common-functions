@@ -1,5 +1,6 @@
 <template>
 <div class="modal swiss-knife">
+  <div class="name">{{ activePersona.name }}</div>
   <div class="actions">
     <a class="action" :href="parkBaseURL + 'profile'">個人檔案</a>
     <a class="action" :href="parkBaseURL + 'settings'">變更設定</a>
@@ -37,7 +38,11 @@ export default {
   width: 18rem;
   background-color: $color-park-light;
   @include shadow;
-
+  > .name {
+    padding: 1rem;
+    font-weight: bold;
+    background-color: $color-park-light;
+  }
   > .actions {
     > .action {
       display: block;
