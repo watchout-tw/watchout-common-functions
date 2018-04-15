@@ -7,14 +7,13 @@
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="addModal(isCitizen ? 'swiss-knife' : 'auth')">
-    <avatar :is-citizen="isCitizen" />
+    <avatar />
   </div>
 </nav>
 </template>
 
 <script>
 // FIXME: perhaps better not use relative path
-import * as util from '../lib/util'
 import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../interfaces'
 import Avatar from './Avatar'
 
@@ -37,9 +36,7 @@ export default {
     }
   },
   created () {
-    if (util.hasJWT()) {
-      this.$store.dispatch('auth/toggle', true)
-    }
+    this.checkAuth()
   },
   components: {
     Avatar

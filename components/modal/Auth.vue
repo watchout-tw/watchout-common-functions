@@ -63,10 +63,8 @@
 
 <script>
 import axios from 'axios'
-import * as util from '../../lib/util'
 import * as STATES from '../../lib/states'
-import * as localStorage from '../../lib/localStorage'
-import { knowsWindowManagement, knowsAuth } from '../../interfaces'
+import { knowsAuth, knowsWindowManagement } from '../../interfaces'
 import SubmitButton from '../button/Submit.vue'
 
 axios.defaults.baseURL = 'https://dev.core.watchout.tw'
@@ -96,23 +94,6 @@ export default {
     }
   },
   methods: {
-    onLoginSuccessful (response) {
-      this.loginSuccessful = true
-      this.states.login = STATES.SUCCESS
-
-      localStorage.token.set(response.data.token)
-      localStorage.citizenID.set(response.data.citizen_id)
-      localStorage.handle.set(response.data.handle)
-      localStorage.albumID.set(response.data.album_id)
-      localStorage.personaID.set(response.data.persona_id)
-      localStorage.roles.set(response.data.roles)
-      localStorage.personas.set(response.data.personas)
-
-      util.authenticateAxios()
-      // util.getCitizen(this.$store)
-      this.$store.dispatch('auth/toggle', true)
-      this.removeModalAfter('auth', 1500)
-    },
     join() {
       this.states.join = STATES.LOADING
     },
@@ -124,7 +105,10 @@ export default {
       this.states.login = STATES.LOADING
 
       axios.post('/auth/login', loginObj).then(response => {
-        this.onLoginSuccessful(response)
+        this.setAuth(response.data)
+        this.loginSuccessful = true
+        this.states.login = STATES.SUCCESS
+        this.removeModalAfter('auth', 1500)
       }).catch(error => {
         this.states.login = STATES.FAILED
         console.error(error)

@@ -5,8 +5,9 @@
 </template>
 
 <script>
+import { knowsAuth } from 'watchout-common-functions/interfaces'
 export default {
-  props: ['isCitizen'],
+  mixins: [knowsAuth],
   data() {
     return {
       size: 40,
