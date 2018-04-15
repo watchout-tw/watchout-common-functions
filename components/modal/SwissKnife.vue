@@ -16,7 +16,7 @@ export default {
   computed: {
     parkBaseURL() {
       return window.location.hostname === 'localhost'
-        ? '//localhost:9020/'
+        ? '//localhost:9004/'
         : window.location.hostname.split('.')[0] === 'beta'
           ? '//beta.park.watchout.tw/'
           : '//park.watchout.tw/'
