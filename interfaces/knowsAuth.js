@@ -8,11 +8,9 @@ function encodeRoles(roles) {
 function decodeRoles(str) {
   return JSON.parse(str)
 }
-
 function encodePersonas(personas) {
   return JSON.stringify(personas)
 }
-
 function decodePersonas(str) {
   return JSON.parse(str)
 }
