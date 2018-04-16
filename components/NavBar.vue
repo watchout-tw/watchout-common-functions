@@ -7,7 +7,7 @@
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="addModal(isCitizen ? 'swiss-knife' : 'auth')">
-    <avatar />
+    <avatar :avatar="isCitizen ? activePersona.avatar : 'anon'"/>
   </div>
 </nav>
 </template>
