@@ -6,7 +6,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      topics: 'caching/topics'
+      cachedTopics: 'caching/topics'
     })
+  },
+  methods: {
+    cachedTopic(id) {
+      return this.cachedTopics.find(topic => topic.id === id)
+    }
   }
 }
