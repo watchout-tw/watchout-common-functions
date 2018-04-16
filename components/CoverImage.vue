@@ -8,7 +8,9 @@ export default {
   props: ['url', 'width', 'classes'],
   computed: {
     image() {
-      if(this.url.includes('http')) {
+      if(!this.url) {
+        return null
+      } else if(this.url.includes('http')) {
         return this.url
       } else {
         return 'https://raw.githubusercontent.com/watchout-tw/watchout-common-assets/master/images/' + this.url
@@ -34,7 +36,7 @@ export default {
   }
   background-size: cover;
   background-position: center center;
-  
+
   &.shadow {
     @include shadow;
   }
