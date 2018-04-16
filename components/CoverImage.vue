@@ -1,11 +1,11 @@
 <template>
-<div class="cover-image" :style="styles">
+<div class="cover-image" :class="classes" :width="width" :style="styles">
 </div>
 </template>
 
 <script>
 export default {
-  props: ['url'],
+  props: ['url', 'width', 'classes'],
   computed: {
     image() {
       if(this.url.includes('http')) {
@@ -26,8 +26,17 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .cover-image {
-  @include rect(4/1);
+  &[width="2"] {
+    @include rect(2/1);
+  }
+  &[width="4"] {
+    @include rect(4/1);
+  }
   background-size: cover;
   background-position: center center;
+  
+  &.shadow {
+    @include shadow;
+  }
 }
 </style>
