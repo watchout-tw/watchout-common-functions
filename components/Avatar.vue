@@ -43,7 +43,6 @@ export default {
           }
         }
       }
-
       let image = id ? require('watchout-common-assets/images/avatar/' + id + '.png') : url
       let dimensions = type === 'system' ? systemAvatars.find(avatar => avatar.id === id) : this.avatar
       return {

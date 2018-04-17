@@ -20,10 +20,18 @@ export default {
     ...mapGetters({
       isCitizen: 'auth/isCitizen',
       citizen: 'auth/citizen',
-      activePersona: 'auth/activePersona',
+      personaID: 'auth/personaID',
       personas: 'auth/personas',
       roles: 'auth/roles'
-    })
+    }),
+    activePersona() {
+      let persona = this.personaID !== null ? this.personas.find(persona => persona.id === this.personaID) : null
+      // FIXME: remove after core fix
+      if(persona) {
+        persona = Object.assign({}, persona, { avatar: JSON.parse(persona.avatar) })
+      }
+      return persona
+    }
   },
   methods: {
     isLocal() {
