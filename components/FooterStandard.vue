@@ -5,7 +5,7 @@
   <div class="earth soil-dark"></div>
   <div class="earth bedrock">
     <div class="social">
-      <div v-for="group of cptSocialGroups" class="group d-flex flex-row justify-content-around" :class="group.platform">
+      <div v-for="group of cptSocialGroups" class="group d-flex flex-row justify-content-around">
         <a v-for="item of group.items" :href="item.link" class="link a-block" target="_blank" :key="item.link">
           <img class="image" :src="item.image" />
           <label class="text a-target">{{ item.text }}</label>
@@ -37,24 +37,32 @@
 <script>
 import { env } from 'watchout-common-assets'
 
+const getPlatformIcon = (platform) => 'https://raw.githubusercontent.com/watchout-tw/watchout-common-assets/master/images/platforms/' + platform + '.png'
+
 const social = [
   {
+    platform: 'twitter',
+    text: 'Twitter',
+    image: getPlatformIcon('twitter'),
+    link: 'https://twitter.com/watchoutTW'
+  },
+  {
+    platform: 'line',
+    text: 'LINE',
+    image: getPlatformIcon('line'),
+    link: '#'
+  },
+  {
+    platform: 'instagram',
+    text: 'Instagram',
+    image: getPlatformIcon('instagram'),
+    link: 'https://www.instagram.com/watchout.tw/'
+  },
+  {
     platform: 'facebook',
-    text: '追蹤我們的最新動態',
-    image: 'https://graph.facebook.com/watchout.tw/picture?type=large',
+    text: 'Facebook',
+    image: getPlatformIcon('facebook'),
     link: 'https://facebook.com/watchout.tw/'
-  },
-  {
-    platform: 'LINE',
-    text: '阿草好朋友',
-    image: require('watchout-common-assets/images/footer/social/LINE/goodfriend.png'),
-    link: 'https://store.line.me/stickershop/product/1024870/zh-Hant'
-  },
-  {
-    platform: 'LINE',
-    text: '阿草督督好',
-    image: require('watchout-common-assets/images/footer/social/LINE/goodcitizen.png'),
-    link: 'https://store.line.me/stickershop/product/1224270/zh-Hant'
   }
 ]
 const linkGroups = [
@@ -272,23 +280,19 @@ footer.standard {
           > .image {
             display: block;
             margin: 0 auto 0.25rem;
-            width: 5.625rem;
+            width: 2rem;
+            background-color: white;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .5)
           }
           > .text {
             color: $color-generic-grey;
           }
         }
-        &.facebook > .link:after {
-          background-image: url('~watchout-common-assets/images/footer/social/facebook/round.png');
-        }
-        &.LINE > .link:after {
-          background-image: url('~watchout-common-assets/images/footer/social/LINE/round.png');
-        }
       }
     }
     > .link-groups {
       > .group {
-        margin: 0 1rem;
+        margin: 0 1.5rem;
         text-align: left;
         > .title {
           margin: 0.25rem 0;
