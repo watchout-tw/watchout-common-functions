@@ -6,20 +6,25 @@
 
 <script>
 
+const DEFAULT_SIZE = 48
+const DEFAULT_WIDTH = 48
+const DEFAULT_TOP = 0
+const DEFAULT_LEFT = 0
+
 const systemAvatars = [
   {
     id: 'anon',
-    size: 48,
+    size: DEFAULT_SIZE,
     width: 44,
     top: 8,
     left: 2
   },
   {
     id: 'default',
-    size: 48,
-    width: 48,
-    top: 0,
-    left: 0
+    size: DEFAULT_SIZE,
+    width: DEFAULT_WIDTH,
+    top: DEFAULT_TOP,
+    left: DEFAULT_LEFT
   }
 ]
 
@@ -30,6 +35,7 @@ export default {
       let type = 'system'
       let id = 'default'
       let url = null
+      let dimensions = Object.assign({}, systemAvatars.find(avatar => avatar.id === 'id'))
       if(this.avatar) {
         if(typeof this.avatar === 'string') {
           id = this.avatar
@@ -42,26 +48,30 @@ export default {
             url = this.avatar.url
           }
         }
+        dimensions = type === 'system' ? systemAvatars.find(avatar => avatar.id === id) : this.avatar
       }
       let image = id ? require('watchout-common-assets/images/avatar/' + id + '.png') : url
-      let dimensions = type === 'system' ? systemAvatars.find(avatar => avatar.id === id) : this.avatar
-      return {
-        type,
-        image,
-        size: dimensions.size,
-        width: dimensions.width,
-        top: dimensions.top,
-        left: dimensions.left
-      }
+      return Object.assign({ type, image }, dimensions)
     },
     imageStyles() {
-      let d = this.classes && this.classes.includes('small') ? 2 : 1
+      let r = 1
+      if(this.classes) {
+        if(this.classes.includes('small')) {
+          r = 0.5
+        } else if(this.classes.includes('large')) {
+          r = 2
+        }
+      }
+      let size = this.internalAvatar.size * r
+      let width = this.internalAvatar.width * r
+      let top = this.internalAvatar.top * r
+      let left = this.internalAvatar.left * r
       return {
-        width: this.internalAvatar.size / d + 'px',
-        height: this.internalAvatar.size / d + 'px',
+        width: size + 'px',
+        height: size + 'px',
         backgroundImage: 'url(' + this.internalAvatar.image + ')',
-        backgroundSize: this.internalAvatar.width / d + 'px',
-        backgroundPosition: `${this.internalAvatar.left / d}px ${this.internalAvatar.top / d}px`
+        backgroundSize: width + 'px',
+        backgroundPosition: `${left}px ${top}px`
       }
     }
   }
@@ -84,6 +94,10 @@ export default {
   &.inline {
     display: inline-block;
     vertical-align: middle;
+  }
+  &.centered {
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
