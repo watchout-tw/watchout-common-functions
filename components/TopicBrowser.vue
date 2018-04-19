@@ -1,12 +1,12 @@
 <template>
 <div class="topic-browser form-field-many-inputs">
-  <button class="input button toggle park" v-for="topic of internalTopics" :class="topic.selected ? ['active'] : ['inactive']" @click="toggle(topic.id)">{{ topic.title }}</button>
+  <button class="input button toggle park" v-for="topic of internalTopics" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id) : false">{{ topic.title }}</button>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['allowMultiple', 'topics', 'selectedTopics'],
+  props: ['allowMultiple', 'topics', 'selectedTopics', 'mutable'],
   data() {
     return {
       internalTopics: this.topics.map(topic => ({
@@ -15,7 +15,18 @@ export default {
       }))
     }
   },
+  computed: {
+    isMutable() {
+      return !(this.mutable === false)
+    }
+  },
   methods: {
+    buttonClasses(selected) {
+      var classes = []
+      classes.push(this.isMutable ? 'mutable' : 'immutable')
+      classes.push(selected ? 'active' : 'inactive')
+      return classes
+    },
     toggle(topicID) {
       if(this.allowMultiple !== true) {
         this.internalTopics.forEach(topic => {
