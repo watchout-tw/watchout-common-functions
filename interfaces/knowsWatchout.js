@@ -1,3 +1,9 @@
+const WHATPORT = {
+  park: 9004,
+  ask: 9010,
+  'musou-media-experiment': 9020
+}
+
 export default {
   methods: {
     getSmallProjectLogo(id) {
@@ -15,6 +21,37 @@ export default {
         width: metadata.width + 'px',
         height: metadata.height + 'px'
       }
+    },
+    getBaseURL(channelID) {
+      const protocol = '//'
+      let currentURL = window.location.hostname
+      let url
+      let port = WHATPORT[channelID]
+      if(!port) {
+        console.error('What port?')
+      } else if(currentURL === 'localhost') {
+        url = `${protocol}localhost:${port}/`
+      } else if(currentURL.split('.')[0] === 'beta') {
+        url = `${protocol}beta.${channelID}.watchout.tw/`
+      } else {
+        url = `${protocol}${channelID}.watchout.tw/`
+      }
+      return url
+    },
+    getAskGameURL(gameSlug) {
+      return this.getBaseURL('ask') + `games/${gameSlug}`
+    },
+    getAskQuestionURL(gameSlug, questionID) {
+      return this.getBaseURL('ask') + `games/${gameSlug}/questions/${questionID}`
+    },
+    getAskAnswerURL(gameSlug, answerID) {
+      return this.getBaseURL('ask') + `games/${gameSlug}/answers/${answerID}`
+    },
+    getParkPersonaProfileURL(personaID) {
+      return this.getBaseURL('park') + `personas/${personaID}`
+    },
+    getParkSettingsURL() {
+      return this.getBaseURL('park') + 'settings'
     }
   }
 }

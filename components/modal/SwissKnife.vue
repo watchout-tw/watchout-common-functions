@@ -2,17 +2,17 @@
 <div class="modal swiss-knife">
   <div class="name">{{ activePersona ? activePersona.name : '沒有人' }}</div>
   <div class="actions">
-    <a class="action" :href="parkBaseURL + 'profile'">個人檔案</a>
-    <a class="action" :href="parkBaseURL + 'settings'">變更設定</a>
+    <a class="action" :href="activePersona ? getParkPersonaProfileURL(activePersona.id) : '#'">個人檔案</a>
+    <a class="action" :href="getParkSettingsURL()">變更設定</a>
     <a class="action" @click="logoutAndRemoveModal">登出</a>
   </div>
 </div>
 </template>
 
 <script>
-import { knowsAuth, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 export default {
-  mixins: [knowsAuth, knowsWindowManagement],
+  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   computed: {
     parkBaseURL() {
       return window.location.hostname === 'localhost'
