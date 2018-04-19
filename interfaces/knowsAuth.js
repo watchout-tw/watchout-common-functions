@@ -25,12 +25,7 @@ export default {
       roles: 'auth/roles'
     }),
     activePersona() {
-      let persona = this.personaID !== null ? this.personas.find(persona => persona.id === this.personaID) : null
-      // FIXME: remove after core fix
-      if(persona) {
-        persona = Object.assign({}, persona, { avatar: JSON.parse(persona.avatar) })
-      }
-      return persona
+      return this.personaID !== null ? this.personas.find(persona => persona.id === this.personaID) : null
     }
   },
   methods: {
