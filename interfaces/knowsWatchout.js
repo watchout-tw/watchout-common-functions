@@ -29,8 +29,8 @@ export default {
       let port = WHATPORT[channelID]
       if(!port) {
         console.error('What port?')
-      } else if(currentURL === 'localhost') {
-        url = `${protocol}localhost:${port}/`
+      } else if(currentURL.includes('localhost')) {
+        url = `${protocol}dev.localhost:${port}/`
       } else if(currentURL.split('.')[0] === 'beta') {
         url = `${protocol}beta.${channelID}.watchout.tw/`
       } else {

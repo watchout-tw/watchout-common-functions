@@ -15,6 +15,11 @@ function decodePersonas(str) {
   return JSON.parse(str)
 }
 
+function getCookieDomain() {
+  let currentURL = window.location.hostname
+  return (currentURL.includes('localhost')) ? 'dev.localhost' : 'watchout.tw'
+}
+
 export default {
   computed: {
     ...mapGetters({
@@ -32,52 +37,91 @@ export default {
     isLocal() {
       return process.browser && localStorage
     },
+    getTokenCookie() {
+      let cookies = Object.assign({}, ...document.cookie.split(';').map(cookie => {
+        let [key, value] = cookie.split('=')
+        return { [key]: value }
+      }))
+      return cookies.hasOwnProperty('watchout_token') ? cookies.watchout_token : null
+    },
+    setTokenCookie(token) {
+      let domain = getCookieDomain()
+      document.cookie = `watchout_token=${token};Domain=${domain};`
+    },
+    clearTokenCookie() {
+      let domain = getCookieDomain()
+      document.cookie = `watchout_token=;Domain=${domain};Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+    },
     checkAuth() {
       if(this.isLocal()) {
-        let token = localStorage.getItem(ls.TOKEN)
-        let citizenID = localStorage.getItem(ls.CITIZEN_ID)
-        let handle = localStorage.getItem(ls.HANDLE)
-        let albumID = localStorage.getItem(ls.ALBUM_ID)
-        let personaID = localStorage.getItem(ls.PERSONA_ID)
-        let personas = decodePersonas(localStorage.getItem(ls.PERSONAS))
-        let roles = decodeRoles(localStorage.getItem(ls.ROLES))
+        let tokenInLocalStorage = localStorage.getItem(ls.TOKEN)
+        let tokenCookie = this.getTokenCookie()
 
-        if(token) { // FIXME: need a more rigorous check
-          this.setAuth({
-            token,
-            citizen_id: citizenID,
-            handle,
-            album_id: albumID,
-            persona_id: personaID,
-            personas,
-            roles
-          })
+        if(tokenCookie) {
+          if(!tokenInLocalStorage) {
+            // citizen has logged IN elsewhere
+            axios.post('/auth/login', { token: tokenCookie }).then(response => {
+              this.setAuth(response.data)
+            }).catch(error => {
+              console.error(error)
+            })
+          } else {
+            // citizen has logged IN here
+            let citizenID = localStorage.getItem(ls.CITIZEN_ID)
+            let handle = localStorage.getItem(ls.HANDLE)
+            let albumID = localStorage.getItem(ls.ALBUM_ID)
+            let personaID = localStorage.getItem(ls.PERSONA_ID)
+            let personas = decodePersonas(localStorage.getItem(ls.PERSONAS))
+            let roles = decodeRoles(localStorage.getItem(ls.ROLES))
+            this.setAuth({
+              token: tokenInLocalStorage,
+              citizen_id: citizenID,
+              handle,
+              album_id: albumID,
+              persona_id: personaID,
+              personas,
+              roles
+            })
+          }
+        } else {
+          if(tokenInLocalStorage) {
+            // citizen has logged OUT elsewhere
+            this.logout()
+          } else {
+            // user is anonymous
+          }
         }
       }
     },
     setAuth(data) {
-      // update store
-      this.$store.dispatch('auth/toggle', data)
-      // authenticate axios
-      if(data.token) {
+      if(data.token) { // FIXME: need a more rigorous check
+        // update store
+        this.$store.dispatch('auth/toggle', data)
+        // authenticate axios
         axios.defaults.headers.common['Authorization'] = data.token
-      }
-      // update localStorage
-      if(this.isLocal()) {
-        localStorage.setItem(ls.TOKEN, data.token)
-        localStorage.setItem(ls.CITIZEN_ID, data.citizen_id)
-        localStorage.setItem(ls.HANDLE, data.handle)
-        localStorage.setItem(ls.ALBUM_ID, data.album_id)
-        localStorage.setItem(ls.PERSONA_ID, data.persona_id)
-        localStorage.setItem(ls.PERSONAS, encodePersonas(data.personas))
-        localStorage.setItem(ls.ROLES, encodeRoles(data.roles))
+
+        if(this.isLocal()) {
+          // update localStorage
+          localStorage.setItem(ls.TOKEN, data.token)
+          localStorage.setItem(ls.CITIZEN_ID, data.citizen_id)
+          localStorage.setItem(ls.HANDLE, data.handle)
+          localStorage.setItem(ls.ALBUM_ID, data.album_id)
+          localStorage.setItem(ls.PERSONA_ID, data.persona_id)
+          localStorage.setItem(ls.PERSONAS, encodePersonas(data.personas))
+          localStorage.setItem(ls.ROLES, encodeRoles(data.roles))
+          // set cookie
+          if(!this.getTokenCookie()) {
+            this.setTokenCookie(data.token)
+          }
+        }
       }
     },
     logout() {
       // update store
       this.$store.dispatch('auth/toggle', false)
-      // update localStorage
+
       if(this.isLocal()) {
+        // update localStorage
         localStorage.removeItem(ls.TOKEN)
         localStorage.removeItem(ls.CITIZEN_ID)
         localStorage.removeItem(ls.HANDLE)
@@ -85,7 +129,10 @@ export default {
         localStorage.removeItem(ls.PERSONA_ID)
         localStorage.removeItem(ls.PERSONAS)
         localStorage.removeItem(ls.ROLES)
+        // clear cookie
+        this.clearTokenCookie()
       }
+      // force redirect to home page
       this.$router.push('/')
     }
   }
