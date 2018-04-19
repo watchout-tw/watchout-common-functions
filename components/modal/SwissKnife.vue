@@ -13,15 +13,6 @@
 import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
-  computed: {
-    parkBaseURL() {
-      return window.location.hostname === 'localhost'
-        ? '//localhost:9004/'
-        : window.location.hostname.split('.')[0] === 'beta'
-          ? '//beta.park.watchout.tw/'
-          : '//park.watchout.tw/'
-    }
-  },
   methods: {
     logoutAndRemoveModal() {
       this.logout()
