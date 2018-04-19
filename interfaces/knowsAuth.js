@@ -91,6 +91,7 @@ export default {
         localStorage.removeItem(ls.PERSONAS)
         localStorage.removeItem(ls.ROLES)
       }
+      this.$router.push('/')
     }
   }
 }
