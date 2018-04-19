@@ -39,7 +39,7 @@ export default {
     },
     getTokenCookie() {
       let cookies = Object.assign({}, ...document.cookie.split(';').map(cookie => {
-        let [key, value] = cookie.split('=')
+        let [key, value] = cookie.trim().split('=')
         return { [key]: value }
       }))
       return cookies.hasOwnProperty('watchout_token') ? cookies.watchout_token : null
