@@ -14,7 +14,7 @@
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div>{{ question.push.count }}/{{ question.data.threshold }}</div>
-    <button :class="pushBtnClass" v-on:click="push(question.id)">{{ pushBtnText }}</button>
+    <button :class="pushClasses" v-on:click="push(question.id)">{{ pushText }}</button>
   </div>
   <div class="detail" :class="subcontainerClasses">
     <div class="content" v-if="isFull">{{ question.content }}</div>
@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import * as core from '~/lib/core'
-import * as util from '~/lib/util'
+import * as core from '../../lib/core'
+import * as util from '../../lib/util'
 import { knowsAuth } from '../../interfaces'
 import CoverImage from '../CoverImage'
 import Avatar from '../Avatar'
@@ -89,11 +89,11 @@ export default {
     excerpt() {
       return this.question.content ? this.question.content.substr(0, 50) + '⋯' : ''
     },
-    pushBtnClass () {
-      return util.pushBtnClassMapper(this.question)
+    pushClasses () {
+      return util.getPushButtonClasses(this.question)
     },
-    pushBtnText () {
-      return util.pushBtnTextMapper(this.question)
+    pushText () {
+      return util.getPushButtonText(this.question)
     }
   },
   methods: {
