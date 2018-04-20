@@ -1,14 +1,13 @@
 <template>
 <div class="topic-browser form-field-many-inputs">
-  <button class="input button toggle park" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id) : false">{{ topic.title }}</button>
+  <button class="input button toggle park" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topic.title }}</button>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['allowMultiple', 'topics', 'selectedTopics', 'mutable'],
+  props: ['limit', 'topics', 'selectedTopics', 'mutable'],
   data() {
-    console.warn('sele', this.selectedTopics)
     return {
       internalTopics: this.topics.map(topic => ({
         ...topic,
@@ -22,7 +21,7 @@ export default {
     }
   },
   watch: {
-    'selectedTopics.length': function() {
+    'selectedTopics': function() {
       this.internalTopics = this.topics.map(topic => ({
         ...topic,
         selected: this.selectedTopics.includes(topic.id)
@@ -36,15 +35,15 @@ export default {
       classes.push(selected ? 'active' : 'inactive')
       return classes
     },
-    toggle(topicID) {
-      if(this.allowMultiple !== true) {
-        this.internalTopics.forEach(topic => {
-          topic.selected = false
-        })
+    toggle(topicID, isSelected) {
+      if(this.limit && this.selectedTopics.length >= this.limit) {
+        this.selectedTopics.shift()
       }
-      let topic = this.internalTopics.find(topic => topic.id === topicID)
-      topic.selected = !topic.selected
-      this.$emit('update:selectedTopics', this.internalTopics.filter(topic => topic.selected).map(topic => topic.id))
+      if(isSelected) {
+        this.selectedTopics.splice(this.selectedTopics.indexOf(topicID), 1)
+      }else {
+        this.selectedTopics.push(topicID)
+      }
     }
   }
 }
