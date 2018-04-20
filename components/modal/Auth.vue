@@ -19,7 +19,7 @@
             <input type="password" name="password" placeholder="密碼" v-model="credentials.join.password" />
           </div>
           <div class="field">
-            <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意使用條款</span></label>
+            <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意</span><a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></label>
           </div>
           <div class="field">
             <submit-button :classes="['park']" label="註冊" :state="states.join" @click.native="join" />
