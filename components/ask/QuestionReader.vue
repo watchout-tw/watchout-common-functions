@@ -14,7 +14,7 @@
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div>{{ question.push.count }}/{{ question.data.threshold }}</div>
-    <button :class="pushClasses" v-on:click="push(question.id)">{{ pushText }}</button>
+    <submit-button :classes="pushClasses" :label="pushText" :state="pushButtonState" @click.native="push(question.id)"/>
   </div>
   <div class="detail" :class="subcontainerClasses">
     <div class="content" v-if="isFull">{{ question.content }}</div>
@@ -40,11 +40,13 @@
 
 <script>
 import * as core from '../../lib/core'
+import * as submitState from '../../lib/states'
 import * as util from '../../lib/util'
 import { knowsAuth } from '../../interfaces'
 import CoverImage from '../CoverImage'
 import Avatar from '../Avatar'
 import ShareButton from '../button/Share'
+import SubmitButton from '../button/Submit'
 import Quiero from './Quiero'
 
 export default {
@@ -52,7 +54,8 @@ export default {
   props: ['question', 'mode', 'pushable', 'preview'],
   data () {
     return {
-      currentTime: util.formatter.date(new Date())
+      currentTime: util.formatter.date(new Date()),
+      pushButtonState: submitState.DEFAULT
     }
   },
   computed: {
@@ -98,18 +101,32 @@ export default {
   },
   methods: {
     push(id) {
+      this.pushButtonState = submitState.LOADING
       core.pushQuestion(id).then(response => {
+        this.pushed()
+        this.pushButtonState = submitState.SUCCESS
+        setTimeout(() => {
+          this.pushButtonState = submitState.DEFAULT
+        }, 1500)
         console.log(response)
       }).catch(error => {
+        this.pushButtonState = submitState.FAILED
         console.error(error)
+        setTimeout(() => {
+          this.pushButtonState = submitState.DEFAULT
+        }, 1500)
       })
+    },
+    pushed () {
+      this.$emit('pushed')
     }
   },
   components: {
-    CoverImage,
-    ShareButton,
     Avatar,
-    Quiero
+    CoverImage,
+    Quiero,
+    ShareButton,
+    SubmitButton
   }
 }
 </script>
