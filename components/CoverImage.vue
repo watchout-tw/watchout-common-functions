@@ -34,7 +34,7 @@ export default {
   &[width="4"] {
     @include rect(4/1);
   }
-  background-size: cover;
+  background-size: contain;
   background-position: center center;
 
   &.shadow {
