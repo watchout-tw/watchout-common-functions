@@ -4,17 +4,15 @@ export default {
   computed: {
     ...mapGetters({
       showSupport: 'windowManagement/showSupport',
-      modals: 'windowManagement/modals',
-      joinOrLogin: 'windowManagement/joinOrLogin'
+      modals: 'windowManagement/modals'
     })
   },
   methods: {
     ...mapActions({
       toggleShowSupport: 'windowManagement/toggleShowSupport',
       addModal: 'windowManagement/addModal',
-      removeModal: 'windowManagement/removeModal',
-      showJoin: 'windowManagement/showJoin',
-      showLogin: 'windowManagement/showLogin'
+      updateModal: 'windowManagement/updateModal',
+      removeModal: 'windowManagement/removeModal'
     }),
     removeModalAfter(id, time) {
       setTimeout(() => {

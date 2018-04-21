@@ -26,8 +26,7 @@ export default {
   methods: {
     linkTo () {
       if(this.config && this.config.citizenshipRequired && !this.isCitizen) {
-        this.addModal('auth')
-        this.showLogin()
+        this.addModal({ id: 'auth', joinOrLogin: 'login' })
       } else {
         this.$router.push(this.to)
       }

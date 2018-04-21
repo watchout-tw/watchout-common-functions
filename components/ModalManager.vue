@@ -1,8 +1,8 @@
 <template>
 <div class="modal-manager">
-  <transition name="modal" appear v-for="modal of modals" :key="modal">
-    <div class="modal-overlay"  @click.self="removeModal(modal)">
-      <component :is="modal"></component>
+  <transition name="modal" appear v-for="modal of modals" :key="modal.id">
+    <div class="modal-overlay"  @click.self="removeModal(modal.id)">
+      <component :is="modal.id" :data="modal"></component>
     </div>
   </transition>
 </div>
@@ -10,14 +10,10 @@
 
 <script>
 import { knowsWindowManagement } from '../interfaces' // FIXME: no relative paths
-import { Auth, SwissKnife, Transporter } from './modal'
+import * as modals from './modal'
 export default {
   mixins: [knowsWindowManagement],
-  components: {
-    Auth,
-    SwissKnife,
-    Transporter
-  }
+  components: modals
 }
 </script>
 

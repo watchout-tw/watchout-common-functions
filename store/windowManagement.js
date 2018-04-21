@@ -1,24 +1,23 @@
 export const state = () => ({
   showSupport: true,
-  modals: [],
-  joinOrLogin: 'join'
+  modals: []
 })
 
 export const actions = {
   toggleShowSupport({ commit }, value) {
     commit('toggleShowSupport', value)
   },
-  addModal({ commit }, id) {
-    commit('addModal', id)
+  addModal({ commit }, data) {
+    if(typeof data === 'string') {
+      data = { id: data }
+    }
+    commit('addModal', data)
+  },
+  updateModal({ commit }, data) {
+    commit('updateModal', data)
   },
   removeModal({ commit }, id) {
     commit('removeModal', id)
-  },
-  showJoin({ commit }) {
-    commit('toggleJoinOrLogin', 'join')
-  },
-  showLogin({ commit }) {
-    commit('toggleJoinOrLogin', 'login')
   }
 }
 
@@ -26,19 +25,20 @@ export const mutations = {
   toggleShowSupport(state, value) {
     state.showSupport = value
   },
-  addModal(state, id) {
-    if(!state.modals.includes(id)) {
-      state.modals.push(id)
+  addModal(state, data) {
+    state.modals.push(data)
+  },
+  updateModal(state, data) {
+    const index = state.modals.findIndex(modal => modal.id === data.id)
+    if(index > -1) {
+      state.modals[index] = Object.assign(state.modals[index], data)
     }
   },
   removeModal(state, id) {
-    const index = state.modals.indexOf(id)
+    const index = state.modals.findIndex(modal => modal.id === id)
     if(index > -1) {
       state.modals.splice(index, 1)
     }
-  },
-  toggleJoinOrLogin(state, value) {
-    state.joinOrLogin = value
   }
 }
 
@@ -48,8 +48,5 @@ export const getters = {
   },
   modals(state) {
     return state.modals
-  },
-  joinOrLogin(state) {
-    return state.joinOrLogin
   }
 }

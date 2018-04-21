@@ -6,7 +6,7 @@
   </nuxt-link>
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
-  <div class="nav-item avatar-container" @click="addModal(isCitizen ? 'swiss-knife' : 'auth')">
+  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })">
     <avatar :avatar="isCitizen ? activePersona.avatar : 'anon'"/>
   </div>
 </nav>
