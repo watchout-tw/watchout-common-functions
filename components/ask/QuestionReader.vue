@@ -42,7 +42,7 @@
 import * as core from '../../lib/core'
 import * as STATES from '../../lib/states'
 import * as util from '../../lib/util'
-import { knowsAuth } from '../../interfaces'
+import { knowsAuth, knowsWindowManagement } from '../../interfaces'
 import CoverImage from '../CoverImage'
 import Avatar from '../Avatar'
 import ShareButton from '../button/Share'
@@ -50,7 +50,7 @@ import SubmitButton from '../button/Submit'
 import Quiero from './Quiero'
 
 export default {
-  mixins: [knowsAuth],
+  mixins: [knowsAuth, knowsWindowManagement],
   props: ['question', 'mode', 'pushable', 'preview'],
   data () {
     return {
@@ -102,15 +102,21 @@ export default {
   },
   methods: {
     push(id) {
-      this.pushButtonState = STATES.LOADING
-      core.pushQuestion(id).then(response => {
-        this.pushed()
-        this.pushButtonState = STATES.SUCCESS
-        console.log(response)
-      }).catch(error => {
-        this.pushButtonState = STATES.FAILED
-        console.error(error)
-      })
+      if(!this.isCitizen) {
+        this.addModal({ id: 'auth', joinOrLogin: 'login' })
+      } else if(this.activePersonaIsWithInfo) {
+        this.pushButtonState = STATES.LOADING
+        core.pushQuestion(id).then(response => {
+          this.pushed()
+          this.pushButtonState = STATES.SUCCESS
+          console.log(response)
+        }).catch(error => {
+          this.pushButtonState = STATES.FAILED
+          console.error(error)
+        })
+      } else {
+        this.addModal('private-info-registration')
+      }
     },
     pushed () {
       this.$emit('pushed')

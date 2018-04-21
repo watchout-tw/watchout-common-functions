@@ -1,24 +1,22 @@
 <template>
-<div class="text-editor" :class="computedClasses">
+<div class="text-editor input" :class="computedClasses">
   <div class="tools"></div>
   <div class="content">
-    <component :is="inputElement" rows="4" ref="inputElement" :placeholder="placeholder" :value="content" @input="updateContent()" @focus="isFocused = true" @blur="isFocused = false" :maxlength="maxlength"></component>
+    <input v-if="simple" :type="type" :value="value" ref="inputElement" :placeholder="placeholder" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false" />
+    <textarea v-else rows="4" :maxlength="maxlength" :value="value" ref="inputElement" :placeholder="placeholder" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false"></textarea>
   </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['simple', 'placeholder', 'content', 'maxlength', 'classes'],
+  props: ['placeholder', 'type', 'value', 'classes', 'simple', 'maxlength'],
   data() {
     return {
       isFocused: false
     }
   },
   computed: {
-    inputElement() {
-      return this.simple ? 'input' : 'textarea'
-    },
     computedClasses() {
       let moreClasses = []
       if(this.simple) {
@@ -28,11 +26,6 @@ export default {
         moreClasses.push('focused')
       }
       return Array.isArray(this.classes) ? this.classes.concat(...moreClasses) : moreClasses
-    }
-  },
-  methods: {
-    updateContent() {
-      this.$emit('input', this.$refs.inputElement.value)
     }
   }
 }
@@ -56,9 +49,11 @@ export default {
     background-color: $color-watchout-very-light;
     border-color: $color-watchout;
     &.ask {
+      background-color: $color-ask-very-light;
       border-color: $color-ask;
     }
     &.park {
+      background-color: $color-park-very-light;
       border-color: $color-park;
     }
   }
@@ -69,13 +64,14 @@ export default {
       border: none;
       background: none;
       padding: 0.25rem 0.375rem;
+      line-height: $line-height-compact;
     }
     > textarea {
       display: block;
       width: 100%;
       border: none;
       padding: 0.25rem 0.375rem;
-      line-height: $line-height-default;
+      line-height: $line-height-compact;
       background: none;
     }
   }
