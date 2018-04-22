@@ -20,7 +20,7 @@
         <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意</span><a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></label>
       </div>
       <div class="field">
-        <submit-button :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @click.native="join" />
+        <submit-button :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @click.native="join" v-on:reset="onSubmitButtonReset('join')" />
       </div>
     </form>
     <div class="the-other-action text-align-right">
@@ -36,7 +36,7 @@
         <text-editor placeholder="密碼" type="password" v-model="credentials.login.password" :classes="['park']" :simple="true" key="loginPassword" />
       </div>
       <div class="field with-extra-margin">
-        <submit-button :classes="['park']" label="登入" :state.sync="states.login" :message.sync="states.message" @click.native="login" />
+        <submit-button :classes="['park']" label="登入" :state.sync="states.login" :message.sync="states.message" @click.native="login" v-on:reset="onSubmitButtonReset('login')" />
       </div>
     </form>
     <div class="the-other-action text-align-right">
@@ -93,7 +93,25 @@ export default {
     },
     join() {
       if(this.states.join === STATES.DEFAULT && this.credentials.join.handle && this.credentials.join.email && this.credentials.join.password && this.credentials.join.iAgree) {
-        this.states.join = STATES.LOADING
+        if(util.isEmail(this.credentials.join.email)) {
+          this.states.join = STATES.LOADING
+          core.join({
+            handle: this.credentials.join.handle,
+            email: this.credentials.join.email,
+            password: this.credentials.join.password
+          }).then(response => {
+            this.states.join = STATES.SUCCESS
+            this.states.message = '認證信已寄出'
+          }).catch(error => {
+            let message = error.response.data.message
+            console.error(error, error.response, message)
+            this.states.join = STATES.FAILED
+            this.states.message = ERRORS.MAP[message]
+          })
+        } else {
+          this.states.join = STATES.FAILED
+          this.states.message = '這不是Email'
+        }
       } else {
         this.states.join = STATES.FAILED
         this.states.message = '資料不完整'
@@ -109,13 +127,11 @@ export default {
 
         core.login(data).then(response => {
           this.setAuth(response.data)
-          // this.loginSuccessful = true
           this.states.login = STATES.SUCCESS
           this.states.message = '歡迎回來'
-          this.removeModalAfter('auth', 2000)
         }).catch(error => {
           let message = error.response.data.message
-          console.error(error, error.response, message)
+          console.error(error)
           this.states.login = STATES.FAILED
           this.states.message = ERRORS.MAP[message]
         })
@@ -126,6 +142,12 @@ export default {
     },
     generateHandle() {
       this.credentials.join.handle = nameGenerator({ words: Math.ceil(Math.random() * 2) + 1 }).raw.join('_')
+    },
+    onSubmitButtonReset(which) {
+      let state = which === 'join' ? this.states.join : this.states.login
+      if(state === STATES.SUCCESS) {
+        this.removeModal('auth')
+      }
     }
   },
   components: {
