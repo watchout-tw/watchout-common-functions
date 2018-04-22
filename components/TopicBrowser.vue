@@ -1,6 +1,6 @@
 <template>
 <div class="topic-browser form-field-many-inputs form-field-align-center">
-  <button class="input button medium toggle park" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topic.title }}</button>
+  <button class="input button medium toggle" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topicText(topic) }}</button>
 </div>
 </template>
 
@@ -31,9 +31,13 @@ export default {
     },
     buttonClasses(selected) {
       var classes = []
+      classes.push(this.topics[0].hasOwnProperty('battlefield') ? 'ask' : 'park') // FIXME: quick hack
       classes.push(this.isMutable ? 'mutable' : 'immutable')
       classes.push(selected ? 'active' : 'inactive')
       return classes
+    },
+    topicText(topic) {
+      return topic.hasOwnProperty('battlefield') ? (topic.year + topic.title) : topic.title
     },
     toggle(topicID, isSelected) {
       if(this.limit && this.selectedTopics.length >= this.limit) {
