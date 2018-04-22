@@ -1,11 +1,12 @@
 <template>
 <div class="cover-image" :class="classes" :width="width" :style="styles">
+  <div v-if="label" class="label">{{ label }}</div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['url', 'width', 'classes'],
+  props: ['url', 'label', 'type', 'width', 'classes'],
   computed: {
     image() {
       if(!this.url) {
@@ -39,6 +40,18 @@ export default {
 
   &.shadow {
     @include shadow;
+  }
+
+  > .label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    line-height: 1em;
+    padding: 0.25rem;
+    transform: translate(-50%, -50%);
+    background: white;
+    font-size: 1.25rem;
+    font-weight: bold;
   }
 }
 </style>

@@ -1,35 +1,35 @@
-function errorMsg (label) {
+function error(message) {
   return {
     error: true,
-    message: '請填入' + label
+    message
   }
 }
 
-function successMsg () {
+function success() {
   return {
     success: true,
-    message: '驗證成功'
+    message: '通過驗證'
   }
 }
 
 export default {
   methods: {
-    validate (config, obj) {
-      for (var key in config) {
-        if (config[key].allowNull) {
+    validate(config, obj) {
+      for(var key in config) {
+        if(config[key].allowNull) {
           continue
         }
-        if (!obj.hasOwnProperty(key)) {
-          return errorMsg(config[key].label)
+        if(!obj.hasOwnProperty(key)) {
+          return error(config[key].messages.missing)
         }
-        if (!config[key].allowNull && !obj[key]) {
-          return errorMsg(config[key].label)
+        if(!config[key].allowNull && !obj[key]) {
+          return error(config[key].messages.missing)
         }
-        if (!config[key].allowNull && config[key].isArray && obj[key].length === 0) {
-          return errorMsg(config[key].label)
+        if(!config[key].allowNull && config[key].isArray && obj[key].length === 0) {
+          return error(config[key].messages.missing)
         }
       }
-      return successMsg()
+      return success()
     }
   }
 }

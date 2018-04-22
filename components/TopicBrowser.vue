@@ -1,6 +1,6 @@
 <template>
-<div class="topic-browser form-field-many-inputs">
-  <button class="input button toggle park" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topic.title }}</button>
+<div class="topic-browser form-field-many-inputs form-field-align-center">
+  <button class="input button medium toggle park" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topic.title }}</button>
 </div>
 </template>
 
@@ -48,3 +48,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.topic-browser {
+  margin: 0.5rem 0;
+}
+</style>
