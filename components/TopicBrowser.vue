@@ -9,10 +9,7 @@ export default {
   props: ['limit', 'topics', 'selectedTopics', 'mutable'],
   data() {
     return {
-      internalTopics: this.topics.map(topic => ({
-        ...topic,
-        selected: this.selectedTopics.includes(topic.id)
-      }))
+      internalTopics: this.generateInternalTopics()
     }
   },
   computed: {
@@ -22,13 +19,16 @@ export default {
   },
   watch: {
     'selectedTopics': function() {
-      this.internalTopics = this.topics.map(topic => ({
-        ...topic,
-        selected: this.selectedTopics.includes(topic.id)
-      }))
+      this.internalTopics = this.generateInternalTopics()
     }
   },
   methods: {
+    generateInternalTopics() {
+      return this.topics.map(topic => ({
+        ...topic,
+        selected: this.selectedTopics ? this.selectedTopics.includes(topic.id) : false
+      }))
+    },
     buttonClasses(selected) {
       var classes = []
       classes.push(this.isMutable ? 'mutable' : 'immutable')
