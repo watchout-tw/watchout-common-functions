@@ -16,7 +16,7 @@ export default {
   methods: {
     logoutAndRemoveModal() {
       this.logout()
-      this.removeModalAfter('swiss-knife', 500)
+      this.removeModal('swiss-knife')
     }
   }
 }
