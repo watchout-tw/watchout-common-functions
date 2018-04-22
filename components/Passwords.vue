@@ -1,7 +1,7 @@
 <template>
 <div class="passwords">
   <div class="form">
-    <div class="field">
+    <div class="field" v-if="!isResetMode">
       <text-editor placeholder="確認現行密碼" type="password" v-model="currentPassword" :classes="['park']" :simple="true" key="currentPassword"/>
     </div>
     <div class="field">
@@ -11,7 +11,7 @@
       <text-editor placeholder="確認新密碼" type="password" v-model="newPasswordConfirmation" :classes="['park']" :simple="true" key="Confirmation"/>
     </div>
     <div class="field with-extra-margin">
-      <submit-button :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @click.native="updatePassword" @reset="onSubmitButtonReset" />
+      <submit-button :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @click.native="send" @reset="onSubmitButtonReset" />
     </div>
   </div>
 </div>
@@ -27,6 +27,7 @@ import SubmitButton from './button/Submit'
 
 export default {
   mixins: [knowsAuth],
+  props: ['isResetMode'],
   data() {
     return {
       currentPassword: null,
@@ -37,6 +38,31 @@ export default {
     }
   },
   methods: {
+    send() {
+      if(this.isResetMode) {
+        this.resetPassword()
+      }else {
+        this.updatePassword()
+      }
+    },
+    resetPassword() {
+      if(this.newPassword !== this.newPasswordConfirmation) {
+        this.state = STATES.FAILED
+        this.message = '新密碼兩次不一致'
+      } else {
+        core.resetPassword({
+          new_password: this.newPassword
+        }, this.$route.query.token).then(response => {
+          console.log(response)
+          this.state = STATES.SUCCESS
+          this.message = '密碼已更新；請重新登入'
+        }).catch(error => {
+          let message = error.response.data.message
+          this.state = STATES.FAILED
+          this.message = ERRORS.MAP[message]
+        })
+      }
+    },
     updatePassword() {
       if(!this.currentPassword) {
         this.state = STATES.FAILED
