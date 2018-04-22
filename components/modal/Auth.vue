@@ -17,7 +17,7 @@
         <text-editor placeholder="密碼" type="password" v-model="credentials.join.password" :classes="['park']" :simple="true" key="joinPassword"/>
       </div>
       <div class="field">
-        <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意</span><a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></label>
+        <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意<a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></span></label>
       </div>
       <div class="field">
         <submit-button :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @click.native="join" v-on:reset="onSubmitButtonReset('join')" />
