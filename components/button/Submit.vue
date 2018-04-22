@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     reset() {
+      this.$emit('reset')
       this.symbolOffsetX = 0
       this.showMessage = false
       this.$emit('update:state', this.STATES.DEFAULT)
