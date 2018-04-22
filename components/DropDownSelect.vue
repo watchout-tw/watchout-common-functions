@@ -39,7 +39,8 @@ export default {
   > .placeholder {
     position: absolute;
     top: 0.25rem;
-    color: $color-border-grey;
+    left: 0.375rem;
+    color: $color-secondary-text-grey;
     z-index: -1;
   }
 }
