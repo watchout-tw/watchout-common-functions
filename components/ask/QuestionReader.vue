@@ -3,10 +3,10 @@
   <div class="signature" :class="fullWidthSubcontainerClasses">
     <cover-image :url="question.image" :label="topicTitle" type="topic" width="4" />
     <div class="text tcl-left-right-margin">
-      <component :is="isFull ? 'h1' : 'h2'" class="title small">{{ question.title }}</component>
-      <div class="excerpt" v-if="isCompact">{{ excerpt }}</div>
-      <div class="more font-size-smaller text-align-right" v-if="isCompact">
-        <nuxt-link class="a-text" :to="{ name: 'games-gameSlug-questions-id', params: { gameSlug: question.game.slug, id: question.id }}">繼續閱讀</nuxt-link>
+      <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">{{ question.title }}</component>
+      <div class="excerpt" v-if="isCompact">
+        <span>{{ excerpt }}</span>
+        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="{ name: 'games-gameSlug-questions-id', params: { gameSlug: question.game.slug, id: question.id }}">繼續閱讀</nuxt-link>
       </div>
       <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :date="question.push.startDate" />
     </div>
@@ -21,7 +21,7 @@
     <authorship :avatar="question.persona.avatar" :name="question.persona.name" :date="question.push.startDate" />
   </div>
   <!-- TODO: Add style here -->
-  <div class="references-container" :class="subcontainerClasses">
+  <div class="references-container" :class="subcontainerClasses" v-if="isFull">
     <div class="section-title with-underline small">
       <span>參考資料</span>
     </div>
@@ -174,6 +174,11 @@ export default {
     > .text {
       > .title {
         margin: 0.25rem 0;
+      }
+      > .excerpt {
+        > .read-more {
+          margin: 0 0.25rem;
+        }
       }
     }
   }
