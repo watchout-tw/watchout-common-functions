@@ -91,8 +91,10 @@ export default {
     containerClasses() {
       var classes = []
       if(this.isCompact) {
+        classes.push('compact')
         classes.push('tcl-panel')
       } else if(this.isFull) {
+        classes.push('full')
         classes.push('tcl-container')
       }
       return classes
@@ -180,6 +182,11 @@ export default {
           margin: 0 0.25rem;
         }
       }
+    }
+  }
+  &.compact {
+    > .signature {
+      margin-bottom: 1rem;
     }
   }
   > .status {
