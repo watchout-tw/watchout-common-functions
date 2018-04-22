@@ -82,6 +82,10 @@ const linkGroups = [
         url: env.channels.ask.links.home
       },
       {
+        title: '中央公園',
+        url: env.channels.park.links.home
+      },
+      {
         title: '議題實驗室',
         url: env.channels.lab.links.home
       },
