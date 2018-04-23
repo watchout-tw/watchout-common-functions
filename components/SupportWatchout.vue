@@ -23,7 +23,7 @@ const supportPackages = {
     link: env.links.support.ask.direct,
     text: [
       '沃草年度巨獻：《給問擂台》',
-      '六都市長給問，很缺錢，真的很缺。'
+      '六都市長給問嗎，真的很缺錢。'
     ],
     action: {
       image: 'pitcher',
