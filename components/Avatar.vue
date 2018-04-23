@@ -40,7 +40,7 @@ export default {
         if(typeof this.avatar === 'string') {
           id = this.avatar
         } else if(typeof this.avatar === 'object') {
-          if(this.avatar.type === 'system') {
+          if(this.avatar.type === 'system' && this.avatar.hasOwnProperty('id')) {
             id = this.avatar.id
           } else {
             type = this.avatar.type
@@ -48,9 +48,10 @@ export default {
             url = this.avatar.url
           }
         }
-        dimensions = type === 'system' ? systemAvatars.find(avatar => avatar.id === id) : this.avatar
+        dimensions = id === 'anon' ? systemAvatars.find(avatar => avatar.id === 'anon') : (type === 'system' ? systemAvatars.find(avatar => avatar.id === 'default') : this.avatar)
       }
-      let image = id ? require('watchout-common-assets/images/avatar/' + id + '.png') : url
+      url = id ? `${id}.png` : url
+      let image = require('watchout-common-assets/images/avatar/' + url)
       return Object.assign({ type, image }, dimensions)
     },
     imageStyles() {
