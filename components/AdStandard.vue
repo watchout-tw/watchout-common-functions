@@ -1,14 +1,22 @@
 <template>
 <div class="ad standard">
-  <div class="content" v-if="data">
-    <div class="heading section-title-underline-tiny text-align-center"><span>廣告</span></div>
-  </div>
+  <div class="content" v-if="data" :style="contentStyles"></div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['data']
+  props: ['data'],
+  computed: {
+    contentStyles() {
+      if(this.data.type === 'image') {
+        let image = require('watchout-common-assets/images/ads/' + this.data.url)
+        return {
+          backgroundImage: 'url(' + image + ')'
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -17,11 +25,8 @@ export default {
 .ad.standard {
   > .content {
     @include rect(4/1);
-    border: 2px $color-very-light-grey solid;
+    background-size: contain;
     border-radius: 1px;
-    > .heading {
-      margin: 0.25rem 0;
-    }
   }
 }
 </style>
