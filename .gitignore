@@ -1,2 +1,8 @@
+# macOS
 .DS_Store
+
+# dependencies
 node_modules
+
+# config
+config/config.js
