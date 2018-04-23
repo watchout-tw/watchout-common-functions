@@ -49,6 +49,7 @@ export default {
         this.state = STATES.FAILED
         this.message = '新密碼兩次不一致'
       } else {
+        this.state = STATES.LOADING
         let request = this.requireCurrentPassword ? core.updatePassword({
           password: this.currentPassword,
           new_password: this.newPassword
