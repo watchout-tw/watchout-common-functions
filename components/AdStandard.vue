@@ -1,6 +1,6 @@
 <template>
 <div class="ad standard">
-  <div class="content" v-if="data" :style="contentStyles"></div>
+  <component :is="data.link && data.link.url ? 'a' : 'div'" :href="data.link && data.link.url ? data.link.url : null" target="_blank" class="content" v-if="data" :style="contentStyles"></component>
 </div>
 </template>
 
