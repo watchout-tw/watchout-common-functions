@@ -2,7 +2,7 @@
 <div class="carousel" :class="responsive ? 'responsive' : ''">
   <div class="content">
     <div class="pages">
-      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="page of pages" :style="pageStyles(page)"></component>
+      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="page of pages" :key="JSON.stringify(page)" :style="pageStyles(page)"></component>
     </div>
   </div>
   <template v-if="pages.length > 1">
