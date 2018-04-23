@@ -1,10 +1,19 @@
 <template>
-<div class="share-button" :class="classes"></div>
+<div class="share-button" :class="classes" @click="share"></div>
 </template>
 
 <script>
+import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
+
 export default {
-  props: ['classes']
+  mixins: [knowsWindowManagement],
+  props: ['classes', 'question'],
+  methods: {
+    share () {
+      let fullPath = 'https://ask.watchout.tw' + this.$route.path + `/${this.question.id}`
+      this.addModal({ id: 'share', url: fullPath })
+    }
+  }
 }
 </script>
 

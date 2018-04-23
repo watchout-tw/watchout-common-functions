@@ -10,7 +10,7 @@
       </div>
       <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :date="question.push.startDate" />
     </div>
-    <share-button :classes="['top-right']"/>
+    <share-button :classes="['top-right']" :question="question" />
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div class="font-size-smaller">已有<span class="latin-within-han">{{ question.push.count }}</span>人連署；連署門檻為<span class="latin-within-han">{{ question.data.threshold }}</span>人</div>
