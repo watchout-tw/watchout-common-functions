@@ -1,9 +1,11 @@
 <template>
 <div class="modal share">
-<h2>分享到</h2>
-  <a target="_blank" :href="twitterShare"><div class="button social" :style="twitter"></div></a>
-  <a target="_blank" :href="facebookShare"><div class="button social" :style="facebook"></div></a>
-  <a><div class="button social" :style="line"></div></a>
+  <div class="section-title with-underline text-align-center"><span>分享這一頁到</span></div>
+  <div class="links">
+    <a target="_blank" :href="twitterShare"><div class="button social" :style="twitter"></div></a>
+    <a target="_blank" :href="facebookShare"><div class="button social" :style="facebook"></div></a>
+    <a><div class="button social" :style="line"></div></a>
+  </div>
 </div>
 </template>
 
@@ -14,7 +16,7 @@ import twitter from 'watchout-common-assets/images/platforms/twitter.png'
 
 export default {
   props: ['data'],
-  data () {
+  data() {
     return {
       facebook: {
         backgroundImage: `url(${facebook})`
@@ -28,10 +30,10 @@ export default {
     }
   },
   computed: {
-    facebookShare () {
+    facebookShare() {
       return `https://www.facebook.com/sharer/sharer.php?u=${this.data.url}`
     },
-    twitterShare () {
+    twitterShare() {
       return `https://twitter.com/intent/tweet?url=${this.data.url}`
     }
   }
@@ -43,14 +45,21 @@ export default {
 
 .modal.share {
   position: relative;
-  width: 18rem;
+  width: 12rem;
   padding: 1rem;
-  background-color: $color-park-light;
+  background-color: $color-watchout-light;
   @include shadow;
-}
-.social {
-  background-size: contain;
-  width: 4rem;
-  height: 4rem;
+  > .section-title {
+    margin-bottom: 0.5rem;
+  }
+  > .links {
+    display: flex;
+    justify-content: space-around;
+  }
+  .button.social {
+    background-size: contain;
+    width: 2rem;
+    height: 2rem;
+  }
 }
 </style>
