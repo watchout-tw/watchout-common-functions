@@ -25,6 +25,10 @@ export default {
   },
   methods: {
     linkTo () {
+      if(this.config && this.config.isShare) {
+        this.addModal({ id: 'share', url: this.config.url })
+        return
+      }
       if(this.config && this.config.citizenshipRequired && !this.isCitizen) {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
       } else {
