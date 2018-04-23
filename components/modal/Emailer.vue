@@ -5,7 +5,7 @@
       <text-editor placeholder="請輸入你的註冊Email" type="email" v-model="email" :classes="['park']" :simple="true" key="email" />
     </div>
     <div class="field with-extra-margin">
-      <submit-button :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @click.native="sendEmail" />
+      <submit-button :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @click.native="sendEmail" @reset="onSubmitButtonReset" />
     </div>
   </form>
 </div>
@@ -16,10 +16,12 @@ import * as core from '../../lib/core'
 import * as EMAILER_ACTIONS from '../../lib/emailer_actions'
 import * as STATES from '../../lib/states'
 import * as util from '../../lib/util'
+import { knowsWindowManagement } from '../../interfaces'
 import TextEditor from '../TextEditor'
 import SubmitButton from '../button/Submit.vue'
 
 export default {
+  mixins: [knowsWindowManagement],
   props: ['data'],
   data() {
     let label
@@ -66,6 +68,9 @@ export default {
         this.state = STATES.FAILED
         this.message = '這不是Email'
       }
+    },
+    onSubmitButtonReset() {
+      this.removeModal('emailer')
     }
   },
   components: {
