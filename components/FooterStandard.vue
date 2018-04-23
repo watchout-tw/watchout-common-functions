@@ -50,7 +50,7 @@ const social = [
     platform: 'line',
     text: 'LINE',
     image: getPlatformIcon('line'),
-    link: '#'
+    link: 'https://line.me/R/ti/p/%40dsy7499i'
   },
   {
     platform: 'instagram',
