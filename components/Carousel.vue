@@ -2,13 +2,13 @@
 <div class="carousel" :class="responsive ? 'responsive' : ''">
   <div class="content">
     <div class="pages">
-      <div class="page" v-for="page of pages" :style="pageStyles(page)"></div>
+      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="page of pages" :style="pageStyles(page)"></component>
     </div>
   </div>
-  <div class="controls">
+  <template v-if="pages.length > 1">
     <div class="control prev" @click="goToPage((currentPage + pages.length - 1) % pages.length)"></div>
     <div class="control next" @click="goToPage((currentPage + pages.length + 1) % pages.length)"></div>
-  </div>
+  </template>
 </div>
 </template>
 
@@ -90,6 +90,7 @@ export default {
       align-items: stretch;
       -webkit-overflow-scrolling: touch;
       > .page {
+        display: block;
         flex-shrink: 0;
         width: 100%;
         background-size: cover;
@@ -97,40 +98,37 @@ export default {
       }
     }
   }
-  > .controls {
+  > .control {
     position: absolute;
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    height: 100%;
     top: 0;
-    left: 0;
-    > .control {
-      flex-grow: 1;
-      cursor: pointer;
-      &.prev {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        &:before {
-          content: '◀︎';
-          display: block;
-          margin: 0 0.5rem;
-          font-size: 1.5rem;
-          opacity: 0.25;
-        }
+    height: 100%;
+    cursor: pointer;
+    &.prev {
+      left: 0;
+      padding-right: 2rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      &:before {
+        content: '◀︎';
+        display: block;
+        margin: 0 0.5rem;
+        font-size: 1.5rem;
+        opacity: 0.25;
       }
-      &.next {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        &:after {
-          content: '▶︎';
-          display: block;
-          margin: 0 0.5rem;
-          font-size: 1.5rem;
-          opacity: 0.25;
-        }
+    }
+    &.next {
+      right: 0;
+      padding-left: 2rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      &:after {
+        content: '▶︎';
+        display: block;
+        margin: 0 0.5rem;
+        font-size: 1.5rem;
+        opacity: 0.25;
       }
     }
   }
