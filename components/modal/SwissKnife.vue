@@ -1,6 +1,6 @@
 <template>
 <div class="modal swiss-knife">
-  <div class="name">{{ activePersona ? activePersona.name : '沒有人' }}</div>
+  <div class="name">{{ activePersona ? (activePersona.name ? activePersona.name : '你的顯示名稱') : '沒有人' }}</div>
   <div class="actions">
     <a class="action" :href="activePersona ? getParkPersonaProfileURL(activePersona.id) : '#'">個人檔案</a>
     <a class="action" :href="getParkSettingsURL()">變更設定</a>

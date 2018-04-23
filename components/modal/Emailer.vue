@@ -42,10 +42,24 @@ export default {
         if(this.data.action === EMAILER_ACTIONS.REQ_EMAIL_VERIF) {
           core.requestEmailVerification({
             email: this.email
+          }).then(response => {
+            this.state = STATES.SUCCESS
+            this.message = '請收信'
+          }).catch(error => {
+            error = null
+            this.state = STATES.SUCCESS
+            this.message = '請收信'
           })
         } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
           core.requrestPasswordReset({
             email: this.email
+          }).then(response => {
+            this.state = STATES.SUCCESS
+            this.message = '請收信'
+          }).catch(error => {
+            error = null
+            this.state = STATES.SUCCESS
+            this.message = '請收信'
           })
         }
       } else {

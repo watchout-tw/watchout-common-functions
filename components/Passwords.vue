@@ -1,7 +1,7 @@
 <template>
 <div class="passwords">
   <div class="form">
-    <div class="field">
+    <div class="field" v-if="requireCurrentPassword">
       <text-editor placeholder="確認現行密碼" type="password" v-model="currentPassword" :classes="['park']" :simple="true" key="currentPassword"/>
     </div>
     <div class="field">
@@ -21,12 +21,13 @@
 import * as core from '../lib/core'
 import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
-import { knowsAuth } from '../interfaces'
+// import { knowsAuth } from '../interfaces'
 import TextEditor from './TextEditor'
 import SubmitButton from './button/Submit'
 
 export default {
-  mixins: [knowsAuth],
+  // mixins: [knowsAuth],
+  props: ['requireCurrentPassword', 'data'],
   data() {
     return {
       currentPassword: null,
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     updatePassword() {
-      if(!this.currentPassword) {
+      if(this.requireCurrentPassword && !this.currentPassword) {
         this.state = STATES.FAILED
         this.message = '請確認現行密碼'
       } else if(!this.newPassword) {
@@ -48,17 +49,23 @@ export default {
         this.state = STATES.FAILED
         this.message = '新密碼兩次不一致'
       } else {
-        core.updatePassword({
+        let request = this.requireCurrentPassword ? core.updatePassword({
           password: this.currentPassword,
           new_password: this.newPassword
-        }).then(response => {
+        }) : core.resetPassword({
+          new_password: this.newPassword
+        }, this.data.token)
+
+        request.then(response => {
           console.log(response)
           this.state = STATES.SUCCESS
           this.message = '密碼已更新；請重新登入'
         }).catch(error => {
           let message = error.response.data.message
+          console.log(message)
           this.state = STATES.FAILED
           this.message = ERRORS.MAP[message]
+          this.currentPassword = this.newPassword = this.newPasswordConfirmation = null
         })
       }
     },
@@ -66,7 +73,7 @@ export default {
       if(this.state === STATES.FAILED) {
         this.currentPassword = this.newPassword = this.newPasswordConfirmation = null
       } else if(this.state === STATES.SUCCESS) {
-        this.logout()
+        this.$emit('success')
       }
     }
   },
