@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="action" v-if="data.joinOrLogin === 'login'">
-    <form @keyup.13="login">
+    <form @keyup.13.prevent="login" @submit.prevent>
       <div class="field">
         <text-editor placeholder="草民代號或Email" v-model="credentials.login.account" :classes="['park']" :simple="true" key="loginAccount" />
       </div>

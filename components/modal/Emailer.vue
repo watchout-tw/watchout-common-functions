@@ -1,6 +1,6 @@
 <template>
 <div class="modal email-verifier">
-  <form>
+  <form @keyup.enter.prevent="sendEmail" @submit.prevent>
     <div class="field">
       <text-editor placeholder="請輸入你的註冊Email" type="email" v-model="email" :classes="['park']" :simple="true" key="email" />
     </div>
@@ -38,6 +38,9 @@ export default {
     }
   },
   methods: {
+    test() {
+      console.log('test')
+    },
     sendEmail() {
       if(this.state === STATES.DEFAULT && util.isEmail(this.email)) {
         this.state = STATES.LOADING
@@ -70,7 +73,9 @@ export default {
       }
     },
     onSubmitButtonReset() {
-      this.removeModal('emailer')
+      if(this.state === STATES.SUCCESS) {
+        this.removeModal('emailer')
+      }
     }
   },
   components: {
