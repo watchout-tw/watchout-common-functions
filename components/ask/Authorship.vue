@@ -1,9 +1,9 @@
 <template>
 <div class="authorship">
-  <div class="author">
+  <component :is="hasLink ? 'a' : 'div'" :href="link" class="author a-block">
     <avatar :avatar="avatar" :classes="['shadow', 'inline', 'small']"/>
-    <span class="name">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
-  </div>
+    <span class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
+  </component>
   <div class="date">{{ dateString }}</div>
 </div>
 </template>
@@ -12,8 +12,11 @@
 import * as util from '../../lib/util'
 import Avatar from '../Avatar'
 export default {
-  props: ['avatar', 'name', 'date'],
+  props: ['avatar', 'name', 'link', 'date'],
   computed: {
+    hasLink() {
+      return !!(this.link)
+    },
     dateString() {
       return util.formatter.date(this.date)
     }
@@ -32,6 +35,7 @@ export default {
     align-items: center;
     > .name {
       line-height: 1em;
+      margin-top: 0.125rem;
       margin-left: 0.25rem;
     }
   }

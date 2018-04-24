@@ -8,7 +8,7 @@
         <span>{{ excerpt }}</span>
         <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="{ name: 'games-gameSlug-questions-id', params: { gameSlug: question.game.slug, id: question.id }}">繼續閱讀</nuxt-link>
       </div>
-      <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :date="question.push.startDate" />
+      <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
     </div>
     <share-button :classes="['top-right']" :question="question" />
   </div>
@@ -18,7 +18,7 @@
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
-    <authorship :avatar="question.persona.avatar" :name="question.persona.name" :date="question.push.startDate" />
+    <authorship :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
   </div>
   <!-- TODO: Add style here -->
   <div class="references-container" :class="subcontainerClasses" v-if="isFull">
@@ -57,7 +57,7 @@
 import * as core from '../../lib/core'
 import * as STATES from '../../lib/states'
 import * as util from '../../lib/util'
-import { knowsAuth, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import CoverImage from '../CoverImage'
 import Authorship from './Authorship'
 import Avatar from '../Avatar'
@@ -66,7 +66,7 @@ import SubmitButton from '../button/Submit'
 import Quiero from './Quiero'
 
 export default {
-  mixins: [knowsAuth, knowsWindowManagement],
+  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   props: ['game', 'question', 'topics', 'mode', 'pushable', 'preview'],
   data() {
     return {
