@@ -1,6 +1,6 @@
 <template>
 <div class="modal share">
-  <div class="section-title with-underline text-align-center"><span>分享這一頁到</span></div>
+  <div class="section-title with-underline small text-align-center"><span>分享這一頁到</span></div>
   <div class="links">
     <a target="_blank" :href="twitterShare"><div class="button social" :style="twitter"></div></a>
     <a target="_blank" :href="facebookShare"><div class="button social" :style="facebook"></div></a>
@@ -45,7 +45,7 @@ export default {
 
 .modal.share {
   position: relative;
-  width: 12rem;
+  width: 8rem;
   padding: 1rem;
   background-color: $color-watchout-light;
   @include shadow;
