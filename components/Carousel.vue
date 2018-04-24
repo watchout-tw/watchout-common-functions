@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     updateWindowSize() {
-      if(window) {
+      if(process.browser && window) {
         this.windowSize.height = window.innerHeight
         this.windowSize.width = window.innerWidth
       }

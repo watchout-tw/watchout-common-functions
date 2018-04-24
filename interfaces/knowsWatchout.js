@@ -24,17 +24,17 @@ export default {
     },
     getBaseURL(channelID) {
       const protocol = '//'
-      let currentURL = window.location.hostname
-      let url
-      let port = WHATPORT[channelID]
-      if(!port) {
-        console.error('What port?')
-      } else if(currentURL.includes('localhost')) {
-        url = `${protocol}dev.localhost:${port}/`
-      } else if(currentURL.split('.')[0] === 'beta') {
-        url = `${protocol}beta.${channelID}.watchout.tw/`
-      } else {
-        url = `${protocol}${channelID}.watchout.tw/`
+      let url = `${protocol}${channelID}.watchout.tw/`
+      if(process.broswer && window) {
+        const currentURL = window.location.hostname
+        let port = WHATPORT[channelID]
+        if(!port) {
+          console.error('What port?')
+        } else if(currentURL.includes('localhost')) {
+          url = `${protocol}dev.localhost:${port}/`
+        } else if(currentURL.split('.')[0] === 'beta') {
+          url = `${protocol}beta.${channelID}.watchout.tw/`
+        }
       }
       return url
     },
