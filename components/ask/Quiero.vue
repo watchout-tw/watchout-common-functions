@@ -25,6 +25,9 @@ export default {
   },
   methods: {
     linkTo () {
+      if(this.config && this.config.enabled === false) {
+        return
+      }
       if(this.config && this.config.isShare) {
         this.addModal({ id: 'share', url: this.config.url })
         return
