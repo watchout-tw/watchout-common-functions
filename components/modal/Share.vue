@@ -4,14 +4,14 @@
   <div class="links">
     <a target="_blank" :href="twitterShare"><div class="button social" :style="twitter"></div></a>
     <a target="_blank" :href="facebookShare"><div class="button social" :style="facebook"></div></a>
-    <a><div class="button social" :style="line"></div></a>
+    <!--<a><div class="button social" :style="line"></div></a>-->
   </div>
 </div>
 </template>
 
 <script>
 import facebook from 'watchout-common-assets/images/platforms/facebook.png'
-import line from 'watchout-common-assets/images/platforms/line.png'
+// import line from 'watchout-common-assets/images/platforms/line.png'
 import twitter from 'watchout-common-assets/images/platforms/twitter.png'
 
 export default {
@@ -21,9 +21,9 @@ export default {
       facebook: {
         backgroundImage: `url(${facebook})`
       },
-      line: {
-        backgroundImage: `url(${line})`
-      },
+      // line: {
+      //   backgroundImage: `url(${line})`
+      // },
       twitter: {
         backgroundImage: `url(${twitter})`
       }
