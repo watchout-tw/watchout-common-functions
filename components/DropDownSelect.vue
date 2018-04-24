@@ -2,7 +2,7 @@
 <div class="drop-down-select input">
   <div class="triangle"></div>
   <div class="placeholder" v-if="!value">{{ placeholder }}</div>
-  <select ref="inputElement" :value="value" @input="$emit('input', $event.target.value)">
+  <select ref="inputElement" v-model="selectedItem" @input="$emit('input', $event.target.value)">
     <option disabled selected></option>
     <option v-for="option of options" :value="typeof option !== 'object' ? option : option.value">{{ typeof option !== 'object' ? option : option.label }}</option>
   </select>
@@ -11,7 +11,17 @@
 
 <script>
 export default {
-  props: ['options', 'placeholder', 'value']
+  props: ['options', 'placeholder', 'value'],
+  data() {
+    return {
+      selectedItem: ''
+    }
+  },
+  watch: {
+    'value'() {
+      this.selectedItem = this.value
+    }
+  }
 }
 </script>
 
