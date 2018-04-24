@@ -1,6 +1,6 @@
 <template>
 <div class="ad standard">
-  <component :is="data.link && data.link.url ? 'a' : 'div'" :href="data.link && data.link.url ? data.link.url : null" target="_blank" class="content" v-if="data" :style="contentStyles"></component>
+  <component :is="hasLink ? 'a' : 'div'" :href="hasLink ? data.link.url : null" target="_blank" class="content" :class="contentClasses" v-if="data" :style="contentStyles"></component>
 </div>
 </template>
 
@@ -8,13 +8,23 @@
 export default {
   props: ['data'],
   computed: {
+    hasLink() {
+      return this.data.link && this.data.url
+    },
+    contentClasses() {
+      let classes = []
+      if(this.hasLink) {
+        classes.push('shadow')
+      }
+      return classes
+    },
     contentStyles() {
+      let styles = {}
       if(this.data.type === 'image') {
         let image = require('watchout-common-assets/images/ads/' + this.data.url)
-        return {
-          backgroundImage: 'url(' + image + ')'
-        }
+        styles.backgroundImage = 'url(' + image + ')'
       }
+      return styles
     }
   }
 }
@@ -27,6 +37,10 @@ export default {
     @include rect(4/1);
     background-size: contain;
     border-radius: 1px;
+
+    &.shadow {
+      @include shadow;
+    }
   }
 }
 </style>
