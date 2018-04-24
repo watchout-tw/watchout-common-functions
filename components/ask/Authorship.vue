@@ -2,7 +2,7 @@
 <div class="authorship">
   <div class="author">
     <avatar :avatar="avatar" :classes="['shadow', 'inline', 'small']"/>
-    <span class="name">{{ name }}</span>
+    <span class="name">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
   </div>
   <div class="date">{{ dateString }}</div>
 </div>
