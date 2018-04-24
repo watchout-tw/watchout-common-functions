@@ -124,6 +124,7 @@ export default {
         }
       })
       if(Object.keys(payload).length > 0) {
+        this.state = STATES.LOADING
         core.patchCitizen(payload).then(response => {
           this.state = STATES.SUCCESS
           this.message = '更新成功'
