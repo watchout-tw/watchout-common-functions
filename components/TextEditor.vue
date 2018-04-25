@@ -2,7 +2,7 @@
 <div class="text-editor input" :class="computedClasses">
   <div class="tools"></div>
   <div class="content">
-    <input v-if="simple" :type="type" :value="value" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false" />
+    <input v-if="simple" :type="type" :value="value" :maxlength="maxlength" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false" />
     <textarea v-else rows="4" :maxlength="maxlength" :value="value" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false"></textarea>
   </div>
 </div>
