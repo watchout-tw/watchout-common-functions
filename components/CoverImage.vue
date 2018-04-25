@@ -46,7 +46,7 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    line-height: 1em;
+    line-height: 1;
     padding: 0.25rem;
     transform: translate(-50%, -50%);
     background: white;

@@ -78,7 +78,6 @@ export default {
 .submit-button {
   position: relative;
   text-align: center;
-  $line-height: 1rem;
   min-width: 2.5rem;
 
   > .symbol-container {

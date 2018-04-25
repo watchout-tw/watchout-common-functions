@@ -260,7 +260,7 @@ footer.standard {
   > .bedrock {
     background-color: $color-bedrock;
     padding-bottom: 8rem;
-    line-height: 1.25;
+    line-height: $line-height-tight;
     > .social {
       margin: 0 auto;
       padding: 4rem 0 0;
