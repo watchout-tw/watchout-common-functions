@@ -3,10 +3,13 @@
   <div class="signature" :class="fullWidthSubcontainerClasses">
     <cover-image :url="question.image" :label="topicTitle" type="topic" width="4" />
     <div class="text tcl-left-right-margin">
-      <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">{{ question.title }}</component>
+      <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">
+        <nuxt-link v-if="isCompact" class="a-text" :to="linkToSelf">{{ question.title }}</nuxt-link>
+        <template v-else>{{ question.title }}</template>
+      </component>
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
-        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="{ name: 'games-gameSlug-questions-id', params: { gameSlug: question.game.slug, id: question.id }}">繼續閱讀</nuxt-link>
+        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
       <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
     </div>
@@ -104,6 +107,15 @@ export default {
     },
     subcontainerClasses() {
       return this.isFull ? ['tcl-panel', 'tcl-left-right-margin'] : ['tcl-left-right-margin']
+    },
+    linkToSelf() {
+      return {
+        name: 'games-gameSlug-questions-id',
+        params: {
+          gameSlug: this.question.game.slug,
+          id: this.question.id
+        }
+      }
     },
     titleTag() {
       return this.isFull ? 'h1' : 'h3'
