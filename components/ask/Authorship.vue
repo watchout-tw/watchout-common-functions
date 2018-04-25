@@ -28,13 +28,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~watchout-common-assets/styles/resources';
+
 .authorship {
   > .author {
     margin: 0.25rem 0;
-    display: flex;
-    align-items: center;
     > .name {
-      line-height: 1em;
+      line-height: $line-height-tight;
       margin-top: 0.125rem;
       margin-left: 0.25rem;
     }
