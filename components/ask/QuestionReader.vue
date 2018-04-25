@@ -197,9 +197,6 @@ export default {
     margin-bottom: 1rem;
   }
   > .references-container {
-    > .not-available {
-      color: $color-secondary-text-grey;
-    }
     > .section-title {
       margin: 1em 0 0.5rem;
     }
