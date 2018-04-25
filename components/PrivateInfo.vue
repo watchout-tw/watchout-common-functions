@@ -56,9 +56,9 @@ export default {
       allYears: integerRange(1900, new Date().getFullYear() - 4),
       allMonths: integerRange(1, 12),
       allVoterTypes: [
-        '非原住民',
         '山地原住民',
-        '平地原住民'
+        '平地原住民',
+        '非原住民'
       ],
       cols: ['name', 'gender', 'birth_year', 'birth_month', 'birth_date', 'country_code', 'phone_number', 'voter_type', 'voter_city', 'voter_district', 'voter_neighborhood'],
       name: null,
