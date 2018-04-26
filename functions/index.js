@@ -30,7 +30,7 @@ export function generateMeta(pageTitle, pageDescription, image = defaultImage) {
     {
       vmid: 'twitter-card',
       name: 'twitter:card',
-      content: 'summary'
+      content: 'summary_large_image'
     },
     {
       vmid: 'twitter-title',
