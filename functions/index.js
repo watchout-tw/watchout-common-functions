@@ -8,6 +8,11 @@ export function generateMeta(pageTitle, pageDescription, image = defaultImage) {
       content: pageDescription
     },
     {
+      vmid: 'og-type',
+      property: 'og:type',
+      content: 'website'
+    },
+    {
       vmid: 'og-title',
       property: 'og:title',
       content: pageTitle
@@ -20,6 +25,26 @@ export function generateMeta(pageTitle, pageDescription, image = defaultImage) {
     {
       vmid: 'og-image',
       property: 'og:image',
+      content: image
+    },
+    {
+      vmid: 'twitter-card',
+      name: 'twitter:card',
+      content: 'summary'
+    },
+    {
+      vmid: 'twitter-title',
+      name: 'twitter:title',
+      content: pageTitle
+    },
+    {
+      vmid: 'twitter-description',
+      name: 'twitter:description',
+      content: pageDescription
+    },
+    {
+      vmid: 'twitter-image',
+      name: 'twitter:image',
       content: image
     }
   ]
