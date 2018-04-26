@@ -3,7 +3,7 @@ import defaultImage from 'watchout-common-assets/images/default.gif'
 export function generateMeta(pageTitle, pageDescription, image = defaultImage) {
   return [
     {
-      vmid: 'description',
+      hid: 'description',
       name: 'description',
       content: pageDescription
     },
