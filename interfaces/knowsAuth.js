@@ -137,6 +137,11 @@ export default {
       }
       // force redirect to home page
       this.$router.push('/')
+    },
+    feAuthenticate() {
+      if(this.isCitizen !== true) {
+        this.$router.push('/')
+      }
     }
   }
 }
