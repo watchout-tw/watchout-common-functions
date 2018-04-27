@@ -49,11 +49,11 @@ export default {
     },
     setTokenCookie(token) {
       let domain = getCookieDomain()
-      document.cookie = `watchout_token=${token};Domain=${domain};`
+      document.cookie = `watchout_token=${token};Domain=${domain};Path=/`
     },
     clearTokenCookie() {
       let domain = getCookieDomain()
-      document.cookie = `watchout_token=;Domain=${domain};Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+      document.cookie = `watchout_token=;Domain=${domain};Path=/;Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
     },
     checkAuth() {
       if(this.isLocal()) {
