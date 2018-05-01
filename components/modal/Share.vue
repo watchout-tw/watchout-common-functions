@@ -1,41 +1,22 @@
 <template>
 <div class="modal share">
-  <div class="section-title with-underline small text-align-center"><span>分享這一頁到</span></div>
-  <div class="links">
-    <a target="_blank" :href="twitterShare"><div class="button social" :style="twitter"></div></a>
-    <a target="_blank" :href="facebookShare"><div class="button social" :style="facebook"></div></a>
-    <!--<a><div class="button social" :style="line"></div></a>-->
-  </div>
+  <div class="section-title with-underline small text-align-center"><span>分享{{ what }}到</span></div>
+  <share-to-platforms :url="data.url" />
 </div>
 </template>
 
 <script>
-import facebook from 'watchout-common-assets/images/platforms/facebook.png'
-// import line from 'watchout-common-assets/images/platforms/line.png'
-import twitter from 'watchout-common-assets/images/platforms/twitter.png'
+import ShareToPlatforms from 'watchout-common-functions/components/ShareToPlatforms'
 
 export default {
   props: ['data'],
-  data() {
-    return {
-      facebook: {
-        backgroundImage: `url(${facebook})`
-      },
-      // line: {
-      //   backgroundImage: `url(${line})`
-      // },
-      twitter: {
-        backgroundImage: `url(${twitter})`
-      }
+  computed: {
+    what() {
+      return this.data && this.data.what ? this.data.what : ''
     }
   },
-  computed: {
-    facebookShare() {
-      return `https://www.facebook.com/sharer/sharer.php?u=${this.data.url}`
-    },
-    twitterShare() {
-      return `https://twitter.com/intent/tweet?url=${this.data.url}`
-    }
+  components: {
+    ShareToPlatforms
   }
 }
 </script>
@@ -45,21 +26,14 @@ export default {
 
 .modal.share {
   position: relative;
-  width: 8rem;
+  width: 12rem;
   padding: 1rem;
+  padding-bottom: 1.25rem;
   background-color: $color-watchout-light;
   @include shadow;
+
   > .section-title {
     margin-bottom: 0.5rem;
-  }
-  > .links {
-    display: flex;
-    justify-content: space-around;
-  }
-  .button.social {
-    background-size: contain;
-    width: 2rem;
-    height: 2rem;
   }
 }
 </style>

@@ -2,7 +2,7 @@ const WHATPORT = {
   park: 9487,
   watchout: 9000,
   ask: 9010,
-  'musou-media-experiment': 9020
+  musou: 9020
 }
 
 export default {
@@ -23,15 +23,16 @@ export default {
         height: metadata.height + 'px'
       }
     },
-    getBaseURL(channelID) {
-      const protocol = '//'
+    getBaseURL(channelID, forceProductionURL = false) {
+      let protocol = 'https://'
       let url = `${protocol}${channelID}.watchout.tw/`
-      if(process.broswer && window) {
+      if(process.broswer && window && !forceProductionURL) {
         const currentURL = window.location.hostname
         let port = WHATPORT[channelID]
         if(!port) {
           console.error('What port?')
         } else if(currentURL.includes('localhost')) {
+          protocol = 'http://'
           url = `${protocol}dev.localhost:${port}/`
         } else if(currentURL.split('.')[0] === 'beta') {
           url = `${protocol}beta.${channelID}.watchout.tw/`
@@ -53,6 +54,9 @@ export default {
     },
     getParkSettingsURL() {
       return this.getBaseURL('park') + 'settings'
+    },
+    getMusouProjectURL(moduleID, projectID) {
+      return this.getBaseURL('musou') + moduleID + '/' + projectID
     }
   }
 }

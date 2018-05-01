@@ -24,11 +24,11 @@ export default {
     }
   },
   methods: {
-    linkTo () {
+    linkTo() {
       if(this.config && this.config.enabled === false) {
         return
       }
-      if(this.config && this.config.isShare) {
+      if(this.icon === 'share' && this.config && this.config.url) {
         this.addModal({ id: 'share', url: this.config.url })
         return
       }

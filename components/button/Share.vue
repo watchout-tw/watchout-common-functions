@@ -7,11 +7,10 @@ import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
 
 export default {
   mixins: [knowsWindowManagement],
-  props: ['classes', 'question'],
+  props: ['classes', 'url'],
   methods: {
-    share () {
-      let fullPath = 'https://ask.watchout.tw' + this.$route.path + `/${this.question.id}`
-      this.addModal({ id: 'share', url: fullPath })
+    share() {
+      this.addModal({ id: 'share', url: this.url })
     }
   }
 }
