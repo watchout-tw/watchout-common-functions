@@ -37,7 +37,7 @@
 <script>
 import { env } from 'watchout-common-assets'
 
-const getPlatformIcon = (platform) => 'https://raw.githubusercontent.com/watchout-tw/watchout-common-assets/master/images/platforms/' + platform + '.png'
+const getPlatformIcon = (platform) => require('watchout-common-assets/images/platforms/' + platform + '/black.png')
 
 const social = [
   {
@@ -235,7 +235,7 @@ footer.standard {
   display: block;
   width: 100%;
   margin-top: 8rem;
-  z-index: $z-below-nav;
+  z-index: $z-footer;
   > .earth {
     background-position: center;
     background-size: contain;
@@ -286,7 +286,7 @@ footer.standard {
             margin: 0 auto 0.25rem;
             width: 2rem;
             background-color: white;
-            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .5)
+            @include shadow-darker;
           }
           > .text {
             color: $color-generic-grey;
