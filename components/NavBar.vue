@@ -54,6 +54,7 @@ nav {
   height: 64px;
   margin: 0;
   padding: 0;
+  z-index: $z-nav;
 
   > .nav-item {
     flex-grow: 0;
