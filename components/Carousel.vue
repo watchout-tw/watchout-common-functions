@@ -1,13 +1,16 @@
 <template>
-<div class="carousel" :class="responsive ? 'responsive' : ''">
+<div class="carousel" :class="classes">
   <div class="content">
-    <div class="pages">
-      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="page of pages" :key="JSON.stringify(page)" :style="pageStyles(page)"></component>
+    <div class="pages" @scroll="onScroll">
+      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="(page, index) of pages" :key="index" :style="pageStyles(page)"></component>
     </div>
   </div>
   <template v-if="pages.length > 1">
     <div class="control prev" @click="goToPage((currentPage + pages.length - 1) % pages.length)"></div>
     <div class="control next" @click="goToPage((currentPage + pages.length + 1) % pages.length)"></div>
+    <div class="dots">
+      <div class="dot" v-for="(dot, index) of dots" :key="index" :class="dot.isActive ? ['active'] : []" @click="currentPage = index"></div>
+    </div>
   </template>
 </div>
 </template>
@@ -16,11 +19,13 @@
 /* FIXME: Current assumptions
 
 - A carousel sets its own size ONLY at DOM ready
-- A carousel is 2-to-1 on smaller devices & 4-to-1 on larger decives with a 576px breakpoint
+- A carousel is of these sizes
+  - default: 2-to-1 on smaller devices & 4-to-1 on larger decives with a 576px breakpoint
+  - slides: 3-to-2 and non-responsive
 
 */
 export default {
-  props: ['responsive', 'pages'],
+  props: ['responsive', 'pages', 'width', 'height'],
   data() {
     return {
       bp: {
@@ -35,14 +40,38 @@ export default {
     }
   },
   computed: {
-    scrollLeft() {
-      return this.scrollElement ? this.currentPage * this.scrollElement.offsetWidth : 0
+    internalWidth() {
+      return !Number.isNaN(parseInt(this.width)) ? parseInt(this.width) : 2
+    },
+    internalHeight() {
+      return !Number.isNaN(parseInt(this.height)) ? parseInt(this.height) : 1
+    },
+    classes() {
+      let classes = []
+      if(this.responsive) {
+        classes.push('responsive')
+      }
+      if(this.internalWidth === 3 && this.internalHeight === 2) {
+        classes.push('slides')
+      } else {
+        classes.push('default')
+      }
+      return classes
+    },
+    pageWidth() {
+      return this.scrollElement ? this.scrollElement.offsetWidth : 0
+    },
+    dots() {
+      return this.pages.map((page, index) => ({
+        type: 'default',
+        isActive: index === this.currentPage
+      }))
     }
   },
   watch: {
     currentPage() {
       if(this.scrollElement) {
-        this.scrollElement.scrollLeft = this.scrollLeft
+        this.scrollElement.scrollLeft = this.currentPage * this.pageWidth
       }
     }
   },
@@ -62,6 +91,12 @@ export default {
     },
     goToPage(index) {
       this.currentPage = index
+    },
+    onScroll() {
+      if(this.scrollElement) {
+        let scrollLeft = this.scrollElement.scrollLeft
+        this.currentPage = Math.round(scrollLeft / this.pageWidth)
+      }
     }
   },
   mounted() {
@@ -74,13 +109,20 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .carousel {
+  $dot-size: 0.5rem;
   position: relative;
   background-color: $color-very-light-grey;
-  @include rect(2/1)
-  &.responsive {
-    @include tcl-md {
-      @include rect(4/1)
+  margin-bottom: $dot-size * 3;
+  &.default {
+    @include rect(2/1)
+    &.responsive {
+      @include tcl-md {
+        @include rect(4/1)
+      }
     }
+  }
+  &.slides {
+    @include rect(3/2)
   }
   > .content {
     > .pages {
@@ -129,6 +171,36 @@ export default {
         margin: 0 0.5rem;
         font-size: 1.5rem;
         opacity: 0.25;
+      }
+    }
+  }
+  > .dots {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: $dot-size / 2;
+    display: flex;
+    justify-content: center;
+
+    > .dot {
+      width: $dot-size * 2;
+      height: $dot-size * 2;
+      margin: 0 $dot-size / 2;
+      opacity: 0.25;
+      cursor: pointer;
+
+      &:after {
+        content: '';
+        display: block;
+        width: $dot-size;
+        height: $dot-size;
+        margin: $dot-size / 2;
+        border-radius: 50%;
+        background-color: black;
+      }
+      &.active {
+        opacity: 1;
       }
     }
   }
