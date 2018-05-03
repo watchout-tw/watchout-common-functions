@@ -3,6 +3,8 @@
   <component :is="hasLink ? 'a' : 'div'" :href="link" class="author a-block">
     <avatar :avatar="avatar" :classes="['shadow', 'inline', 'small']"/>
     <span class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
+    <!-- TODO: styling enhancement needed -->
+    <span v-if="score" class="score bg-ask text-color-white">{{ score }}</span>
   </component>
   <div class="date">{{ dateString }}</div>
 </div>
@@ -12,7 +14,7 @@
 import * as util from '../../lib/util'
 import Avatar from '../Avatar'
 export default {
-  props: ['avatar', 'name', 'link', 'date'],
+  props: ['avatar', 'name', 'link', 'date', 'score'],
   computed: {
     hasLink() {
       return !!(this.link)
@@ -37,6 +39,9 @@ export default {
       line-height: $line-height-tight;
       margin-top: 0.125rem;
       margin-left: 0.25rem;
+    }
+    > .score {
+      margin: 0.25rem;
     }
   }
   > .date {
