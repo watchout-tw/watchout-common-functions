@@ -7,7 +7,7 @@
     <button @click="comment(message, 'like')">like: {{message.detail.like ? message.detail.like.length : 0}}</button>
     <button @click="cancelComment(message, 'like')">cancel like</button>
     <button @click="comment(message, 'dislike')">dislike: {{message.detail.dislike ? message.detail.dislike.length : 0}}</button>
-    <button @click="cancelComment(message, 'dislike')">cancel like</button>
+    <button @click="cancelComment(message, 'dislike')">cancel dislike</button>
   </div>
   <input v-model="newMessage" />
   <button @click="sendMessage()">send</button>
@@ -15,10 +15,13 @@
 </template>
 
 <script>
-import socket from '../lib/socket.io.js'
+import * as SOCKETIO from '../lib/socket.io.js'
+import { knowsAuth } from '../interfaces'
+let socket
 
 export default {
   props: ['roomId'],
+  mixins: [knowsAuth],
   data() {
     return {
       messages: [],
@@ -63,7 +66,8 @@ export default {
   },
   mounted() {
     const V_THIS = this
-    console.log('room', this.roomId)
+    socket = SOCKETIO.initSocketWithAuth(this.getTokenCookie())
+
     socket.on('addRoom', (data) => {
       console.log('addRoom', data)
     })
