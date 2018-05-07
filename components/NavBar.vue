@@ -1,5 +1,5 @@
 <template>
-<nav :class="navClasses">
+<nav class="nav-bar" :class="navClasses">
   <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles" @click="addModal('transporter')"></div>
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
     <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)"/>
@@ -46,7 +46,7 @@ export default {
 
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
-nav {
+nav.nav-bar {
   position: relative;
   display: flex;
   flex-direction: row;
