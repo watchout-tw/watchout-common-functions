@@ -15,18 +15,44 @@
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
-  <div v-if="isCompact" class="origin-question" :class="subcontainerClasses">
+  <div class="origin-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>原始問題</span>
     </div>
     {{ answer.question.title }}
   </div>
-  <div v-if="isCompact" class="origin-question" :class="subcontainerClasses">
+  <div v-if="isFull" class="detail" :class="subcontainerClasses">
+    <div class="section-title with-underline small">
+      <span>答案</span>
+    </div>
+    <div class="content">{{ answer.content }}</div>
+    <authorship :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
+  </div>
+  <div v-if="isFull" class="references-container" :class="subcontainerClasses">
+    <div class="section-title with-underline small">
+      <span>參考資料</span>
+    </div>
+    <div v-if="!answer.references || answer.references.length < 1" class="not-available">沒有參考資料</div>
+    <ul v-else class="bulleted-list references">
+      <li class="reference" v-for="reference of answer.references">
+        <div class="title">
+          <template v-if="reference.url">
+            <a class="a-text" :href="reference.url" target="_blank">{{ reference.title }}</a>
+          </template>
+          <template v-else>{{ reference.title }}</template>
+        </div>
+        <div v-if="reference.description" class="font-size-smaller">{{ reference.description }}</div>
+      </li>
+    </ul>
+  </div>
+  <div class="review" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>評分</span>
     </div>
     <review-buttons :answer="answer" v-on:review="toReview" />
     <div class="font-size-smaller">平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；已經有<span class="latin-within-han">{{ answer.review.count }}</span>人評分</div>
+  </div>
+  <div v-if="isFull" :class="subcontainerClasses">
   </div>
 </div>
 </template>
@@ -84,7 +110,6 @@ export default {
       if(!this.isCitizen) {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
       } else if(this.activePersonaIsWithInfo) {
-        // FIXME: API is not ready yet
         core.reviewAnswer(this.answer.id).then(response => {
           this.reviewed()
           console.log(response)
