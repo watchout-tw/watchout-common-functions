@@ -69,6 +69,7 @@ export default {
     justify-content: center;
     > .button.social {
       position: relative;
+      background-color: white;
       background-size: contain;
       flex-grow: 0;
       flex-shrink: 0;
