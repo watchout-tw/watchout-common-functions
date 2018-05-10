@@ -11,7 +11,7 @@
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
-  <div class="origin-question" :class="subcontainerClasses">
+  <div v-if="!preview" class="origin-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>原始問題</span>
     </div>
@@ -22,7 +22,7 @@
       <span>答案</span>
     </div>
     <div class="content">{{ answer.content }}</div>
-    <authorship :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
+    <authorship v-if="!preview" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
   </div>
   <div v-if="isFull" class="references-container" :class="subcontainerClasses">
     <div class="section-title with-underline small">
@@ -41,7 +41,7 @@
       </li>
     </ul>
   </div>
-  <div class="review" :class="subcontainerClasses">
+  <div v-if="!preview" class="review" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>評分</span>
     </div>
