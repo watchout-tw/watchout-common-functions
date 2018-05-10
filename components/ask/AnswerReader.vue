@@ -3,10 +3,6 @@
   <div class="signature" :class="fullWidthSubcontainerClasses">
     <cover-image :url="answer.image" type="topic" width="4" />
     <div class="text tcl-left-right-margin">
-      <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">
-        <nuxt-link v-if="isCompact" class="a-text" :to="linkToSelf">{{ answer.title }}</nuxt-link>
-        <template v-else>{{ answer.title }}</template>
-      </component>
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
         <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="linkToSelf">繼續閱讀</nuxt-link>
