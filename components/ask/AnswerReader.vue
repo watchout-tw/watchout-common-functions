@@ -63,7 +63,7 @@ import ShareButton from '../button/Share'
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
-  props: ['answer', 'mode'],
+  props: ['answer', 'mode', 'preview'],
   computed: {
     isCompact () {
       return this.mode === 'compact'
