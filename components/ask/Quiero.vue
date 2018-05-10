@@ -1,7 +1,7 @@
 <template>
-<div class="quiero" :class="classes">
+<div class="quiero" :class="internalClasses">
   <div class="to" @click="linkTo()">
-    <div class="button" :style="buttonStyles"></div>
+    <div class="button" :class="internalClasses" :style="buttonStyles"></div>
     <label class="label">{{ label }}</label>
   </div>
 </div>
@@ -14,6 +14,21 @@ export default {
   mixins: [knowsAuth, knowsWindowManagement],
   props: ['icon', 'label', 'classes', 'to', 'config'],
   computed: {
+    isEnabled() {
+      return !(this.config && this.config.enabled === false)
+    },
+    internalClasses() {
+      let classes = [].concat(Array.isArray(this.classes) ? this.classes : [])
+      if(Array.isArray(this.classes)) {
+        if(this.classes.includes('important')) {
+          classes.push('ask')
+        }
+      }
+      if(!this.isEnabled) {
+        classes.push('disabled')
+      }
+      return classes
+    },
     iconImage() {
       return require(`watchout-common-assets/images/quiero/${this.icon}.png`)
     },
@@ -25,7 +40,7 @@ export default {
   },
   methods: {
     linkTo() {
-      if(this.config && this.config.enabled === false) {
+      if(!this.isEnabled) {
         return
       }
       if(this.icon === 'share' && this.config && this.config.url) {
@@ -47,23 +62,31 @@ export default {
 $circle-size: 4.25rem;
 .quiero {
   > .to {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
     > .button {
       height: $circle-size;
       width: $circle-size;
-      border-radius: $circle-size;
-      background-color: rgba($color-ask, 0.25);
+      border-radius: 50%;
       background-size: contain;
-      @include shadow;
     }
     > .label {
       display: block;
-      margin-top: 0.5rem;
+      position: relative;
+      margin-top: 0.625rem;
       line-height: 1;
     }
   }
-  &.important > .to > .button {
-    background-color: $color-ask;
+  &.disabled {
+    > .to {
+      cursor: default;
+      > .label {
+        color: $color-generic-grey;
+      }
+    }
   }
 }
 </style>
