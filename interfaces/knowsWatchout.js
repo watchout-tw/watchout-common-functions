@@ -32,7 +32,7 @@ export default {
         const currentURL = window.location.hostname
         let port = WHATPORT[channelID]
         if(!port) {
-          console.error('What port?')
+          console.warn('getBaseURL: Service at unknown port.')
         } else if(currentURL.includes('localhost')) {
           protocol = 'http://'
           url = `${protocol}dev.localhost:${port}/`

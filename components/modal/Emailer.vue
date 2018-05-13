@@ -38,9 +38,6 @@ export default {
     }
   },
   methods: {
-    test() {
-      console.log('test')
-    },
     sendEmail() {
       if(this.state === STATES.DEFAULT && util.isEmail(this.email)) {
         this.state = STATES.LOADING

@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import * as ls from '../lib/ls'
+import * as core from '../lib/core'
 
 function encodeRoles(roles) {
   return JSON.stringify(roles)
@@ -55,19 +56,29 @@ export default {
       let domain = getCookieDomain()
       document.cookie = `watchout_token=;Domain=${domain};Path=/;Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
     },
+    reloadAuth() {
+      if(this.isLocal()) {
+        let token = this.getTokenCookie()
+        if(token) {
+          core.loginWithToken(token).then(response => {
+            this.setAuth(response.data)
+          }).catch(this.handleError)
+        } else {
+          this.logout()
+        }
+      }
+    },
     checkAuth() {
       if(this.isLocal()) {
         let tokenInLocalStorage = localStorage.getItem(ls.TOKEN)
-        let tokenCookie = this.getTokenCookie()
+        let token = this.getTokenCookie()
 
-        if(tokenCookie) {
+        if(token) {
           if(!tokenInLocalStorage) {
             // citizen has logged IN elsewhere
-            axios.post('/auth/login', { token: tokenCookie }).then(response => {
+            core.loginWithToken(token).then(response => {
               this.setAuth(response.data)
-            }).catch(error => {
-              console.error(error)
-            })
+            }).catch(this.handleError)
           } else {
             // citizen has logged IN here
             let citizenID = localStorage.getItem(ls.CITIZEN_ID)

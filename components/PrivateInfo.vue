@@ -26,8 +26,9 @@
       <drop-down-select :options="allDistricts" placeholder="戶籍區域" v-model="voter_district" />
       <drop-down-select :options="allNeighborhoods" placeholder="戶籍村里" v-model="voter_neighborhood" />
     </div>
-    <div class="field with-extra-margin">
-      <submit-button :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @click.native="submit" />
+    <div class="field form-field-many-inputs no-wrap">
+      <button class="input button" @click="clear()">清空</button>
+      <submit-button :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @click.native="submit" @reset="onSubmitButtonReset" />
     </div>
   </div>
 </div>
@@ -37,6 +38,7 @@
 import * as core from '../lib/core'
 import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
+import { knowsAuth, knowsError, knowsWindowManagement } from '../interfaces'
 import administrativeDivision from '../data/hoods-20170131.json'
 import TextEditor from './TextEditor'
 import GenderSlider from './GenderSlider'
@@ -51,6 +53,7 @@ function integerRange(from, to) {
   return range
 }
 export default {
+  mixins: [knowsAuth, knowsError, knowsWindowManagement],
   data() {
     return {
       allYears: integerRange(1900, new Date().getFullYear() - 4),
@@ -82,9 +85,7 @@ export default {
       this.cols.forEach(col => {
         this[col] = response.data[col]
       })
-    }).catch(error => {
-      console.log(error)
-    })
+    }).catch(this.handleError)
   },
   computed: {
     allDays() {
@@ -116,22 +117,39 @@ export default {
     }
   },
   methods: {
+    clear() {
+      this.name = null
+      this.gender = 0
+      this.birth_year = this.birth_month = this.birth_date = null
+      this.country_code = this.phone_number = null
+      this.voter_type = this.voter_city = this.voter_district = this.voter_neighborhood = null
+    },
     submit() {
       let payload = {}
       this.cols.forEach(col => {
-        if(this[col] != null) {
-          payload[col] = this[col]
+        if(!this[col]) {
+          this[col] = null
         }
+        payload[col] = this[col]
       })
+      console.log(payload)
       if(Object.keys(payload).length > 0) {
         this.state = STATES.LOADING
         core.patchCitizen(payload).then(response => {
+          console.log(response)
           this.state = STATES.SUCCESS
           this.message = '更新成功'
         }).catch(error => {
           this.state = STATES.FAILED
           this.message = ERRORS.MAP[error.response.message]
+          this.handleError(error)
         })
+      }
+    },
+    onSubmitButtonReset() {
+      if(this.state === STATES.SUCCESS) {
+        this.removeModal('private-info-registration')
+        this.reloadAuth()
       }
     }
   },

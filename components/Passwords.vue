@@ -21,12 +21,12 @@
 import * as core from '../lib/core'
 import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
-// import { knowsAuth } from '../interfaces'
+import { knowsError } from '../interfaces'
 import TextEditor from './TextEditor'
 import SubmitButton from './button/Submit'
 
 export default {
-  // mixins: [knowsAuth],
+  mixins: [knowsError],
   props: ['requireCurrentPassword', 'data'],
   data() {
     return {
@@ -63,10 +63,10 @@ export default {
           this.message = '密碼已更新；請重新登入'
         }).catch(error => {
           let message = error.response.data.message
-          console.log(message)
           this.state = STATES.FAILED
           this.message = ERRORS.MAP[message]
           this.currentPassword = this.newPassword = this.newPasswordConfirmation = null
+          this.handleError(error)
         })
       }
     },

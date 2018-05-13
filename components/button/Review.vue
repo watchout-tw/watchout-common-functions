@@ -7,6 +7,7 @@
 <script>
 import debounce from 'lodash.debounce'
 import * as core from '../../lib/core'
+import { knowsError } from '../../interfaces'
 
 const scores = [
   { value: 1, classes: [] },
@@ -17,6 +18,7 @@ const scores = [
 ]
 
 export default {
+  mixins: [knowsError],
   props: ['answer'],
   data () {
     return {
@@ -31,9 +33,7 @@ export default {
       if (!this.selectedScore) return
       core.reviewAnswer(this.answer.id).then(response => {
         this.$emit('reviewed')
-      }).catch(error => {
-        console.error(error)
-      })
+      }).catch(this.handleError)
     })
   }
 }

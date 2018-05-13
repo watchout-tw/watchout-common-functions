@@ -55,14 +55,14 @@
 
 <script>
 import * as core from '../../lib/core'
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import Authorship from './Authorship'
 import CoverImage from '../CoverImage'
 import ReviewButtons from '../button/Review'
 import ShareButton from '../button/Share'
 
 export default {
-  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
   props: ['answer', 'mode', 'preview'],
   computed: {
     isCompact () {
@@ -109,9 +109,7 @@ export default {
         core.reviewAnswer(this.answer.id).then(response => {
           this.reviewed()
           console.log(response)
-        }).catch(error => {
-          console.error(error)
-        })
+        }).catch(this.handleError)
       } else {
         this.addModal('private-info-registration')
       }
