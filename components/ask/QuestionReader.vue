@@ -50,9 +50,9 @@
     </div>
     <div class="personas">
       <div class="persona" v-for="player of game.players">
-        <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" @click.prevent.stop />
+        <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" disabled />
         <avatar :avatar="player.persona.avatar" :classes="['shadow']" />
-        <div class="name">{{ player.persona.name }}</div>
+        <div class="name">{{ player.persona.id === 0 ? '所有參賽選手' : player.persona.name }}</div>
       </div>
     </div>
   </div>
