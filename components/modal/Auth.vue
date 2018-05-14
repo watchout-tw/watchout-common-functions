@@ -20,7 +20,7 @@
         <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意<a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></span></label>
       </div>
       <div class="field">
-        <submit-button :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @click.native="join" v-on:reset="onSubmitButtonReset('join')" />
+        <submit-button :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @click.native="join" @reset="onSubmitButtonReset('join')" />
       </div>
     </form>
     <div class="the-other-action text-align-right">
@@ -36,7 +36,7 @@
         <text-editor placeholder="密碼" type="password" v-model="credentials.login.password" :classes="['park']" :simple="true" key="loginPassword" />
       </div>
       <div class="field with-extra-margin">
-        <submit-button :classes="['park']" label="登入" :state.sync="states.login" :message.sync="states.message" @click.native="login" v-on:reset="onSubmitButtonReset('login')" />
+        <submit-button :classes="['park']" label="登入" :state.sync="states.login" :message.sync="states.message" @click.native="login" @reset="onSubmitButtonReset('login')" />
       </div>
     </form>
     <div class="the-other-action text-align-right">
@@ -54,14 +54,14 @@ import * as EMAILER_ACTIONS from '../../lib/emailer_actions'
 import * as ERRORS from '../../lib/errors'
 import * as STATES from '../../lib/states'
 import * as util from '../../lib/util'
-import { knowsAuth, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsError, knowsWindowManagement } from '../../interfaces'
 import TextEditor from '../TextEditor'
 import SubmitButton from '../button/Submit.vue'
 
 const nameGenerator = require('project-name-generator')
 
 export default {
-  mixins: [knowsAuth, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsWindowManagement],
   props: ['data'],
   data() {
     return {
@@ -104,9 +104,9 @@ export default {
             this.states.message = '認證信已寄出'
           }).catch(error => {
             let message = error.response.data.message
-            console.error(error, error.response, message)
             this.states.join = STATES.FAILED
             this.states.message = ERRORS.MAP[message]
+            this.handleError(error)
           })
         } else {
           this.states.join = STATES.FAILED
@@ -131,9 +131,9 @@ export default {
           this.states.message = '歡迎回來'
         }).catch(error => {
           let message = error.response.data.message
-          console.error(error)
           this.states.login = STATES.FAILED
           this.states.message = ERRORS.MAP[message]
+          this.handleError(error)
         })
       } else {
         this.states.login = STATES.FAILED

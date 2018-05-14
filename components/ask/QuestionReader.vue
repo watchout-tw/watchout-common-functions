@@ -16,8 +16,11 @@
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
-    <div class="font-size-smaller">已有<span class="latin-within-han">{{ question.push.count }}</span>人連署；連署門檻為<span class="latin-within-han">{{ question.data.threshold }}</span>人</div>
-    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButtonState" :message.sync="pushButtonMessage" @click.native="push(question.id)"/>
+    <div class="status-description">
+      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；尚須<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
+      <div class="font-size-smaller"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
+    </div>
+    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButtonState" :message.sync="pushButtonMessage" @click.native="push(question.id)" @reset="onPushButtonReset" />
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
@@ -47,9 +50,9 @@
     </div>
     <div class="personas">
       <div class="persona" v-for="player of game.players">
-        <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" @click.prevent.stop />
+        <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" disabled />
         <avatar :avatar="player.persona.avatar" :classes="['shadow']" />
-        <div class="name">{{ player.persona.name }}</div>
+        <div class="name">{{ player.persona.id === 0 ? '所有參賽選手' : player.persona.name }}</div>
       </div>
     </div>
   </div>
@@ -61,7 +64,7 @@
 import * as core from '../../lib/core'
 import * as STATES from '../../lib/states'
 import * as util from '../../lib/util'
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import CoverImage from '../CoverImage'
 import Authorship from './Authorship'
 import Avatar from '../Avatar'
@@ -70,7 +73,7 @@ import SubmitButton from '../button/Submit'
 import Quiero from './Quiero'
 
 export default {
-  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
   props: ['game', 'question', 'topics', 'mode', 'pushable', 'preview'],
   data() {
     return {
@@ -92,14 +95,21 @@ export default {
     questionStartDate() {
       return util.formatter.date(this.question.push.startDate)
     },
+    questionEndDate() {
+      return util.formatter.date(util.getQuestionEndDate(this.question))
+    },
+    pushThreshold() {
+      return this.question.data.threshold ? this.question.data.threshold : 0
+    },
+    pushCount() {
+      return this.question.push.count ? this.question.push.count : 0
+    },
     containerClasses() {
       var classes = []
       if(this.isCompact) {
-        classes.push('compact')
-        classes.push('tcl-panel')
+        classes = ['tcl-panel', 'compact']
       } else if(this.isFull) {
-        classes.push('full')
-        classes.push('tcl-container')
+        classes = ['tcl-container', 'full']
       }
       return classes
     },
@@ -149,19 +159,22 @@ export default {
     push(id) {
       if(!this.isCitizen) {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
-      } else if(this.activePersonaIsWithInfo) {
+      } else if(!this.activePersonaIsWithInfo) {
+        this.addModal('private-info-registration')
+      } else if(!util.questionIsPushedByMe(this.question)) {
         this.pushButtonState = STATES.LOADING
         core.pushQuestion(id).then(response => {
-          this.pushed()
           this.pushButtonState = STATES.SUCCESS
-          console.log(response)
+          this.pushButtonMessage = '已連署'
         }).catch(error => {
           this.pushButtonState = STATES.FAILED
-          console.error(error)
+          this.pushButtonMessage = '連署失敗'
+          this.handleError(error)
         })
-      } else {
-        this.addModal('private-info-registration')
       }
+    },
+    onPushButtonReset() {
+      this.pushed()
     },
     pushed() {
       this.$emit('pushed')
