@@ -1,5 +1,5 @@
 <template>
-<div class="submit-button input button" :class="classes">
+<div class="submit-button input button" :class="internalClasses">
   <div v-if="!state || state === STATES.DEFAULT" class="label">{{ label }}</div>
   <div v-else class="symbol-container" :style="symbolStyles">
     <div v-if="state === STATES.LOADING" class="symbol loading"></div>
@@ -17,7 +17,7 @@ const DEFAULT_FONT_SIZE = 16
 const DEFAULT_SYMBOL_SIZE = DEFAULT_FONT_SIZE * 1.5
 
 export default {
-  props: ['classes', 'label', 'state', 'message'],
+  props: ['classes', 'label', 'state', 'message', 'once'],
   data() {
     return {
       STATES,
@@ -26,7 +26,8 @@ export default {
       isFullWidth: false,
       fontSize: DEFAULT_FONT_SIZE,
       symbolSize: DEFAULT_SYMBOL_SIZE,
-      symbolAnimationDuration: 500 // FIXME: this is hard coded
+      symbolAnimationDuration: 500, // FIXME: this is hard coded
+      hasBeenDone: false
     }
   },
   mounted() {
@@ -43,11 +44,17 @@ export default {
           this.symbolOffsetX = (messageWidth / 2 + this.fontSize / 4) * -1
           this.showMessage = true
         }
-        setTimeout(this.reset, 2500)
+        if(this.state === STATES.SUCCESS) {
+          this.hasBeenDone = true
+        }
+        setTimeout(this.reset, 2000)
       }, this.symbolAnimationDuration)
     }
   },
   computed: {
+    internalClasses() {
+      return (Array.isArray(this.classes) ? this.classes : []).concat(this.once === true && this.hasBeenDone === true ? ['immutable'] : [])
+    },
     symbolStyles() {
       return {
         transform: `translateX(${this.symbolOffsetX}px) scale(${this.symbolSize / DEFAULT_SYMBOL_SIZE})`
@@ -63,6 +70,9 @@ export default {
   methods: {
     reset() {
       this.$emit('reset')
+      if(this.once === true && this.state === STATES.SUCCESS) {
+        return
+      }
       this.symbolOffsetX = 0
       this.showMessage = false
       this.$emit('update:state', this.STATES.DEFAULT)
