@@ -1,5 +1,4 @@
 import { mapGetters } from 'vuex'
-import axios from 'axios'
 import * as ls from '../lib/ls'
 import * as core from '../lib/core'
 
@@ -112,7 +111,7 @@ export default {
         // update store
         this.$store.dispatch('auth/toggle', data)
         // authenticate axios
-        axios.defaults.headers.common['Authorization'] = data.token
+        core.setHeader({common: {Authorization: data.token}})
 
         if(this.isLocal()) {
           // update localStorage
