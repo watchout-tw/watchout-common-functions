@@ -111,7 +111,11 @@ export default {
         // update store
         this.$store.dispatch('auth/toggle', data)
         // authenticate axios
-        core.setHeaders({ Authorization: data.token })
+        core.setHeaders({
+          common: {
+            Authorization: data.token
+          }
+        })
 
         if(this.isLocal()) {
           // update localStorage
