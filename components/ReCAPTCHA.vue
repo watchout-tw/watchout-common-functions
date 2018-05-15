@@ -26,6 +26,7 @@ export default {
       this.$emit('update:token', token)
       this.$emit('update:verified', true)
       if(typeof this.callback === 'function') this.callback()
+      window.grecaptcha.reset()
     }
   }
 }
