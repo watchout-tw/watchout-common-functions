@@ -8,7 +8,10 @@
   <template v-if="pages.length > 1">
     <div class="control prev" @click="goToPage((currentPage + pages.length - 1) % pages.length)"></div>
     <div class="control next" @click="goToPage((currentPage + pages.length + 1) % pages.length)"></div>
-    <div class="dots">
+    <div class="stops form-field-many-inputs no-wrap" v-if="stops">
+      <div class="input button small" v-for="stop of stops" :key="stop.id" @click="goToPage(stop.id)">{{ stop.label }}</div>
+    </div>
+    <div class="dots" v-else>
       <div class="dot" v-for="(dot, index) of dots" :key="index" :class="dot.isActive ? ['active'] : []" @click="currentPage = index"></div>
     </div>
   </template>
@@ -25,7 +28,7 @@
 
 */
 export default {
-  props: ['responsive', 'pages', 'width', 'height'],
+  props: ['responsive', 'pages', 'stops', 'width', 'height'],
   data() {
     return {
       bp: {
@@ -89,8 +92,16 @@ export default {
       }
       return styles
     },
-    goToPage(index) {
-      this.currentPage = index
+    goToPage(value) {
+      let index = -1
+      if(Number.isInteger(value)) {
+        index = value
+      } else {
+        index = this.pages.findIndex(page => page.id === value)
+      }
+      if(index > -1) {
+        this.currentPage = index
+      }
     },
     onScroll() {
       if(this.scrollElement) {
@@ -135,7 +146,8 @@ export default {
         display: block;
         flex-shrink: 0;
         width: 100%;
-        background-size: cover;
+        background-size: contain;
+        background-repeat: no-repeat;
         background-position: center center;
       }
     }
@@ -173,6 +185,15 @@ export default {
         opacity: 0.25;
       }
     }
+  }
+  > .stops {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem 0;
   }
   > .dots {
     position: absolute;
