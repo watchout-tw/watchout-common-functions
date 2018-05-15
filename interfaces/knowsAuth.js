@@ -110,7 +110,7 @@ export default {
       if(data.token) { // FIXME: need a more rigorous check
         // update store
         this.$store.dispatch('auth/toggle', data)
-        // authenticate axios
+        // authenticate coreInstance
         core.setHeaders({
           common: {
             Authorization: data.token
