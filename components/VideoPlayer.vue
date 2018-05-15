@@ -35,12 +35,12 @@ export default {
 
   &.shadow {
     > .player {
-      box-shadow: 0 2px 16px 0 rgba(black, 0.35);
+      @include shadow-lifted;
     }
   }
   &.shadow-hard {
     > .player {
-      box-shadow: 0 2px 16px 0 $color-video-player-shadow-black;
+      @include shadow-lifted-darkest;
     }
   }
 }
