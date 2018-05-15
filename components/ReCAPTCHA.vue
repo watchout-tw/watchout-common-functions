@@ -17,7 +17,7 @@ export default {
       window.grecaptcha.render('recaptcha-placeholder', {
         sitekey: config.reCaptchaSiteKey,
         size: SIZE,
-        callback: self.verifiedCallback
+        callback: this.verifiedCallback
       })
     }
   },
