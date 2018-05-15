@@ -111,11 +111,7 @@ export default {
         // update store
         this.$store.dispatch('auth/toggle', data)
         // authenticate coreInstance
-        core.setHeaders({
-          common: {
-            Authorization: data.token
-          }
-        })
+        core.setAuthorizationHeader(data.token)
 
         if(this.isLocal()) {
           // update localStorage
@@ -136,6 +132,8 @@ export default {
     logout() {
       // update store
       this.$store.dispatch('auth/toggle', false)
+      // unauthenticate coreInstance
+      core.unsetAuthorizationHeader()
 
       if(this.isLocal()) {
         // update localStorage
