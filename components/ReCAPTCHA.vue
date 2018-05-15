@@ -17,7 +17,7 @@ export default {
       window.grecaptcha.render('recaptcha-placeholder', {
         sitekey: config.reCaptchaSiteKey,
         size: SIZE,
-        callback: self.verifiedCallback
+        callback: this.verifiedCallback
       })
     }
   },
@@ -25,7 +25,10 @@ export default {
     verifiedCallback(token) {
       this.$emit('update:token', token)
       this.$emit('update:verified', true)
-      if(typeof this.callback === 'function') this.callback()
+      if(typeof this.callback === 'function') {
+        this.callback()
+      }
+      window.grecaptcha.reset()
     }
   }
 }
