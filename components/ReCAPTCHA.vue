@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import config from '~/config/config'
+import config from '../config/config'
 
 const SIZE = 'invisible'
 export default {
