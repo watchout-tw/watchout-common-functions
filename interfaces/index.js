@@ -3,6 +3,7 @@ import knowsCaching from './knowsCaching'
 import knowsDOM from './knowsDOM'
 import knowsError from './knowsError'
 import knowsMarkdown from './knowsMarkdown'
+import knowsScrolling from './knowsScrolling'
 import knowsWatchout from './knowsWatchout'
 import knowsWindowManagement from './knowsWindowManagement'
 
@@ -12,6 +13,7 @@ export {
   knowsDOM,
   knowsError,
   knowsMarkdown,
+  knowsScrolling,
   knowsWatchout,
   knowsWindowManagement
 }
