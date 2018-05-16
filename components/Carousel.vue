@@ -1,5 +1,5 @@
 <template>
-<div class="carousel" :class="classes">
+<div class="carousel" :class="internalClasses">
   <div class="content">
     <div class="pages" @scroll="onScroll">
       <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="(page, index) of pages" :key="index" :style="pageStyles(page)">
@@ -31,7 +31,7 @@ const SCROLL = 2
 
 */
 export default {
-  props: ['responsive', 'pages', 'stops', 'width', 'height'],
+  props: ['responsive', 'pages', 'stops', 'width', 'height', 'classes'],
   data() {
     return {
       bp: {
@@ -53,19 +53,19 @@ export default {
     internalHeight() {
       return !Number.isNaN(parseInt(this.height)) ? parseInt(this.height) : 1
     },
-    classes() {
-      let classes = []
+    internalClasses() {
+      let otherClasses = []
       if(this.responsive) {
-        classes.push('responsive')
+        otherClasses.push('responsive')
       }
       if(this.internalWidth === 3 && this.internalHeight === 2) {
-        classes.push('slides')
+        otherClasses.push('slides')
       } else if(this.internalWidth === 16 && this.internalHeight === 9) {
-        classes.push('video')
+        otherClasses.push('video')
       } else {
-        classes.push('default')
+        otherClasses.push('default')
       }
-      return classes
+      return otherClasses.concat(Array.isArray(this.classes) ? this.classes : [])
     },
     pageWidth() {
       return this.scrollElement ? this.scrollElement.offsetWidth : 0
@@ -154,6 +154,12 @@ export default {
   &.video {
     @include rect(16/9)
   }
+  &.shadow-lifted-darker {
+    @include shadow-lifted-darker;
+  }
+  &.shadow-lifted-darkest {
+    @include shadow-lifted-darkest;
+  }
   > .content {
     > .pages {
       height: 100%;
@@ -177,6 +183,7 @@ export default {
     height: 100%;
     cursor: pointer;
     color: white;
+    $text-shadow: 0 0 8px rgba(black, 0.25);
     &.prev {
       left: 0;
       padding-right: 2rem;
@@ -189,7 +196,7 @@ export default {
         margin: 0 0.5rem;
         font-size: 1.5rem;
         opacity: 0.75;
-        text-shadow: 0 0 4px rgba(black, 0.25);
+        text-shadow: $text-shadow;
       }
     }
     &.next {
@@ -204,7 +211,7 @@ export default {
         margin: 0 0.5rem;
         font-size: 1.5rem;
         opacity: 0.75;
-        text-shadow: 0 0 4px rgba(black, 0.25);
+        text-shadow: $text-shadow;
       }
     }
   }
@@ -250,6 +257,20 @@ export default {
           width: $dot-size * 1.5;
           height: $dot-size * 1.5;
           margin: $dot-size / 4;
+        }
+      }
+    }
+  }
+  &[class*=shadow] {
+    > .dots {
+      margin-top: $dot-size;
+    }
+  }
+  &.on-dark-background {
+    > .dots {
+      > .dot {
+        &:after {
+          background-color: white;
         }
       }
     }
