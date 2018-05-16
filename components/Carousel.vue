@@ -2,23 +2,26 @@
 <div class="carousel" :class="classes">
   <div class="content">
     <div class="pages" @scroll="onScroll">
-      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="(page, index) of pages" :key="index" :style="pageStyles(page)"></component>
+      <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="(page, index) of pages" :key="index" :style="pageStyles(page)">
+          <video-player v-if="page.type === 'video'" :platform="page.platform" :id="page.id" :classes="[]" />
+      </component>
     </div>
   </div>
   <template v-if="pages.length > 1">
     <div class="control prev" @click="goToPage((currentPage + pages.length - 1) % pages.length)"></div>
     <div class="control next" @click="goToPage((currentPage + pages.length + 1) % pages.length)"></div>
-    <div class="stops form-field-many-inputs no-wrap" v-if="stops">
-      <div class="input button small" v-for="stop of stops" :key="stop.id" @click="goToPage(stop.id)">{{ stop.label }}</div>
-    </div>
-    <div class="dots" v-else>
-      <div class="dot" v-for="(dot, index) of dots" :key="index" :class="dot.isActive ? ['active'] : []" @click="currentPage = index"></div>
+    <div class="dots">
+      <div class="dot" v-for="(dot, index) of dots" :key="index" :class="[ ...(dot.isActive ? ['active'] : []), ...(dot.isStop ? ['stop'] : []) ]" @click="goToPage(index)"></div>
     </div>
   </template>
 </div>
 </template>
 
 <script>
+import VideoPlayer from './VideoPlayer'
+const CLICK = 1
+const SCROLL = 2
+
 /* FIXME: Current assumptions
 
 - A carousel sets its own size ONLY at DOM ready
@@ -39,7 +42,8 @@ export default {
       windowSize: {
         width: 0,
         height: 0
-      }
+      },
+      lastUserAction: null
     }
   },
   computed: {
@@ -56,6 +60,8 @@ export default {
       }
       if(this.internalWidth === 3 && this.internalHeight === 2) {
         classes.push('slides')
+      } else if(this.internalWidth === 16 && this.internalHeight === 9) {
+        classes.push('video')
       } else {
         classes.push('default')
       }
@@ -67,13 +73,14 @@ export default {
     dots() {
       return this.pages.map((page, index) => ({
         type: 'default',
-        isActive: index === this.currentPage
+        isActive: index === this.currentPage,
+        isStop: Array.isArray(this.stops) && this.stops.map(stop => stop.id).includes(page.id)
       }))
     }
   },
   watch: {
     currentPage() {
-      if(this.scrollElement) {
+      if(this.scrollElement && this.lastUserAction !== SCROLL) {
         this.scrollElement.scrollLeft = this.currentPage * this.pageWidth
       }
     }
@@ -101,18 +108,27 @@ export default {
       }
       if(index > -1) {
         this.currentPage = index
+        this.lastUserAction = CLICK
+      } else {
+        this.lastUserAction = null
       }
     },
     onScroll() {
       if(this.scrollElement) {
         let scrollLeft = this.scrollElement.scrollLeft
         this.currentPage = Math.round(scrollLeft / this.pageWidth)
+        this.lastUserAction = SCROLL
+      } else {
+        this.lastUserAction = null
       }
     }
   },
   mounted() {
     this.updateWindowSize()
     this.scrollElement = this.$el.querySelector('.pages')
+  },
+  components: {
+    VideoPlayer
   }
 }
 </script>
@@ -123,7 +139,7 @@ export default {
   $dot-size: 0.5rem;
   position: relative;
   background-color: $color-very-light-grey;
-  margin-bottom: $dot-size * 3;
+  margin-bottom: $dot-size * 5;
   &.default {
     @include rect(2/1)
     &.responsive {
@@ -134,6 +150,9 @@ export default {
   }
   &.slides {
     @include rect(3/2)
+  }
+  &.video {
+    @include rect(16/9)
   }
   > .content {
     > .pages {
@@ -157,6 +176,7 @@ export default {
     top: 0;
     height: 100%;
     cursor: pointer;
+    color: white;
     &.prev {
       left: 0;
       padding-right: 2rem;
@@ -168,7 +188,8 @@ export default {
         display: block;
         margin: 0 0.5rem;
         font-size: 1.5rem;
-        opacity: 0.25;
+        opacity: 0.75;
+        text-shadow: 0 0 4px rgba(black, 0.25);
       }
     }
     &.next {
@@ -182,7 +203,8 @@ export default {
         display: block;
         margin: 0 0.5rem;
         font-size: 1.5rem;
-        opacity: 0.25;
+        opacity: 0.75;
+        text-shadow: 0 0 4px rgba(black, 0.25);
       }
     }
   }
@@ -207,7 +229,7 @@ export default {
     > .dot {
       width: $dot-size * 2;
       height: $dot-size * 2;
-      margin: 0 $dot-size / 2;
+      margin: 0 $dot-size / 4;
       opacity: 0.25;
       cursor: pointer;
 
@@ -222,6 +244,13 @@ export default {
       }
       &.active {
         opacity: 1;
+      }
+      &.stop {
+        &:after {
+          width: $dot-size * 1.5;
+          height: $dot-size * 1.5;
+          margin: $dot-size / 4;
+        }
       }
     }
   }
