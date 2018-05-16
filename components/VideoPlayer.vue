@@ -27,7 +27,6 @@ export default {
 .video-player {
   > .player {
     width: 100%;
-    max-width: 640px;
     margin: 0 auto;
     background-color: $color-video-player-content-black;
     @include rect(16/9);
