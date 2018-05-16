@@ -28,7 +28,6 @@ export default {
       if(typeof this.callback === 'function') {
         this.callback()
       }
-      window.grecaptcha.reset()
     }
   }
 }
