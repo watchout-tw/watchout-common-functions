@@ -12,10 +12,10 @@
       </like-buttons>
     </div>
   </div>
-  <form class="send-message" @keyup.13.prevent="sendMessage" @submit.prevent>
+  <form class="send-message" @keyup.13.prevent="onSubmit" @submit.prevent>
     <div class="field with-button">
       <text-editor placeholder="輸入訊息" v-model="newMessage" :classes="['park']" :simple="true" key="newMessage" />
-      <button class="button small park" @click="sendMessage">送出</button>
+      <button class="button small park" @click="onSubmit">送出</button>
     </div>
   </form>
 </div>
@@ -23,11 +23,10 @@
 
 <script>
 import * as SOCKETIO from '../lib/socket.io.js'
-import { knowsAuth } from '../interfaces'
+import { knowsAuth, knowsWindowManagement } from '../interfaces'
 import LikeButtons from './button/Like'
 import TextEditor from './TextEditor'
 // FIXME: add debounce to like/dislike api calls
-let socket
 
 const likeButtonsConfig = {
   options: [
@@ -60,19 +59,61 @@ const likeButtonsConfig = {
 
 export default {
   props: ['room'],
-  mixins: [knowsAuth],
+  mixins: [knowsAuth, knowsWindowManagement],
   data() {
     return {
+      socket: null,
+      isInitialized: false,
       messages: [],
       newMessage: null,
       likeButtonsConfig
     }
   },
-  computed: {
-  },
   watch: {
+    isCitizen() {
+      if(this.isCitizen) {
+        this.init()
+      } else {
+        this.destroy()
+      }
+    }
   },
   methods: {
+    init() {
+      const self = this
+      this.socket = SOCKETIO.initSocketWithAuth(this.getTokenCookie())
+
+      this.socket.on('addRoom', (data) => {
+        console.log('addRoom', data)
+      })
+      this.socket.on('leaveRoom', (data) => {
+        console.log(data)
+        // TODO: close this chat room
+      })
+      this.socket.on('chat', (data) => {
+        console.log('catch chat', data)
+        self.messages.push(data)
+      })
+      this.socket.on('banned', (data) => {
+        console.log('banned', data)
+        // TODO: do something for banned
+      })
+      this.socket.on('comment', (data) => {
+        console.log('comment', data)
+        self.setMessageDetail(data)
+      })
+      this.socket.on('cancelComment', (data) => {
+        console.log(data)
+        self.setMessageDetail(data)
+      })
+
+      this.socket.emit('addRoom', { room: this.room })
+      this.isInitialized = true
+    },
+    destroy() {
+      this.socket = null
+      this.isInitialized = false
+    },
     messageIsLiked(message) {
       return message.detail.like && message.detail.like.includes(this.citizen.handle)
     },
@@ -88,7 +129,6 @@ export default {
       }
     },
     onLike(message) {
-      console.log('onlike')
       const LIKE = 'like'
       if(this.messageIsLiked(message)) {
         this.cancelComment(message, LIKE)
@@ -97,7 +137,6 @@ export default {
       }
     },
     onDislike(message) {
-      console.log('ondislike')
       const DISLIKE = 'dislike'
       if(this.messageIsDisliked(message)) {
         this.cancelComment(message, DISLIKE)
@@ -105,73 +144,55 @@ export default {
         this.comment(message, DISLIKE)
       }
     },
-    sendMessage: function() {
-      if(this.newMessage) {
-        socket.emit('chat', {
-          room: this.room,
-          content: this.newMessage,
-          detail: {}
-        })
-        this.newMessage = null
+    onSubmit() {
+      if(this.isCitizen) {
+        if(this.socket && this.newMessage) {
+          this.socket.emit('chat', {
+            room: this.room,
+            content: this.newMessage,
+            detail: {}
+          })
+          this.newMessage = null
+        }
+      } else {
+        this.addModal({ id: 'auth', joinOrLogin: 'login' })
       }
     },
-    comment: function(message, type) {
-      socket.emit('comment', {
-        room: message.room,
-        order: message.order,
-        type: type
-      })
+    comment(message, type) {
+      if(this.socket) {
+        this.socket.emit('comment', {
+          room: message.room,
+          order: message.order,
+          type: type
+        })
+      }
     },
-    cancelComment: function(message, type) {
-      socket.emit('cancelComment', {
-        room: message.room,
-        order: message.order,
-        type: type
-      })
+    cancelComment(message, type) {
+      if(this.socket) {
+        this.socket.emit('cancelComment', {
+          room: message.room,
+          order: message.order,
+          type: type
+        })
+      }
     },
-    setMessageDetail: function(data) {
-      for(let i = 0, l = this.messages.length; i < l; i++) {
-        if(data.order === this.messages[i].order) {
-          this.messages[i].detail = data.detail
-          return
+    setMessageDetail(data) {
+      if(this.socket) {
+        for(let i = 0, l = this.messages.length; i < l; i++) {
+          if(data.order === this.messages[i].order) {
+            this.messages[i].detail = data.detail
+            return
+          }
         }
       }
     }
   },
   mounted() {
-    const V_THIS = this
-    socket = SOCKETIO.initSocketWithAuth(this.getTokenCookie())
-
-    socket.on('addRoom', (data) => {
-      console.log('addRoom', data)
-    })
-
-    socket.on('leaveRoom', (data) => {
-      console.log(data)
-      // TODO: close this chat room
-    })
-
-    socket.on('chat', (data) => {
-      console.log('catch chat', data)
-      V_THIS.messages.push(data)
-    })
-
-    socket.on('banned', (data) => {
-      console.log('banned', data)
-      // TODO: do something for banned
-    })
-
-    socket.on('comment', (data) => {
-      console.log('comment', data)
-      V_THIS.setMessageDetail(data)
-    })
-
-    socket.on('cancelComment', (data) => {
-      console.log(data)
-      V_THIS.setMessageDetail(data)
-    })
-
-    socket.emit('addRoom', {room: this.room})
+    if(this.isCitizen) {
+      this.init()
+    } else {
+      console.warn('Not logged in')
+    }
   },
   components: {
     LikeButtons,
