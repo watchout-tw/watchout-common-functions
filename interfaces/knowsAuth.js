@@ -154,6 +154,21 @@ export default {
       if(this.isCitizen !== true) {
         this.$router.push('/')
       }
+    },
+    hasRole(channel, name) {
+      let hasRole = false
+      if(this.isLocal() && Array.isArray(this.roles)) {
+        let filteredRoles
+        if(channel && name) {
+          filteredRoles = this.roles.filter(role => role.channel === channel && role.name === name)
+        } else if(channel) {
+          filteredRoles = this.roles.filter(role => role.channel === channel)
+        } else if(name) {
+          filteredRoles = this.roles.filter(role => role.name === name)
+        }
+        hasRole = filteredRoles.length > 0
+      }
+      return hasRole
     }
   }
 }
