@@ -74,10 +74,8 @@ export default {
   },
   watch: {
     isCitizen() {
-      if(this.isCitizen) {
+      if(this.socket && !this.socket.connected) {
         this.init()
-      } else {
-        this.destroy()
       }
     }
   },
@@ -96,11 +94,10 @@ export default {
     })
   },
   mounted() {
-    if(this.isCitizen) {
-      this.init()
-    } else {
-      console.warn('Not logged in')
-    }
+    this.init()
+  },
+  beforeDestroy() {
+    this.destroy()
   },
   methods: {
     log() {
