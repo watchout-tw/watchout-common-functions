@@ -37,10 +37,13 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 .like-buttons {
   display: flex;
+  justify-content: flex-end;
   > .button-with-count {
     display: flex;
     align-items: center;
-    margin-right: 0.5rem;
+    &:not(:last-child) {
+      margin-right: 0.5rem;
+    }
     > .button {
       background-size: contain;
       background-position: center center;

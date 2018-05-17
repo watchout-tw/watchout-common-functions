@@ -1,14 +1,14 @@
 <template>
 <div class="blablabla">
-  <div class="messages">
+  <div class="messages font-size-smaller">
     <div class="not-available text-align-center" v-if="messages.length < 1">暫時沒有訊息</div>
     <div class="message" v-for="message in messages" :key="message.time">
       <div class="content">
-        <span class="talker">{{ message.talker }}</span><span class="text">{{ message.content }}</span>
+        <span class="speaker">{{ message.alias }}</span><span class="text">{{ message.content }}</span>
       </div>
       <like-buttons :config="likeButtonsConfig" :state="getMessageState(message)" @like="onLike(message)"  @dislike="onDislike(message)">
-        <template slot="like-count">{{ message.detail.like ? message.detail.like.length : 0 }}</template>
-        <template slot="dislike-count">{{ message.detail.dislike ? message.detail.dislike.length : 0 }}</template>
+        <template slot="like-count">{{ message.detail && message.detail.like ? message.detail.like.length : 0 }}</template>
+        <template slot="dislike-count">{{ message.detail && message.detail.dislike ? message.detail.dislike.length : 0 }}</template>
       </like-buttons>
     </div>
   </div>
@@ -22,8 +22,9 @@
 </template>
 
 <script>
+import * as blablabla from '../lib/blablabla'
 import * as SOCKETIO from '../lib/socket.io.js'
-import { knowsAuth, knowsWindowManagement } from '../interfaces'
+import { knowsAuth, knowsError, knowsWindowManagement } from '../interfaces'
 import LikeButtons from './button/Like'
 import TextEditor from './TextEditor'
 // FIXME: add debounce to like/dislike api calls
@@ -59,13 +60,15 @@ const likeButtonsConfig = {
 
 export default {
   props: ['room'],
-  mixins: [knowsAuth, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsWindowManagement],
   data() {
     return {
+      isInDebugMode: true,
       socket: null,
-      isInitialized: false,
+      hasAddedRoom: false,
       messages: [],
       newMessage: null,
+      lastEvent: null,
       likeButtonsConfig
     }
   },
@@ -78,70 +81,109 @@ export default {
       }
     }
   },
+  updated() {
+    if(!(this.lastEvent && this.lastEvent.toLowerCase().includes('comment'))) {
+      this.scrollToBottom()
+    }
+  },
+  beforeMount() {
+    blablabla.getChatHistory(this.room).then(response => {
+      let chats = response.data.chats
+      chats.reverse()
+      this.messages.push(...chats)
+    }).catch(error => {
+      this.handleError(error)
+    })
+  },
+  mounted() {
+    if(this.isCitizen) {
+      this.init()
+    } else {
+      console.warn('Not logged in')
+    }
+  },
   methods: {
+    log() {
+      if(this.isInDebugMode) {
+        console.log(...['[bla]', ...arguments])
+      }
+    },
     init() {
       const self = this
+      const log = this.log
       this.socket = SOCKETIO.initSocketWithAuth(this.getTokenCookie())
 
       this.socket.on('addRoom', (data) => {
-        console.log('addRoom', data)
+        log('addRoom', data)
+        this.hasAddedRoom = true
+        this.lastEvent = 'addRoom'
       })
       this.socket.on('leaveRoom', (data) => {
-        console.log(data)
-        // TODO: close this chat room
+        log('leaveRoom', data)
+        this.hasAddedRoom = false
+        this.lastEvent = 'leaveRoom'
       })
       this.socket.on('chat', (data) => {
-        console.log('catch chat', data)
+        log('chat', data)
         self.messages.push(data)
+        this.lastEvent = 'chat'
       })
       this.socket.on('banned', (data) => {
-        console.log('banned', data)
-        // TODO: do something for banned
+        log('banned', data)
+        // TODO: notify if banned
       })
       this.socket.on('comment', (data) => {
-        console.log('comment', data)
+        log('comment', data)
         self.setMessageDetail(data)
+        this.lastEvent = 'comment'
       })
       this.socket.on('cancelComment', (data) => {
-        console.log(data)
+        log('cancelComment', data)
         self.setMessageDetail(data)
+        this.lastEvent = 'cancelComment'
       })
 
       this.socket.emit('addRoom', { room: this.room })
-      this.isInitialized = true
     },
     destroy() {
       this.socket = null
-      this.isInitialized = false
     },
     messageIsLiked(message) {
-      return message.detail.like && message.detail.like.includes(this.citizen.handle)
+      return message.detail && message.detail.like && message.detail.like.includes(this.citizen.handle)
     },
     messageIsDisliked(message) {
-      return message.detail.dislike && message.detail.dislike.includes(this.citizen.handle)
+      return message.detail && message.detail.dislike && message.detail.dislike.includes(this.citizen.handle)
     },
     getMessageState(message) {
       return {
         me: {
-          'like': message.detail.like && message.detail.like.includes(this.citizen.handle),
-          'dislike': message.detail.dislike && message.detail.dislike.includes(this.citizen.handle)
+          'like': message.detail && message.detail.like && message.detail.like.includes(this.citizen.handle),
+          'dislike': message.detail && message.detail.dislike && message.detail.dislike.includes(this.citizen.handle)
         }
       }
     },
     onLike(message) {
       const LIKE = 'like'
-      if(this.messageIsLiked(message)) {
-        this.cancelComment(message, LIKE)
+      if(this.isCitizen) {
+        if(this.messageIsLiked(message)) {
+          this.cancelComment(message, LIKE)
+        } else {
+          this.comment(message, LIKE)
+        }
       } else {
-        this.comment(message, LIKE)
+        this.addModal({ id: 'auth', joinOrLogin: 'login' })
       }
     },
     onDislike(message) {
       const DISLIKE = 'dislike'
-      if(this.messageIsDisliked(message)) {
-        this.cancelComment(message, DISLIKE)
+      if(this.isCitizen) {
+        if(this.messageIsDisliked(message)) {
+          this.cancelComment(message, DISLIKE)
+        } else {
+          this.comment(message, DISLIKE)
+        }
       } else {
-        this.comment(message, DISLIKE)
+        this.addModal({ id: 'auth', joinOrLogin: 'login' })
       }
     },
     onSubmit() {
@@ -178,20 +220,19 @@ export default {
     },
     setMessageDetail(data) {
       if(this.socket) {
-        for(let i = 0, l = this.messages.length; i < l; i++) {
+        for(let i = 0; i < this.messages.length; i++) {
           if(data.order === this.messages[i].order) {
-            this.messages[i].detail = data.detail
+            this.$set(this.messages[i], 'detail', Object.assign({}, data.detail))
             return
           }
         }
       }
-    }
-  },
-  mounted() {
-    if(this.isCitizen) {
-      this.init()
-    } else {
-      console.warn('Not logged in')
+    },
+    scrollToBottom() {
+      let el = this.$el.querySelector('.messages')
+      if(el) {
+        el.scrollTop = el.scrollHeight
+      }
     }
   },
   components: {
@@ -205,15 +246,20 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 .blablabla {
   > .messages {
+    max-height: 20rem;
+    overflow: scroll;
     > .message {
       margin: 0.25rem 0;
        > .content {
-         > .talker {
-           margin-right: 1rem;
+         > .speaker {
+           margin-right: 0.5rem;
            color: $color-secondary-text-grey;
          }
        }
     }
+  }
+  > .send-message {
+    margin: 0.5rem 0;
   }
 }
 </style>
