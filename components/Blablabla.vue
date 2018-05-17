@@ -14,7 +14,7 @@
   </div>
   <form class="send-message" @keyup.13.prevent="onSubmit" @submit.prevent>
     <div class="field with-button">
-      <text-editor placeholder="輸入訊息" v-model="newMessage" :classes="['park']" :simple="true" key="newMessage" />
+      <text-editor placeholder="輸入訊息" v-model="newMessage" :classes="['park']" :simple="true" :maxlength="messageLengthLimit" key="newMessage" />
       <button class="button small park" @click="onSubmit">送出</button>
     </div>
   </form>
@@ -68,6 +68,7 @@ export default {
       hasAddedRoom: false,
       messages: [],
       newMessage: null,
+      messageLengthLimit: 140,
       lastEvent: null,
       likeButtonsConfig
     }
@@ -186,7 +187,7 @@ export default {
     onSubmit() {
       if(this.isCitizen) {
         if(this.socket && this.newMessage) {
-          this.newMessage = this.newMessage.trim()
+          this.newMessage = this.newMessage.trim().substr(0, this.messageLengthLimit)
           if(this.newMessage !== '') {
             this.socket.emit('chat', {
               room: this.room,
@@ -250,12 +251,19 @@ export default {
     overflow: scroll;
     > .message {
       margin: 0.25rem 0;
-       > .content {
-         > .speaker {
-           margin-right: 0.5rem;
-           color: $color-secondary-text-grey;
-         }
-       }
+      > .content {
+        > .speaker {
+          margin-right: 0.5rem;
+          color: $color-secondary-text-grey;
+        }
+        > .text {
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          word-break: break-all;
+          word-break: break-word;
+          hyphens: auto;
+        }
+      }
     }
   }
   > .send-message {
