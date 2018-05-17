@@ -186,12 +186,15 @@ export default {
     onSubmit() {
       if(this.isCitizen) {
         if(this.socket && this.newMessage) {
-          this.socket.emit('chat', {
-            room: this.room,
-            content: this.newMessage,
-            detail: {}
-          })
-          this.newMessage = null
+          this.newMessage = this.newMessage.trim()
+          if(this.newMessage !== '') {
+            this.socket.emit('chat', {
+              room: this.room,
+              content: this.newMessage,
+              detail: {}
+            })
+            this.newMessage = null
+          }
         }
       } else {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
