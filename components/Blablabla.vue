@@ -2,7 +2,7 @@
 <div class="blablabla">
   <div class="messages font-size-smaller">
     <div class="not-available text-align-center" v-if="messages.length < 1">暫時沒有訊息</div>
-    <div class="message" v-for="message in messages" :key="message.time">
+    <div class="message" v-for="message in messages" :key="message._id">
       <div class="content">
         <span class="speaker">{{ message.alias }}</span><span class="text">{{ message.content }}</span>
       </div>
@@ -11,6 +11,9 @@
         <template slot="dislike-count">{{ message.detail && message.detail.dislike ? message.detail.dislike.length : 0 }}</template>
       </like-buttons>
     </div>
+  </div>
+  <div class="log" v-if="showlogHistory">
+    <div v-for="(entry, index) of logHistory" :key="index">{{ entry }}</div>
   </div>
   <form class="send-message" @keyup.13.prevent="onSubmit" @submit.prevent>
     <div class="field with-button">
@@ -63,7 +66,9 @@ export default {
   mixins: [knowsAuth, knowsError, knowsWindowManagement],
   data() {
     return {
-      isInDebugMode: true,
+      logHistory: [],
+      printToConsole: true,
+      showlogHistory: false,
       socket: null,
       hasAddedRoom: false,
       messages: [],
@@ -75,9 +80,8 @@ export default {
   },
   watch: {
     isCitizen() {
-      if(this.socket && !this.socket.connected) {
-        this.init()
-      }
+      this.destroy()
+      this.init()
     }
   },
   updated() {
@@ -101,30 +105,66 @@ export default {
     this.destroy()
   },
   methods: {
-    log() {
-      if(this.isInDebugMode) {
+    log(eventName) {
+      this.logHistory.push(...arguments)
+      this.lastEvent = eventName
+      if(this.printToConsole) {
         console.log(...['[bla]', ...arguments])
       }
     },
     init() {
       const self = this
       const log = this.log
+      this.destroy()
       this.socket = SOCKETIO.initSocketWithAuth(this.getTokenCookie())
 
+      // io events
+      this.socket.on('connect', () => {
+        log('connect')
+      })
+      this.socket.on('connect_error', (error) => {
+        log('connect_error', error)
+      })
+      this.socket.on('connect_timeout', (timeout) => {
+        log('connect_timeout', timeout)
+      })
+      this.socket.on('error', (error) => {
+        log('error', error)
+      })
+      this.socket.on('disconnect', (reason) => {
+        log('disconnect', reason)
+      })
+      this.socket.on('reconnecting', (attemptNumber) => {
+        log('reconnecting', attemptNumber)
+      })
+      this.socket.on('reconnect', (attemptNumber) => {
+        log('reconnect', attemptNumber)
+      })
+      this.socket.on('reconnect_error', (error) => {
+        log('reconnect_error', error)
+      })
+      this.socket.on('reconnect_failed', () => {
+        log('reconnect_failed')
+      })
+      this.socket.on('ping', () => {
+        log('ping')
+      })
+      this.socket.on('pong', (latency) => {
+        log('pong', latency)
+      })
+
+      // blablabla specific events
       this.socket.on('addRoom', (data) => {
         log('addRoom', data)
         this.hasAddedRoom = true
-        this.lastEvent = 'addRoom'
       })
       this.socket.on('leaveRoom', (data) => {
         log('leaveRoom', data)
         this.hasAddedRoom = false
-        this.lastEvent = 'leaveRoom'
       })
       this.socket.on('chat', (data) => {
         log('chat', data)
         self.messages.push(data)
-        this.lastEvent = 'chat'
       })
       this.socket.on('banned', (data) => {
         log('banned', data)
@@ -133,17 +173,18 @@ export default {
       this.socket.on('comment', (data) => {
         log('comment', data)
         self.setMessageDetail(data)
-        this.lastEvent = 'comment'
       })
       this.socket.on('cancelComment', (data) => {
         log('cancelComment', data)
         self.setMessageDetail(data)
-        this.lastEvent = 'cancelComment'
       })
 
       this.socket.emit('addRoom', { room: this.room })
     },
     destroy() {
+      if(this.socket && typeof this.socket.close === 'function') {
+        this.socket.close()
+      }
       this.socket = null
     },
     messageIsLiked(message) {
@@ -249,6 +290,7 @@ export default {
   > .messages {
     max-height: 20rem;
     overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     > .message {
       margin: 0.25rem 0;
       > .content {

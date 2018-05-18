@@ -147,7 +147,7 @@ export default {
         // clear cookie
         this.clearTokenCookie()
       }
-      // force redirect to home page
+      // transport back to home
       this.$router.push('/')
     },
     feAuthenticate() {
