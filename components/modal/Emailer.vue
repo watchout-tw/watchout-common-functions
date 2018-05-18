@@ -1,11 +1,11 @@
 <template>
 <div class="modal email-verifier">
-  <form @keyup.enter.prevent="sendEmail" @submit.prevent>
+  <form @submit.prevent="sendEmail">
     <div class="field">
       <text-editor placeholder="請輸入你的註冊Email" type="email" v-model="email" :classes="['park']" :simple="true" key="email" />
     </div>
     <div class="field with-extra-margin">
-      <submit-button :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @click.native="sendEmail" @reset="onSubmitButtonReset" />
+      <submit-button type="submit" :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>
   </form>
 </div>

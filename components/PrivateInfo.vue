@@ -1,6 +1,6 @@
 <template>
 <div class="private-info">
-  <div class="form">
+  <form @submit.prevent="onSubmit">
     <div class="field">
       <text-editor placeholder="真實姓名" v-model="name" :classes="['park']" :simple="true" key="name" />
     </div>
@@ -28,9 +28,9 @@
     </div>
     <div class="field form-field-many-inputs no-wrap">
       <button class="input button" @click="clear()">清空</button>
-      <submit-button :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @click.native="submit" @reset="onSubmitButtonReset" />
+      <submit-button type="submit" :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>
-  </div>
+  </form>
 </div>
 </template>
 
@@ -124,7 +124,7 @@ export default {
       this.country_code = this.phone_number = null
       this.voter_type = this.voter_city = this.voter_district = this.voter_neighborhood = null
     },
-    submit() {
+    onSubmit() {
       let payload = {}
       this.cols.forEach(col => {
         if(!this[col]) {

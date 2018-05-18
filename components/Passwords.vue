@@ -1,6 +1,6 @@
 <template>
 <div class="passwords">
-  <div class="form">
+  <form @submit.prevent="updatePassword">
     <div class="field" v-if="requireCurrentPassword">
       <text-editor placeholder="確認現行密碼" type="password" v-model="currentPassword" :classes="['park']" :simple="true" key="currentPassword"/>
     </div>
@@ -11,9 +11,9 @@
       <text-editor placeholder="確認新密碼" type="password" v-model="newPasswordConfirmation" :classes="['park']" :simple="true" key="Confirmation"/>
     </div>
     <div class="field with-extra-margin">
-      <submit-button :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @click.native="updatePassword" @reset="onSubmitButtonReset" />
+      <submit-button type="submit" :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>
-  </div>
+  </form>
 </div>
 </template>
 

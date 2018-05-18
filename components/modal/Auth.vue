@@ -4,10 +4,10 @@
     <h2>進入沃草共有地</h2>
   </div>
   <div class="action" v-if="data.joinOrLogin === 'join'">
-    <form onkeypress="return event.keyCode != 13;">
+    <form @submit.prevent="join">
       <div class="field with-button">
         <text-editor placeholder="草民代號" v-model="credentials.join.handle" :classes="['park']" :simple="true" key="joinHandle" />
-        <button class="button small park" @click.prevent="generateHandle">隨機</button>
+        <button type="button" class="button small park" @click.prevent="generateHandle">隨機</button>
       </div>
       <div class="font-size-smaller text-color-nice-grey">草民代號是你在沃草共有地的獨特身份識別，無法更改，請謹慎選擇。你可以使用A-Z、a-z、0-9、_、-。</div>
       <div class="field">
@@ -20,7 +20,7 @@
         <label class="form-input-check-label"><input type="checkbox" class="park" v-model="credentials.join.iAgree"><span>我同意<a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></span></label>
       </div>
       <div class="field">
-        <submit-button :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @click.native="join" @reset="onSubmitButtonReset('join')" />
+        <submit-button type="submit" :classes="['park']" label="註冊" :state.sync="states.join" :message.sync="states.message" @reset="onSubmitButtonReset('join')" />
       </div>
     </form>
     <div class="the-other-action text-align-right">
@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="action" v-if="data.joinOrLogin === 'login'">
-    <form @keyup.13.prevent="login" @submit.prevent>
+    <form @submit.prevent="login">
       <div class="field">
         <text-editor placeholder="草民代號或Email" v-model="credentials.login.account" :classes="['park']" :simple="true" key="loginAccount" />
       </div>
@@ -36,7 +36,7 @@
         <text-editor placeholder="密碼" type="password" v-model="credentials.login.password" :classes="['park']" :simple="true" key="loginPassword" />
       </div>
       <div class="field with-extra-margin">
-        <submit-button :classes="['park']" label="登入" :state.sync="states.login" :message.sync="states.message" @click.native="login" @reset="onSubmitButtonReset('login')" />
+        <submit-button type="submit" :classes="['park']" label="登入" :state.sync="states.login" :message.sync="states.message" @reset="onSubmitButtonReset('login')" />
       </div>
     </form>
     <div class="the-other-action text-align-right">

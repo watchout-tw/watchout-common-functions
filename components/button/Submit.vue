@@ -1,5 +1,5 @@
 <template>
-<div class="submit-button input button" :class="internalClasses">
+<button class="submit-button input button" :class="internalClasses" :type="internalType">
   <div v-if="!state || state === STATES.DEFAULT" class="label">{{ label }}</div>
   <div v-else class="symbol-container" :style="symbolStyles">
     <div v-if="state === STATES.LOADING" class="symbol loading"></div>
@@ -7,7 +7,7 @@
     <div v-else-if="[STATES.FAILED, STATES.INCOMPLETE].includes(state)" class="symbol cross"></div>
   </div>
   <div v-if="message" class="message-container" :style="messageStyles"><span ref="message">{{ message }}</span></div>
-</div>
+</button>
 </template>
 
 <script>
@@ -17,7 +17,7 @@ const DEFAULT_FONT_SIZE = 16
 const DEFAULT_SYMBOL_SIZE = DEFAULT_FONT_SIZE * 1.5
 
 export default {
-  props: ['classes', 'label', 'state', 'message', 'once'],
+  props: ['type', 'classes', 'label', 'state', 'message', 'once'],
   data() {
     return {
       STATES,
@@ -30,9 +30,24 @@ export default {
       hasBeenDone: false
     }
   },
-  mounted() {
-    this.fontSize = parseInt(window.getComputedStyle(this.$el).fontSize)
-    this.symbolSize = this.fontSize * 1.5
+  computed: {
+    internalType() {
+      return this.type ? this.type : 'button'
+    },
+    internalClasses() {
+      return (Array.isArray(this.classes) ? this.classes : []).concat(this.once === true && this.hasBeenDone === true ? ['immutable'] : [])
+    },
+    symbolStyles() {
+      return {
+        transform: `translateX(${this.symbolOffsetX}px) scale(${this.symbolSize / DEFAULT_SYMBOL_SIZE})`
+      }
+    },
+    messageStyles() {
+      return {
+        opacity: this.showMessage ? 1 : 0,
+        marginLeft: `${this.symbolSize + this.fontSize / 4}px`
+      }
+    }
   },
   watch: {
     state() {
@@ -51,21 +66,9 @@ export default {
       }, this.symbolAnimationDuration)
     }
   },
-  computed: {
-    internalClasses() {
-      return (Array.isArray(this.classes) ? this.classes : []).concat(this.once === true && this.hasBeenDone === true ? ['immutable'] : [])
-    },
-    symbolStyles() {
-      return {
-        transform: `translateX(${this.symbolOffsetX}px) scale(${this.symbolSize / DEFAULT_SYMBOL_SIZE})`
-      }
-    },
-    messageStyles() {
-      return {
-        opacity: this.showMessage ? 1 : 0,
-        marginLeft: `${this.symbolSize + this.fontSize / 4}px`
-      }
-    }
+  mounted() {
+    this.fontSize = parseInt(window.getComputedStyle(this.$el).fontSize)
+    this.symbolSize = this.fontSize * 1.5
   },
   methods: {
     reset() {
