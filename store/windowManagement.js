@@ -26,6 +26,12 @@ export const mutations = {
     state.showSupport = value
   },
   addModal(state, data) {
+    // check if modal to add is a singleton & already added
+    const singletons = ['auth']
+    let id = data.id
+    if(singletons.includes(id) && state.modals.filter(modal => modal.id === id).length > 0) {
+      return
+    }
     state.modals.push(data)
   },
   updateModal(state, data) {
