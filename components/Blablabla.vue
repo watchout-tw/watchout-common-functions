@@ -226,7 +226,6 @@ export default {
       }
     },
     onSubmit() {
-      console.log('onsubmit')
       if(this.isCitizen) {
         if(this.socket && this.newMessage) {
           this.newMessage = this.newMessage.trim().substr(0, this.messageLengthLimit)
