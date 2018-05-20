@@ -288,7 +288,13 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 .blablabla {
   > .messages {
-    max-height: 20rem;
+    max-height: 40vh;
+    @include vbp-md-up {
+      max-height: 50vh;
+    }
+    @include tcl-md {
+      max-height: 60vh;
+    }
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
     > .message {

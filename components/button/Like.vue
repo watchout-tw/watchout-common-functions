@@ -1,7 +1,7 @@
 <template>
 <div class="like-buttons">
   <div class="button-with-count" v-for="option in config.options" :key="option.value">
-    <button class="input button simple round" :class="state.me.hasOwnProperty(option.value) && state.me[option.value] === true ? option.activeClasses : option.inactiveClasses" :style="getOptionButtonStyles(option)" @click="doThis(option)"></button>
+    <button class="input button simple round shadow-reduced" :class="state.me.hasOwnProperty(option.value) && state.me[option.value] === true ? option.activeClasses : option.inactiveClasses" :style="getOptionButtonStyles(option)" @click="doThis(option)"></button>
     <span class="count font-size-smaller secondary-text"><slot :name="option.value + '-count'"></slot></span>
   </div>
 </div>
