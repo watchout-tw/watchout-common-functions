@@ -44,10 +44,8 @@ export default {
 
     // select default options
     const indexes = this.generateRandomIndexes(this.selectLimit, this.internalOptions.length)
-    for(var index of indexes) {
-      var option = this.internalOptions[index]
-      this.select(option)
-    }
+    const options = indexes.map(index => this.internalOptions[index])
+    this.select(options)
   },
   methods: {
     generateRandomIndexes(amount, range) {
@@ -72,14 +70,17 @@ export default {
       this.reloading.state = STATES.SUCCESS
       this.reloading.message = 'reload成功'
     },
-    select(option) {
+    select(options) {
       var newSelecteds = this.selectedOptions
-      if(this.selectedOptions.indexOf(option) > -1) {
-        const index = this.selectedOptions.findIndex(_option => _option === option)
-        newSelecteds.splice(index, 1)
-      } else {
-        if(this.selectedOptions.length === this.selectLimit) return
-        newSelecteds.push(option)
+      if(!Array.isArray(options)) options = [options]
+      for(var option of options) {
+        if(this.selectedOptions.indexOf(option) > -1) {
+          const index = this.selectedOptions.findIndex(_option => _option === option)
+          newSelecteds.splice(index, 1)
+        } else {
+          if(this.selectedOptions.length === this.selectLimit) return
+          newSelecteds.push(option)
+        }
       }
       this.$emit('update:selectedOptions', newSelecteds)
     }
