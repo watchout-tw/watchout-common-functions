@@ -1,7 +1,9 @@
 <template>
 <div class="cover-image-browser">
-  <div class="options">
-    <cover-image v-for="option of internalOptions" :key="option" :url="option" @click.native="select(option)" width="4"></cover-image>
+  <div class="options tcl-container">
+    <div class="tcl-panel" v-for="option of internalOptions" :key="option">
+      <cover-image :url="option" :classes="['option']" :width="4" @click.native="select(option)"></cover-image>
+    </div>
   </div>
   <submit-button label='reload' :state.sync='reloading.state' :message.sync='reloading.message' @click.native='reload'></submit-button>
 </div>
