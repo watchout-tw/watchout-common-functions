@@ -19,7 +19,7 @@ const defaultOptions = [
   'watchout-common-assets/images/cover-images/5.jpg',
   'watchout-common-assets/images/cover-images/6.jpeg'
 ]
-const optionsAmt = 4
+const optionsAmount = 4
 
 export default {
   props: ['limit', 'selectedOptions', 'options'],
@@ -33,13 +33,13 @@ export default {
     }
   },
   mounted() {
-    this.selectOptions()
+    this.generateOptions()
   },
   methods: {
-    selectOptions() {
+    generateOptions() {
       const options = Array.isArray(this.options) ? this.options : defaultOptions
       var indexes = []
-      while(indexes.length < optionsAmt) {
+      while(indexes.length < optionsAmount) {
         var index = Math.floor(Math.random() * options.length)
         if (indexes.indexOf(index) > -1) continue
         indexes.push(index)
@@ -50,7 +50,7 @@ export default {
       if(this.reloading.state !== STATES.DEFAULT) return
 
       this.reloading.state = STATES.LOADING
-      this.selectOptions()
+      this.generateOptions()
       this.reloading.state = STATES.SUCCESS
       this.reloading.message = 'reload成功'
     }
