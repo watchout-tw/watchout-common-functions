@@ -1,8 +1,8 @@
 <template>
 <div class="cover-image-browser">
   <div class="options tcl-container">
-    <div class="tcl-panel" v-for="option of internalOptions" :key="option">
-      <cover-image :url="option" :classes="['option']" :width="4" @click.native="select(option)"></cover-image>
+    <div v-for="option of internalOptions" :key="option" :class="['tcl-panel', isSelected(option) ? 'active' : '']">
+      <cover-image :url="option" :width="4" @click.native="select(option)"></cover-image>
     </div>
   </div>
   <submit-button label='reload' :state.sync='reloading.state' :message.sync='reloading.message' @click.native='reload'></submit-button>
@@ -79,7 +79,7 @@ export default {
       var newSelecteds = this.selectedOptions
       if(!Array.isArray(options)) options = [options]
       for(var option of options) {
-        if(this.selectedOptions.indexOf(option) > -1) {
+        if(this.isSelected(option)) {
           const index = this.selectedOptions.findIndex(_option => _option === option)
           newSelecteds.splice(index, 1)
         } else {
@@ -88,6 +88,9 @@ export default {
         }
       }
       this.$emit('update:selectedOptions', newSelecteds)
+    },
+    isSelected(option) {
+      return this.selectedOptions.indexOf(option) > -1
     }
   },
   components: {
@@ -99,5 +102,13 @@ export default {
 
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
+
+.cover-image-browser {
+  > .options {
+    > .active {
+      border: 1px solid black; //TODO
+    }
+  }
+}
 
 </style>
