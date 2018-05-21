@@ -23,10 +23,10 @@ const defaultOptions = [
   'cover-images/6.png'
 ]
 const defaultLimit = 1
-const optionsAmount = 4
+const defaultAmount = 4
 
 export default {
-  props: ['limit', 'selectedOptions', 'options'],
+  props: ['limit', 'amount', 'selectedOptions', 'options'],
   data() {
     return {
       internalOptions: [],
@@ -39,6 +39,9 @@ export default {
   computed: {
     selectLimit() {
       return typeof this.limit === 'number' ? this.limit : defaultLimit
+    },
+    optionsAmount() {
+      return typeof this.amount === 'number' ? this.amount : defaultAmount
     }
   },
   mounted() {
@@ -61,7 +64,7 @@ export default {
     },
     generateInternalOptions() {
       const options = Array.isArray(this.options) ? this.options : defaultOptions
-      const indexes = this.generateRandomIndexes(optionsAmount, options.length)
+      const indexes = this.generateRandomIndexes(this.optionsAmount, options.length)
       this.internalOptions = indexes.map(index => options[index])
     },
     reload() {
