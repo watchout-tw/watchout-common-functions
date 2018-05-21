@@ -1,24 +1,26 @@
 <template>
 <div class="cover-image-browser">
-  <div class="options" v-for="option of internalOptions">
-    {{ option }}
+  <div class="options">
+    <cover-image v-for="option of internalOptions" :key="option" :url="option" @click.native="select(option)" width="4"></cover-image>
   </div>
   <submit-button label='reload' :state.sync='reloading.state' :message.sync='reloading.message' @click.native='reload'></submit-button>
 </div>
 </template>
 
 <script>
-import SubmitButton from './button/Submit'
 import * as STATES from '../lib/states'
+import SubmitButton from './button/Submit'
+import CoverImage from './CoverImage'
 
 const defaultOptions = [
-  'watchout-common-assets/images/cover-images/1.jpeg',
-  'watchout-common-assets/images/cover-images/2.jpeg',
-  'watchout-common-assets/images/cover-images/3.jpeg',
-  'watchout-common-assets/images/cover-images/4.jpeg',
-  'watchout-common-assets/images/cover-images/5.jpg',
-  'watchout-common-assets/images/cover-images/6.jpeg'
+  'cover-images/1.png',
+  'cover-images/2.png',
+  'cover-images/3.png',
+  'cover-images/4.png',
+  'cover-images/5.png',
+  'cover-images/6.png'
 ]
+const defaultLimit = 1
 const optionsAmount = 4
 
 export default {
@@ -32,31 +34,59 @@ export default {
       }
     }
   },
+  computed: {
+    selectLimit() {
+      return typeof this.limit === 'number' ? this.limit : defaultLimit
+    }
+  },
   mounted() {
-    this.generateOptions()
+    this.generateInternalOptions()
+
+    // select default options
+    const indexes = this.generateRandomIndexes(this.selectLimit, this.internalOptions.length)
+    for(var index of indexes) {
+      var option = this.internalOptions[index]
+      this.select(option)
+    }
   },
   methods: {
-    generateOptions() {
-      const options = Array.isArray(this.options) ? this.options : defaultOptions
+    generateRandomIndexes(amount, range) {
       var indexes = []
-      while(indexes.length < optionsAmount) {
-        var index = Math.floor(Math.random() * options.length)
+      while(indexes.length < amount) {
+        var index = Math.floor(Math.random() * range)
         if (indexes.indexOf(index) > -1) continue
         indexes.push(index)
       }
+      return indexes
+    },
+    generateInternalOptions() {
+      const options = Array.isArray(this.options) ? this.options : defaultOptions
+      const indexes = this.generateRandomIndexes(optionsAmount, options.length)
       this.internalOptions = indexes.map(index => options[index])
     },
     reload() {
       if(this.reloading.state !== STATES.DEFAULT) return
 
       this.reloading.state = STATES.LOADING
-      this.generateOptions()
+      this.generateInternalOptions()
       this.reloading.state = STATES.SUCCESS
       this.reloading.message = 'reload成功'
+    },
+    select(option) {
+      var newSelecteds = this.selectedOptions
+      if(this.selectedOptions.indexOf(option) > -1) {
+        const index = this.selectedOptions.findIndex(_option => _option === option)
+        newSelecteds.splice(index, 1)
+      } else {
+        if(this.selectedOptions.length === this.selectLimit) return
+        newSelecteds.push(option)
+      }
+      this.$emit('update:selectedOptions', newSelecteds)
     }
   },
   components: {
-    SubmitButton
+    SubmitButton,
+    CoverImage
   }
 }
 </script>
