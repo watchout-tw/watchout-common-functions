@@ -45,15 +45,15 @@ export default {
     }
   },
   mounted() {
-    this.generateInternalOptions()
+    this.setInternalOptions()
 
     // select default options
-    const indexes = this.generateRandomIndexes(this.selectLimit, this.internalOptions.length)
+    const indexes = this.getRandomIndexes(this.selectLimit, this.internalOptions.length)
     const options = indexes.map(index => this.internalOptions[index])
     this.select(options)
   },
   methods: {
-    generateRandomIndexes(amount, range) {
+    getRandomIndexes(amount, range) {
       var indexes = []
       while(indexes.length < amount) {
         var index = Math.floor(Math.random() * range)
@@ -62,16 +62,16 @@ export default {
       }
       return indexes
     },
-    generateInternalOptions() {
+    setInternalOptions() {
       const options = Array.isArray(this.options) ? this.options : defaultOptions
-      const indexes = this.generateRandomIndexes(this.optionsAmount, options.length)
+      const indexes = this.getRandomIndexes(this.optionsAmount, options.length)
       this.internalOptions = indexes.map(index => options[index])
     },
     reload() {
       if(this.reloading.state !== STATES.DEFAULT) return
 
       this.reloading.state = STATES.LOADING
-      this.generateInternalOptions()
+      this.setInternalOptions()
       this.reloading.state = STATES.SUCCESS
       this.reloading.message = 'reload成功'
     },
