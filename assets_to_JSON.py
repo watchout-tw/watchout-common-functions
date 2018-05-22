@@ -20,20 +20,24 @@ def read_files(folder):
   return paths
 
 def output_json(path, data):
-  with open(path, 'w') as outfile:
-      json.dump(data, outfile)
+    with open(path, 'w') as outfile:
+        json.dump(data, outfile)
 
-
-def main():
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', help='input folder path', type=str)
     parser.add_argument('--output', help='output json file path', type=str)
     args = parser.parse_args()
-    # TODO check arguments are presented
+    if args.input == None:
+        raise Exception('argument - input - cannot be null')
+    if args.output == None:
+        raise Exception('argument - output - cannot be null')
+    return args
 
+def main():
+    args = parse_args()
     files = read_files(args.input)
     data = {'paths': files}
-    print(data)
     output_json(args.output, data)
 
 
