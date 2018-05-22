@@ -4,10 +4,20 @@ import json
 from os import listdir
 from os.path import isfile, join
 
+ROOT = "watchout-common-assets/images/"
+
+def strip_root(path):
+    index = path.find(ROOT) + len(ROOT)
+    return path[index:]
+
 def read_files(folder):
-  # TODO: should support layers of folders
-  # TODO: should append directory path
-  return [file for file in listdir(folder) if isfile(join(folder, file))]
+  paths = []
+  for file in listdir(folder):
+      path = join(folder, file)
+      sub_paths = [path] if isfile(path) else read_files(path)
+      sub_paths = [strip_root(sub_path) for sub_path in sub_paths]
+      paths.extend(sub_paths)
+  return paths
 
 def output_json(path, data):
   with open(path, 'w') as outfile:
@@ -23,6 +33,7 @@ def main():
 
     files = read_files(args.input)
     data = {'paths': files}
+    print(data)
     output_json(args.output, data)
 
 
