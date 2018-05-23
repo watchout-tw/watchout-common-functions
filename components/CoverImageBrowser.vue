@@ -14,14 +14,6 @@ import * as STATES from '../lib/states'
 import SubmitButton from './button/Submit'
 import CoverImage from './CoverImage'
 
-const defaultOptions = [
-  'cover-images/1.png',
-  'cover-images/2.png',
-  'cover-images/3.png',
-  'cover-images/4.png',
-  'cover-images/5.png',
-  'cover-images/6.png'
-]
 const defaultLimit = 1
 const defaultAmount = 4
 
@@ -42,6 +34,11 @@ export default {
     },
     optionsAmount() {
       return typeof this.amount === 'number' ? this.amount : defaultAmount
+    },
+    _options() { // naming...
+      if(Array.isArray(this.options)) return this.options
+      var options = require('../data/cover-images.json')
+      return JSON.parse(JSON.stringify(options)).paths
     }
   },
   mounted() {
@@ -63,9 +60,8 @@ export default {
       return indexes
     },
     setInternalOptions() {
-      const options = Array.isArray(this.options) ? this.options : defaultOptions
-      const indexes = this.getRandomIndexes(this.optionsAmount, options.length)
-      this.internalOptions = indexes.map(index => options[index])
+      const indexes = this.getRandomIndexes(this.optionsAmount, this._options.length)
+      this.internalOptions = indexes.map(index => this._options[index])
     },
     reload() {
       if(this.reloading.state !== STATES.DEFAULT) return
