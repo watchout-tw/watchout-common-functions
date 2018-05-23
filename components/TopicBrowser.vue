@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  props: ['limit', 'topics', 'selectedTopics', 'mutable'],
+  props: ['limit', 'selectedTopics', 'topics', 'mutable'],
   data() {
     return {
       internalTopics: this.generateInternalTopics()
