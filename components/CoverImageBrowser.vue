@@ -1,11 +1,14 @@
 <template>
 <div class="cover-image-browser">
-  <div class="options tcl-container">
-    <div v-for="option of internalOptions" :key="option" :class="['tcl-panel', isSelected(option) ? 'active' : '']">
-      <cover-image :url="option" :width="4" @click.native="select(option)"></cover-image>
+  <div class="options">
+    <div class="option" v-for="option of internalOptions" :key="option" :class="[isSelected(option) ? 'active' : '']" @click="toggleSelection(option)">
+      <cover-image :url="option" :width="2" />
+      <input type="checkbox" class="ask" :checked="isSelected(option)" />
     </div>
   </div>
-  <submit-button label='reload' :state.sync='reloading.state' :message.sync='reloading.message' @click.native='reload'></submit-button>
+  <div class="actions">
+    <submit-button :classes="['medium']" label='這些圖我都不愛' :state.sync='reloadButton.state' :message.sync='reloadButton.message' @click.native='reload'></submit-button>
+  </div>
 </div>
 </template>
 
@@ -14,76 +17,87 @@ import * as STATES from '../lib/states'
 import SubmitButton from './button/Submit'
 import CoverImage from './CoverImage'
 
+const coverImages = require('../data/cover-images.json')
+const defaultOptions = JSON.parse(JSON.stringify(coverImages.paths))
 const defaultLimit = 1
-const defaultAmount = 4
+const defaultSize = 4
 
 export default {
-  props: ['limit', 'amount', 'selectedOptions', 'options'],
+  props: ['limit', 'size', 'selectedOptions', 'options'],
   data() {
     return {
       internalOptions: [],
-      reloading: {
+      reloadButton: {
         state: STATES.DEFAULT,
         message: null
       }
     }
   },
   computed: {
-    selectLimit() {
+    internalLimit() {
       return typeof this.limit === 'number' ? this.limit : defaultLimit
     },
-    optionsAmount() {
-      return typeof this.amount === 'number' ? this.amount : defaultAmount
+    internalSize() {
+      return typeof this.size === 'number' ? this.size : defaultSize
     },
-    _options() { // naming...
-      if(Array.isArray(this.options)) return this.options
-      var options = require('../data/cover-images.json')
-      return JSON.parse(JSON.stringify(options)).paths
+    allOptions() {
+      return Array.isArray(this.options) ? this.options : defaultOptions
     }
   },
   mounted() {
-    this.setInternalOptions()
-
-    // select default options
-    const indexes = this.getRandomIndexes(this.selectLimit, this.internalOptions.length)
-    const options = indexes.map(index => this.internalOptions[index])
-    this.select(options)
+    console.log('mounted', JSON.stringify(this.internalOptions), JSON.stringify(this.selectedOptions))
+    if(this.internalOptions.length <= 0) {
+      this.init()
+    }
   },
   methods: {
-    getRandomIndexes(amount, range) {
-      var indexes = []
-      while(indexes.length < amount) {
+    getRandomIndices(size, range) {
+      var indices = []
+      while(indices.length < size) {
         var index = Math.floor(Math.random() * range)
-        if (indexes.indexOf(index) > -1) continue
-        indexes.push(index)
+        if (indices.indexOf(index) > -1) continue
+        indices.push(index)
       }
-      return indexes
+      return indices
     },
     setInternalOptions() {
-      const indexes = this.getRandomIndexes(this.optionsAmount, this._options.length)
-      this.internalOptions = indexes.map(index => this._options[index])
+      const indices = this.getRandomIndices(this.internalSize, this.allOptions.length)
+      this.internalOptions = indices.map(index => this.allOptions[index])
+    },
+    init() {
+      this.setInternalOptions()
+      this.clearSelection()
+      this.toggleSelection(this.internalOptions[0])
     },
     reload() {
-      if(this.reloading.state !== STATES.DEFAULT) return
-
-      this.reloading.state = STATES.LOADING
-      this.setInternalOptions()
-      this.reloading.state = STATES.SUCCESS
-      this.reloading.message = 'reload成功'
+      if(this.reloadButton.state !== STATES.DEFAULT) {
+        return
+      }
+      this.reloadButton.state = STATES.LOADING
+      this.init()
+      this.reloadButton.state = STATES.SUCCESS
+      this.reloadButton.message = '那這些呢？'
     },
-    select(options) {
-      var newSelecteds = this.selectedOptions
-      if(!Array.isArray(options)) options = [options]
+    toggleSelection(options) {
+      if(!Array.isArray(options)) {
+        options = [options]
+      }
       for(var option of options) {
         if(this.isSelected(option)) {
-          const index = this.selectedOptions.findIndex(_option => _option === option)
-          newSelecteds.splice(index, 1)
+          const index = this.selectedOptions.findIndex(selectedOption => selectedOption === option)
+          this.selectedOptions.splice(index, 1)
         } else {
-          if(this.selectedOptions.length === this.selectLimit) return
-          newSelecteds.push(option)
+          if(this.selectedOptions.length >= this.internalLimit) {
+            this.selectedOptions.shift()
+          }
+          this.selectedOptions.push(option)
         }
       }
-      this.$emit('update:selectedOptions', newSelecteds)
+      this.$emit('update:selectedOptions', this.selectedOptions)
+    },
+    clearSelection() {
+      this.selectedOptions.splice(0, this.selectedOptions.length)
+      this.$emit('update:selectedOptions', this.selectedOptions)
     },
     isSelected(option) {
       return this.selectedOptions.indexOf(option) > -1
@@ -100,10 +114,32 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 
 .cover-image-browser {
+  $margin: 0.375rem;
   > .options {
-    > .active {
-      border: 1px solid black; //TODO
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    > .option {
+      position: relative;
+      flex-basis: calc(50% - #{$margin});
+      margin: $margin 0;
+      filter: grayscale(1);
+      cursor: pointer;
+
+      &.active {
+        filter: none;
+      }
+      > input[type="checkbox"] {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+      }
     }
+  }
+  > .actions {
+    margin: $margin 0;
+    text-align: center;
   }
 }
 
