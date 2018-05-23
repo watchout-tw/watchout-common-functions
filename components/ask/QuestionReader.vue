@@ -17,7 +17,7 @@
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div class="status-description">
-      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；尚須<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
+      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
       <div class="font-size-smaller"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
     </div>
     <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButtonState" :message.sync="pushButtonMessage" @click.native="push(question.id)" @reset="onPushButtonReset" />

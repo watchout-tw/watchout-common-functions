@@ -33,6 +33,7 @@ import TextEditor from './TextEditor'
 // FIXME: add debounce to like/dislike api calls
 
 const likeButtonsConfig = {
+  showCount: true,
   options: [
     {
       event: 'like',
