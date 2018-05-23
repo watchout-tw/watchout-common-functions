@@ -11,13 +11,13 @@ def strip_root(path):
     return path[index:]
 
 def read_files(folder):
-  paths = []
-  for file in listdir(folder):
-      path = join(folder, file)
-      sub_paths = [path] if isfile(path) else read_files(path)
-      sub_paths = [strip_root(sub_path) for sub_path in sub_paths]
-      paths.extend(sub_paths)
-  return paths
+    paths = []
+    for file in listdir(folder):
+        path = join(folder, file)
+        sub_paths = [path] if isfile(path) else read_files(path)
+        sub_paths = [strip_root(sub_path) for sub_path in sub_paths]
+        paths.extend(sub_paths)
+    return paths
 
 def output_json(path, data):
     with open(path, 'w') as outfile:
