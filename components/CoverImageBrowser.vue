@@ -45,7 +45,6 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted', JSON.stringify(this.internalOptions), JSON.stringify(this.selectedOptions))
     if(this.internalOptions.length <= 0) {
       this.init()
     }
