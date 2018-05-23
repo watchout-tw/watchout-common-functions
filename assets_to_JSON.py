@@ -1,3 +1,8 @@
+##########################################
+#### USAGE
+#### run `python assets_to_JSON.py --input path/to/comm-assets/images --output path/to/output/json/file`
+##########################################
+
 import argparse
 import json
 
