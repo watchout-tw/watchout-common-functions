@@ -199,22 +199,16 @@ export default {
         }
       }
     },
-    toReview() {
+    onReview: debounce(function() {
       if(!this.isCitizen) {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
-      } else if(this.activePersonaIsWithInfo) {
-        core.reviewAnswer(this.answer.id).then(response => {
-          this.reviewed()
-          console.log(response)
-        }).catch(this.handleError)
-      } else {
+      } else if(!this.activePersonaIsWithInfo) {
         this.addModal('private-info-registration')
+      } else {
+        core.reviewAnswer(this.answer.id, this.scoreToSubmit).then(response => {
+          this.reviewed()
+        }).catch(this.handleError)
       }
-    },
-    onReview: debounce(function() {
-      core.reviewAnswer(this.answer.id, this.scoreToSubmit).then(response => {
-        this.$emit('reviewed')
-      }).catch(this.handleError)
     }, 500),
     onReviewTerrible() {
       this.scoreToSubmit = 1
