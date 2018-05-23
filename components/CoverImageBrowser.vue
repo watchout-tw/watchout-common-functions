@@ -3,11 +3,11 @@
   <div class="options">
     <div class="option" v-for="option of internalOptions" :key="option" :class="[isSelected(option) ? 'active' : '']" @click="toggleSelection(option)">
       <cover-image :url="option" :width="2" />
-      <input type="checkbox" class="ask" :checked="isSelected(option)" />
+      <input type="checkbox" class="park" :checked="isSelected(option)" />
     </div>
   </div>
   <div class="actions">
-    <submit-button :classes="['medium']" label='這些圖我都不愛' :state.sync='reloadButton.state' :message.sync='reloadButton.message' @click.native='reload'></submit-button>
+    <submit-button :classes="['medium', 'park']" label='這些圖我都不愛' :state.sync='reloadButton.state' :message.sync='reloadButton.message' @click.native='reload'></submit-button>
   </div>
 </div>
 </template>
