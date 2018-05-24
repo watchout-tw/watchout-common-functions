@@ -1,7 +1,7 @@
 <template>
 <div class="question-reader" :class="containerClasses">
   <div class="signature" :class="fullWidthSubcontainerClasses">
-    <cover-image :url="question.image" :label="topicTitle" type="topic" width="4" />
+    <cover-image :url="question.image" :label="topicTitle" :secondary-label="question.data.keyword" type="topic" width="4" />
     <div class="text tcl-left-right-margin">
       <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">
         <nuxt-link class="a-text" :to="linkToSelf">{{ question.title }}</nuxt-link>
@@ -23,7 +23,6 @@
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
-    <div class="keyword">#{{ question.data.keyword }}</div>
     <authorship :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
   </div>
   <div class="references-container" :class="subcontainerClasses" v-if="isFull">
