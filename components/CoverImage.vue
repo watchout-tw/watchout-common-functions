@@ -35,6 +35,7 @@ export default {
   &[width="4"] {
     @include rect(4/1);
   }
+  background-color: $color-very-light-grey;
   background-size: contain;
   background-position: center center;
 
