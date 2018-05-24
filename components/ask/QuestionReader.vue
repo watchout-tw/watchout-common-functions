@@ -8,7 +8,7 @@
       </component>
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
-        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="linkToSelf">繼續閱讀</nuxt-link>
+        <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
       <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
     </div>
@@ -16,8 +16,8 @@
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div class="status-description">
-      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
-      <div class="font-size-smaller"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
+      <div class="font-size-small"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
+      <div class="font-size-small"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
     </div>
     <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @reset="onPushButtonReset" />
   </div>
@@ -39,7 +39,7 @@
           </template>
           <template v-else>{{ reference.title }}</template>
         </div>
-        <div v-if="reference.description" class="font-size-smaller">{{ reference.description }}</div>
+        <div v-if="reference.description" class="font-size-small">{{ reference.description }}</div>
       </li>
     </ul>
   </div>

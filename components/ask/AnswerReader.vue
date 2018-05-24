@@ -5,7 +5,7 @@
     <div class="text tcl-left-right-margin">
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
-        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="linkToSelf">繼續閱讀</nuxt-link>
+        <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
       <authorship v-if="!isFull" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.question.push.startDate" score="4.3" />
     </div>
@@ -34,13 +34,13 @@
           </template>
           <template v-else>{{ reference.title }}</template>
         </div>
-        <div v-if="reference.description" class="font-size-smaller">{{ reference.description }}</div>
+        <div v-if="reference.description" class="font-size-small">{{ reference.description }}</div>
       </li>
     </ul>
   </div>
   <div v-if="!isPreview" class="review" :class="subcontainerClasses">
     <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
-    <div class="review-summary text-align-right font-size-smaller">
+    <div class="review-summary text-align-right font-size-small">
       <template v-if="answer.review.count <= 0">還沒有人評分</template>
       <template v-else>平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；<span class="latin-within-han first">{{ answer.review.count }}</span>人已評分</template>
     </div>

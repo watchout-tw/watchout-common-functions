@@ -6,7 +6,7 @@
     <!-- TODO: styling enhancement needed -->
     <span v-if="score" class="score bg-ask text-color-white">{{ score }}</span>
   </component>
-  <div class="date">{{ dateString }}</div>
+  <div class="date font-size-small">{{ dateString }}</div>
 </div>
 </template>
 
@@ -43,9 +43,6 @@ export default {
     > .score {
       margin: 0.25rem;
     }
-  }
-  > .date {
-    font-size: 0.75rem;
   }
 }
 </style>
