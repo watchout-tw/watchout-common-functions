@@ -7,7 +7,7 @@
         <span>{{ excerpt }}</span>
         <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
-      <authorship v-if="!isFull" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.question.push.startDate" score="4.3" />
+      <authorship v-if="!isFull" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" score="4.3" />
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
@@ -151,7 +151,7 @@ const likeButtonsConfig = {
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['answer', 'mode', 'preview'],
+  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'preview'],
   data() {
     return {
       likeButtonsConfig,
@@ -210,6 +210,11 @@ export default {
       }
     }
   },
+  beforeMount() {
+    if(!this.isPreview) {
+      this.clientSideReload()
+    }
+  },
   methods: {
     onReview: debounce(function() {
       if(!this.isCitizen) {
@@ -218,7 +223,7 @@ export default {
         this.addModal('private-info-registration')
       } else {
         core.reviewAnswer(this.answer.id, this.scoreToSubmit).then(response => {
-          this.reviewed()
+          this.reviewed(response.data)
         }).catch(this.handleError)
       }
     }, 500),
@@ -242,8 +247,19 @@ export default {
       this.scoreToSubmit = REVIEWS.GREAT
       this.onReview()
     },
-    reviewed() {
+    reviewed(reviewedAnswer) {
+      this.clientSideUpdate(reviewedAnswer)
       this.$emit('reviewed')
+    },
+    clientSideReload() {
+      core.getAnswer(this.answer.id).then(responses => {
+        this.clientSideUpdate(responses.data)
+      })
+    },
+    clientSideUpdate(answer) {
+      this.$emit('update:personaSpeeches', answer.persona_speeches)
+      this.$emit('update:reviewCount', answer.review.count)
+      this.$emit('update:reviewAverage', answer.review.average)
     }
   },
   components: {
