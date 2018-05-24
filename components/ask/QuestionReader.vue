@@ -23,9 +23,9 @@
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
+    <div class="keyword">#{{ question.data.keyword }}</div>
     <authorship :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
   </div>
-  <!-- TODO: Add style here -->
   <div class="references-container" :class="subcontainerClasses" v-if="isFull">
     <div class="section-title with-underline small">
       <span>參考資料</span>
