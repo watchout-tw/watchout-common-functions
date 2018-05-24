@@ -4,7 +4,7 @@
     <avatar :avatar="avatar" :classes="['shadow', 'inline', 'small']"/>
     <span class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
     <!-- TODO: styling enhancement needed -->
-    <span v-if="score" class="score bg-ask text-color-white">{{ score }}</span>
+    <span v-if="score" class="score bg-ask font-size-small text-color-white">{{ score }}</span>
   </component>
   <div class="date font-size-small">{{ dateString }}</div>
 </div>
@@ -41,7 +41,8 @@ export default {
       margin-left: 0.25rem;
     }
     > .score {
-      margin: 0.25rem;
+      margin: 0 0.25rem;
+      padding: 0.125rem 0.25rem;
     }
   }
 }
