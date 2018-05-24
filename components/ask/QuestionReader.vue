@@ -15,7 +15,7 @@
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
-    <div class="status-description">
+    <div class="status-description secondary-text">
       <div class="font-size-small"><span class="latin-within-han first">{{ pushCount }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
       <div class="font-size-small"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
     </div>

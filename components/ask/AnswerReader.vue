@@ -42,7 +42,7 @@
   </div>
   <div v-if="!isPreview" class="review" :class="subcontainerClasses">
     <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
-    <div class="review-summary text-align-right font-size-small">
+    <div class="review-summary text-align-right font-size-small secondary-text">
       <template v-if="answer.review.count <= 0">還沒有人評分</template>
       <template v-else>平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；<span class="latin-within-han first">{{ answer.review.count }}</span>人已評分</template>
     </div>
@@ -285,10 +285,8 @@ export default {
       background-position: center center;
     }
     > .text {
-      > .title {
-        margin: 0.25rem 0;
-      }
       > .excerpt {
+        margin: 0.25rem 0;
         > .read-more {
           margin: 0 0.25rem;
         }
@@ -305,33 +303,9 @@ export default {
       margin: 0.25rem 0;
     }
   }
-  > .status {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-top: 0.25rem;
-    margin-bottom: 1rem;
-  }
   > .references-container {
     > .section-title {
       margin: 1em 0 0.5rem;
-    }
-  }
-  > .assigned-personas-container {
-    > .section-title {
-      margin: 1em 0 0.5rem;
-    }
-    > .personas {
-      > .persona {
-        display: flex;
-        align-items: center;
-        > .assigned {
-          margin-right: 0.5rem;
-        }
-        > .name {
-          margin-left: 0.5rem;
-        }
-      }
     }
   }
   > .review {
