@@ -11,11 +11,13 @@
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
-  <div v-if="!isPreview && !isFull" class="origin-question" :class="subcontainerClasses">
+  <div v-if="!isPreview && !isFull" class="original-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>原始問題</span>
     </div>
-    {{ answer.question.title }}
+    <div class="question secondary-text">
+      <nuxt-link :to="{ name: 'games-gameSlug-questions-id', params: { gameSlug: answer.question.game.slug, id: answer.question.id } }" class="a-block"><span class="a-target">{{ answer.question.title }}</span></nuxt-link>
+    </div>
   </div>
   <div v-if="isFull" class="detail" :class="subcontainerClasses">
     <div class="content">{{ answer.content }}</div>
@@ -296,6 +298,11 @@ export default {
   &.compact {
     > .signature {
       margin-bottom: 1rem;
+    }
+  }
+  > .original-question {
+    > .question {
+      margin: 0.25rem 0;
     }
   }
   > .status {
