@@ -17,10 +17,10 @@
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div class="status-description">
-      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；尚須<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
+      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
       <div class="font-size-smaller"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
     </div>
-    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButtonState" :message.sync="pushButtonMessage" @click.native="push(question.id)" @reset="onPushButtonReset" />
+    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @reset="onPushButtonReset" />
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
@@ -78,8 +78,10 @@ export default {
   data() {
     return {
       currentTime: util.formatter.date(new Date()),
-      pushButtonState: STATES.DEFAULT,
-      pushButtonMessage: null
+      pushButton: {
+        state: STATES.DEFAULT,
+        message: null
+      }
     }
   },
   computed: {
@@ -162,13 +164,13 @@ export default {
       } else if(!this.activePersonaIsWithInfo) {
         this.addModal('private-info-registration')
       } else if(!util.questionIsPushedByMe(this.question)) {
-        this.pushButtonState = STATES.LOADING
+        this.pushButton.state = STATES.LOADING
         core.pushQuestion(id).then(response => {
-          this.pushButtonState = STATES.SUCCESS
-          this.pushButtonMessage = '已連署'
+          this.pushButton.state = STATES.SUCCESS
+          this.pushButton.message = '已連署'
         }).catch(error => {
-          this.pushButtonState = STATES.FAILED
-          this.pushButtonMessage = '連署失敗'
+          this.pushButton.state = STATES.FAILED
+          this.pushButton.message = '連署失敗'
           this.handleError(error)
         })
       }

@@ -45,8 +45,11 @@
     <div class="section-title with-underline small">
       <span>評分</span>
     </div>
-    <review-buttons :answer="answer" v-on:review="toReview" />
-    <div class="font-size-smaller">平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；已經有<span class="latin-within-han">{{ answer.review.count }}</span>人評分</div>
+    <like-buttons :config="likeButtonsConfig" :state="getReview()" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
+    <div class="review-summary text-align-right font-size-smaller">
+      <template v-if="answer.review.count <= 0">還沒有人評分</template>
+      <template v-else>平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；<span class="latin-within-han first">{{ answer.review.count }}</span>人已評分</template>
+    </div>
   </div>
   <div v-if="isFull" :class="subcontainerClasses">
   </div>
@@ -54,21 +57,104 @@
 </template>
 
 <script>
+import debounce from 'lodash.debounce'
 import * as core from '../../lib/core'
 import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import Authorship from './Authorship'
 import CoverImage from '../CoverImage'
-import ReviewButtons from '../button/Review'
+import LikeButtons from '../button/Like'
 import ShareButton from '../button/Share'
+
+const likeButtonsConfig = {
+  showCount: false,
+  options: [
+    {
+      event: 'review-terrible',
+      value: 1,
+      inactiveClasses: [
+        'review',
+        'terrible'
+      ],
+      activeClasses: [
+        'review',
+        'terrible',
+        'active'
+      ],
+      showText: true
+    },
+    {
+      event: 'review-bad',
+      value: 2,
+      inactiveClasses: [
+        'review',
+        'bad'
+      ],
+      activeClasses: [
+        'review',
+        'bad',
+        'active'
+      ],
+      showText: true
+    },
+    {
+      event: 'review-okay',
+      value: 3,
+      inactiveClasses: [
+        'review',
+        'okay'
+      ],
+      activeClasses: [
+        'review',
+        'okay',
+        'active'
+      ],
+      showText: true
+    },
+    {
+      event: 'review-good',
+      value: 4,
+      inactiveClasses: [
+        'review',
+        'good'
+      ],
+      activeClasses: [
+        'review',
+        'good',
+        'active'
+      ],
+      showText: true
+    },
+    {
+      event: 'review-great',
+      value: 5,
+      inactiveClasses: [
+        'review',
+        'great'
+      ],
+      activeClasses: [
+        'review',
+        'great',
+        'active'
+      ],
+      showText: true
+    }
+  ]
+}
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
   props: ['answer', 'mode', 'preview'],
+  data() {
+    return {
+      likeButtonsConfig,
+      scoreToSubmit: -1
+    }
+  },
   computed: {
-    isCompact () {
+    isCompact() {
       return this.mode === 'compact'
     },
-    isFull () {
+    isFull() {
       return this.mode === 'full'
     },
     containerClasses() {
@@ -102,27 +188,57 @@ export default {
     }
   },
   methods: {
-    toReview () {
-      if(!this.isCitizen) {
-        this.addModal({ id: 'auth', joinOrLogin: 'login' })
-      } else if(this.activePersonaIsWithInfo) {
-        core.reviewAnswer(this.answer.id).then(response => {
-          this.reviewed()
-          console.log(response)
-        }).catch(this.handleError)
-      } else {
-        this.addModal('private-info-registration')
+    getReview() {
+      return {
+        me: {
+          terrible: false,
+          bad: false,
+          okay: false,
+          good: false,
+          great: false
+        }
       }
     },
-    reviewed () {
+    onReview: debounce(function() {
+      if(!this.isCitizen) {
+        this.addModal({ id: 'auth', joinOrLogin: 'login' })
+      } else if(!this.activePersonaIsWithInfo) {
+        this.addModal('private-info-registration')
+      } else {
+        core.reviewAnswer(this.answer.id, this.scoreToSubmit).then(response => {
+          this.reviewed()
+        }).catch(this.handleError)
+      }
+    }, 500),
+    onReviewTerrible() {
+      this.scoreToSubmit = 1
+      this.onReview()
+    },
+    onReviewBad() {
+      this.scoreToSubmit = 2
+      this.onReview()
+    },
+    onReviewOkay() {
+      this.scoreToSubmit = 3
+      this.onReview()
+    },
+    onReviewGood() {
+      this.scoreToSubmit = 4
+      this.onReview()
+    },
+    onReviewGreat() {
+      this.scoreToSubmit = 5
+      this.onReview()
+    },
+    reviewed() {
       this.$emit('reviewed')
     }
   },
   components: {
     Authorship,
     CoverImage,
-    ShareButton,
-    ReviewButtons
+    LikeButtons,
+    ShareButton
   }
 }
 </script>
