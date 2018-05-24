@@ -11,18 +11,15 @@
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
-  <div v-if="!preview" class="origin-question" :class="subcontainerClasses">
+  <div v-if="!isPreview && !isFull" class="origin-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>原始問題</span>
     </div>
     {{ answer.question.title }}
   </div>
   <div v-if="isFull" class="detail" :class="subcontainerClasses">
-    <div class="section-title with-underline small">
-      <span>答案</span>
-    </div>
     <div class="content">{{ answer.content }}</div>
-    <authorship v-if="!preview" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
+    <authorship v-if="!isPreview" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
   </div>
   <div v-if="isFull" class="references-container" :class="subcontainerClasses">
     <div class="section-title with-underline small">
@@ -41,11 +38,8 @@
       </li>
     </ul>
   </div>
-  <div v-if="!preview" class="review" :class="subcontainerClasses">
-    <div class="section-title with-underline small">
-      <span>評分</span>
-    </div>
-    <like-buttons :config="likeButtonsConfig" :state="getReview()" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
+  <div v-if="!isPreview" class="review" :class="subcontainerClasses">
+    <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
     <div class="review-summary text-align-right font-size-smaller">
       <template v-if="answer.review.count <= 0">還沒有人評分</template>
       <template v-else>平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；<span class="latin-within-han first">{{ answer.review.count }}</span>人已評分</template>
@@ -59,18 +53,28 @@
 <script>
 import debounce from 'lodash.debounce'
 import * as core from '../../lib/core'
+import * as util from '../../lib/util'
 import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import Authorship from './Authorship'
 import CoverImage from '../CoverImage'
 import LikeButtons from '../button/Like'
 import ShareButton from '../button/Share'
 
+const REVIEWS = {
+  TERRIBLE: 1,
+  BAD: 2,
+  OKAY: 3,
+  GOOD: 4,
+  GREAT: 5
+}
+
 const likeButtonsConfig = {
   showCount: false,
   options: [
     {
       event: 'review-terrible',
-      value: 1,
+      value: 'terrible',
+      label: REVIEWS.TERRIBLE,
       inactiveClasses: [
         'review',
         'terrible'
@@ -84,7 +88,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-bad',
-      value: 2,
+      value: 'bad',
+      label: REVIEWS.BAD,
       inactiveClasses: [
         'review',
         'bad'
@@ -98,7 +103,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-okay',
-      value: 3,
+      value: 'okay',
+      label: REVIEWS.OKAY,
       inactiveClasses: [
         'review',
         'okay'
@@ -112,7 +118,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-good',
-      value: 4,
+      value: 'good',
+      label: REVIEWS.GOOD,
       inactiveClasses: [
         'review',
         'good'
@@ -126,7 +133,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-great',
-      value: 5,
+      value: 'great',
+      label: REVIEWS.GREAT,
       inactiveClasses: [
         'review',
         'great'
@@ -157,6 +165,9 @@ export default {
     isFull() {
       return this.mode === 'full'
     },
+    isPreview() {
+      return this.preview
+    },
     containerClasses() {
       var classes = []
       if(this.isCompact) {
@@ -185,20 +196,21 @@ export default {
           id: this.answer.id
         }
       }
+    },
+    reviewState() {
+      let score = util.getMyAnswerReviewScore(this.answer)
+      return {
+        me: {
+          terrible: score === REVIEWS.TERRIBLE,
+          bad: score === REVIEWS.BAD,
+          okay: score === REVIEWS.OKAY,
+          good: score === REVIEWS.GOOD,
+          great: score === REVIEWS.GREAT
+        }
+      }
     }
   },
   methods: {
-    getReview() {
-      return {
-        me: {
-          terrible: false,
-          bad: false,
-          okay: false,
-          good: false,
-          great: false
-        }
-      }
-    },
     onReview: debounce(function() {
       if(!this.isCitizen) {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
@@ -211,23 +223,23 @@ export default {
       }
     }, 500),
     onReviewTerrible() {
-      this.scoreToSubmit = 1
+      this.scoreToSubmit = REVIEWS.TERRIBLE
       this.onReview()
     },
     onReviewBad() {
-      this.scoreToSubmit = 2
+      this.scoreToSubmit = REVIEWS.BAD
       this.onReview()
     },
     onReviewOkay() {
-      this.scoreToSubmit = 3
+      this.scoreToSubmit = REVIEWS.OKAY
       this.onReview()
     },
     onReviewGood() {
-      this.scoreToSubmit = 4
+      this.scoreToSubmit = REVIEWS.GOOD
       this.onReview()
     },
     onReviewGreat() {
-      this.scoreToSubmit = 5
+      this.scoreToSubmit = REVIEWS.GREAT
       this.onReview()
     },
     reviewed() {
@@ -297,6 +309,11 @@ export default {
           margin-left: 0.5rem;
         }
       }
+    }
+  }
+  > .review {
+    > .review-summary {
+      margin: 0.25rem 0;
     }
   }
 }

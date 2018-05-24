@@ -4,8 +4,7 @@
     <cover-image :url="question.image" :label="topicTitle" type="topic" width="4" />
     <div class="text tcl-left-right-margin">
       <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">
-        <nuxt-link v-if="isCompact" class="a-text" :to="linkToSelf">{{ question.title }}</nuxt-link>
-        <template v-else>{{ question.title }}</template>
+        <nuxt-link class="a-text" :to="linkToSelf">{{ question.title }}</nuxt-link>
       </component>
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
