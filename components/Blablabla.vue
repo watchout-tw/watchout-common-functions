@@ -16,7 +16,7 @@
     <div v-for="(entry, index) of logHistory" :key="index">{{ entry }}</div>
   </div>
   <form class="send-message" @submit.prevent="onSubmit">
-    <div class="field with-button">
+    <div class="form-field-many-inputs">
       <text-editor placeholder="輸入訊息" v-model="newMessage" :classes="['park']" :simple="true" :maxlength="messageLengthLimit" key="newMessage" />
       <button type="submit" class="button small park">送出</button>
     </div>

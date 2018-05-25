@@ -1,32 +1,32 @@
 <template>
 <div class="private-info">
   <form @submit.prevent="onSubmit">
-    <div class="field">
+    <div class="form-field">
       <text-editor placeholder="真實姓名" v-model="name" :classes="['park']" :simple="true" key="name" />
     </div>
-    <div class="field form-field-many-inputs no-wrap">
+    <div class="form-field-many-inputs no-wrap">
       <drop-down-select :options="allYears" placeholder="出生年" v-model="birth_year" />
       <drop-down-select :options="allMonths" placeholder="月" v-model="birth_month" />
       <drop-down-select :options="allDays" placeholder="日" v-model="birth_date" />
     </div>
-    <div class="field form-field-many-inputs no-wrap">
+    <div class="form-field-many-inputs no-wrap">
       <text-editor placeholder="國碼" v-model="country_code" :classes="['park']" :simple="true" />
       <text-editor placeholder="行動電話" v-model="phone_number" :classes="['park']" :simple="true" />
     </div>
     <div class="section-title with-underline small with-increased-top-margin"><span>性別認同</span></div>
-    <div class="field">
+    <div class="form-field">
       <gender-slider :value.sync="gender" />
     </div>
     <div class="section-title with-underline small with-increased-top-margin"><span>選舉人資訊</span></div>
-    <div class="field form-field-many-inputs no-wrap">
+    <div class="form-field-many-inputs no-wrap">
       <drop-down-select :options="allVoterTypes" placeholder="選擇類別" v-model="voter_type" />
       <drop-down-select :options="allCities" placeholder="戶籍城市" v-model="voter_city" />
     </div>
-    <div class="field form-field-many-inputs no-wrap">
+    <div class="form-field-many-inputs no-wrap">
       <drop-down-select :options="allDistricts" placeholder="戶籍區域" v-model="voter_district" />
       <drop-down-select :options="allNeighborhoods" placeholder="戶籍村里" v-model="voter_neighborhood" />
     </div>
-    <div class="field form-field-many-inputs no-wrap">
+    <div class="form-field-buttons no-wrap">
       <button class="input button" @click="clear()">清空</button>
       <submit-button type="submit" :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>

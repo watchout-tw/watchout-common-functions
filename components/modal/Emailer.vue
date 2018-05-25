@@ -1,10 +1,10 @@
 <template>
 <div class="modal email-verifier">
   <form @submit.prevent="sendEmail">
-    <div class="field">
+    <div class="form-field">
       <text-editor placeholder="請輸入你的註冊Email" type="email" v-model="email" :classes="['park']" :simple="true" key="email" />
     </div>
-    <div class="field with-extra-margin">
+    <div class="form-field with-double-top-margin">
       <submit-button type="submit" :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>
   </form>
