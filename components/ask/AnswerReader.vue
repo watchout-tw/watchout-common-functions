@@ -5,24 +5,23 @@
     <div class="text tcl-left-right-margin">
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
-        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="linkToSelf">繼續閱讀</nuxt-link>
+        <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
-      <authorship v-if="!isFull" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.question.push.startDate" score="4.3" />
+      <authorship v-if="!isFull" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" score="4.3" />
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
-  <div v-if="!preview" class="origin-question" :class="subcontainerClasses">
+  <div v-if="!isPreview && showQuestion" class="original-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>原始問題</span>
     </div>
-    {{ answer.question.title }}
+    <div class="question secondary-text">
+      <nuxt-link :to="{ name: 'games-gameSlug-questions-id', params: { gameSlug: answer.question.game.slug, id: answer.question.id } }" class="a-block"><span class="a-target">{{ answer.question.title }}</span></nuxt-link>
+    </div>
   </div>
   <div v-if="isFull" class="detail" :class="subcontainerClasses">
-    <div class="section-title with-underline small">
-      <span>答案</span>
-    </div>
     <div class="content">{{ answer.content }}</div>
-    <authorship v-if="!preview" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
+    <authorship v-if="!isPreview" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" />
   </div>
   <div v-if="isFull" class="references-container" :class="subcontainerClasses">
     <div class="section-title with-underline small">
@@ -37,16 +36,13 @@
           </template>
           <template v-else>{{ reference.title }}</template>
         </div>
-        <div v-if="reference.description" class="font-size-smaller">{{ reference.description }}</div>
+        <div v-if="reference.description" class="font-size-small">{{ reference.description }}</div>
       </li>
     </ul>
   </div>
-  <div v-if="!preview" class="review" :class="subcontainerClasses">
-    <div class="section-title with-underline small">
-      <span>評分</span>
-    </div>
-    <like-buttons :config="likeButtonsConfig" :state="getReview()" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
-    <div class="review-summary text-align-right font-size-smaller">
+  <div v-if="!isPreview && reviewable" class="review" :class="subcontainerClasses">
+    <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
+    <div class="review-summary text-align-right font-size-small secondary-text">
       <template v-if="answer.review.count <= 0">還沒有人評分</template>
       <template v-else>平均<span class="latin-within-han">{{ answer.review.average ? answer.review.average : 0 }}</span>分；<span class="latin-within-han first">{{ answer.review.count }}</span>人已評分</template>
     </div>
@@ -59,18 +55,28 @@
 <script>
 import debounce from 'lodash.debounce'
 import * as core from '../../lib/core'
+import * as util from '../../lib/util'
 import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import Authorship from './Authorship'
 import CoverImage from '../CoverImage'
 import LikeButtons from '../button/Like'
 import ShareButton from '../button/Share'
 
+const REVIEWS = {
+  TERRIBLE: 1,
+  BAD: 2,
+  OKAY: 3,
+  GOOD: 4,
+  GREAT: 5
+}
+
 const likeButtonsConfig = {
   showCount: false,
   options: [
     {
       event: 'review-terrible',
-      value: 1,
+      value: 'terrible',
+      label: REVIEWS.TERRIBLE,
       inactiveClasses: [
         'review',
         'terrible'
@@ -84,7 +90,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-bad',
-      value: 2,
+      value: 'bad',
+      label: REVIEWS.BAD,
       inactiveClasses: [
         'review',
         'bad'
@@ -98,7 +105,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-okay',
-      value: 3,
+      value: 'okay',
+      label: REVIEWS.OKAY,
       inactiveClasses: [
         'review',
         'okay'
@@ -112,7 +120,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-good',
-      value: 4,
+      value: 'good',
+      label: REVIEWS.GOOD,
       inactiveClasses: [
         'review',
         'good'
@@ -126,7 +135,8 @@ const likeButtonsConfig = {
     },
     {
       event: 'review-great',
-      value: 5,
+      value: 'great',
+      label: REVIEWS.GREAT,
       inactiveClasses: [
         'review',
         'great'
@@ -143,7 +153,7 @@ const likeButtonsConfig = {
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['answer', 'mode', 'preview'],
+  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'showQuestion', 'reviewable', 'preview'],
   data() {
     return {
       likeButtonsConfig,
@@ -156,6 +166,9 @@ export default {
     },
     isFull() {
       return this.mode === 'full'
+    },
+    isPreview() {
+      return this.preview
     },
     containerClasses() {
       var classes = []
@@ -185,20 +198,31 @@ export default {
           id: this.answer.id
         }
       }
+    },
+    reviewState() {
+      let score = util.getMyAnswerReviewScore(this.answer)
+      return {
+        me: {
+          terrible: score === REVIEWS.TERRIBLE,
+          bad: score === REVIEWS.BAD,
+          okay: score === REVIEWS.OKAY,
+          good: score === REVIEWS.GOOD,
+          great: score === REVIEWS.GREAT
+        }
+      }
+    }
+  },
+  beforeMount() {
+    if(!this.isPreview) {
+      this.clientSideReload()
+    }
+  },
+  watch: {
+    'isCitizen'() {
+      this.clientSideReload()
     }
   },
   methods: {
-    getReview() {
-      return {
-        me: {
-          terrible: false,
-          bad: false,
-          okay: false,
-          good: false,
-          great: false
-        }
-      }
-    },
     onReview: debounce(function() {
       if(!this.isCitizen) {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
@@ -206,32 +230,43 @@ export default {
         this.addModal('private-info-registration')
       } else {
         core.reviewAnswer(this.answer.id, this.scoreToSubmit).then(response => {
-          this.reviewed()
+          this.reviewed(response.data)
         }).catch(this.handleError)
       }
     }, 500),
     onReviewTerrible() {
-      this.scoreToSubmit = 1
+      this.scoreToSubmit = REVIEWS.TERRIBLE
       this.onReview()
     },
     onReviewBad() {
-      this.scoreToSubmit = 2
+      this.scoreToSubmit = REVIEWS.BAD
       this.onReview()
     },
     onReviewOkay() {
-      this.scoreToSubmit = 3
+      this.scoreToSubmit = REVIEWS.OKAY
       this.onReview()
     },
     onReviewGood() {
-      this.scoreToSubmit = 4
+      this.scoreToSubmit = REVIEWS.GOOD
       this.onReview()
     },
     onReviewGreat() {
-      this.scoreToSubmit = 5
+      this.scoreToSubmit = REVIEWS.GREAT
       this.onReview()
     },
-    reviewed() {
+    reviewed(reviewedAnswer) {
+      this.clientSideUpdate(reviewedAnswer)
       this.$emit('reviewed')
+    },
+    clientSideReload() {
+      core.getAnswer(this.answer.id).then(responses => {
+        this.clientSideUpdate(responses.data)
+      })
+    },
+    clientSideUpdate(answer) {
+      this.$emit('update:personaSpeeches', answer.persona_speeches)
+      this.$emit('update:reviewCount', answer.review.count)
+      this.$emit('update:reviewAverage', answer.review.average)
     }
   },
   components: {
@@ -255,10 +290,8 @@ export default {
       background-position: center center;
     }
     > .text {
-      > .title {
-        margin: 0.25rem 0;
-      }
       > .excerpt {
+        margin: 0.25rem 0;
         > .read-more {
           margin: 0 0.25rem;
         }
@@ -270,33 +303,19 @@ export default {
       margin-bottom: 1rem;
     }
   }
-  > .status {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-top: 0.25rem;
-    margin-bottom: 1rem;
+  > .original-question {
+    > .question {
+      margin: 0.25rem 0;
+    }
   }
   > .references-container {
     > .section-title {
       margin: 1em 0 0.5rem;
     }
   }
-  > .assigned-personas-container {
-    > .section-title {
-      margin: 1em 0 0.5rem;
-    }
-    > .personas {
-      > .persona {
-        display: flex;
-        align-items: center;
-        > .assigned {
-          margin-right: 0.5rem;
-        }
-        > .name {
-          margin-left: 0.5rem;
-        }
-      }
+  > .review {
+    > .review-summary {
+      margin: 0.25rem 0;
     }
   }
 }

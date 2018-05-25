@@ -1,8 +1,8 @@
 <template>
 <div class="like-buttons">
   <div class="button-with-count" v-for="option in config.options" :key="option.value">
-    <button class="input button simple round shadow-reduced" :class="state.me && state.me.hasOwnProperty(option.value) && state.me[option.value] === true ? option.activeClasses : option.inactiveClasses" :style="getOptionButtonStyles(option)" @click="doThis(option)">{{ option.showText ? option.value : '' }}</button>
-    <span v-if="config.showCount" class="count font-size-smaller secondary-text"><slot :name="option.value + '-count'"></slot></span>
+    <button class="input button simple round shadow-reduced" :class="state.me && state.me.hasOwnProperty(option.value) && state.me[option.value] === true ? option.activeClasses : option.inactiveClasses" :style="getOptionButtonStyles(option)" @click="doThis(option)">{{ option.showText ? option.label : '' }}</button>
+    <span v-if="config.showCount" class="count font-size-small secondary-text"><slot :name="option.value + '-count'"></slot></span>
   </div>
 </div>
 </template>

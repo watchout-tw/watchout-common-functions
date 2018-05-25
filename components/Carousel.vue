@@ -55,6 +55,9 @@ export default {
     },
     internalClasses() {
       let otherClasses = []
+      if(this.pages.length > 1) {
+        otherClasses.push('with-controls')
+      }
       if(this.responsive) {
         otherClasses.push('responsive')
       }
@@ -139,7 +142,9 @@ export default {
   $dot-size: 0.5rem;
   position: relative;
   background-color: $color-very-light-grey;
-  margin-bottom: $dot-size * 5;
+  &.with-controls {
+    margin-bottom: $dot-size * 5;
+  }
   &.default {
     @include rect(2/1)
     &.responsive {

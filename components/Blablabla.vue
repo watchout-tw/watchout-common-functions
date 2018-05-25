@@ -1,6 +1,6 @@
 <template>
 <div class="blablabla">
-  <div class="messages font-size-smaller">
+  <div class="messages font-size-small">
     <div class="not-available text-align-center" v-if="messages.length < 1">暫時沒有訊息</div>
     <div class="message" v-for="message in messages" :key="message._id">
       <div class="content">
