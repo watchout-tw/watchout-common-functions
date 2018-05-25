@@ -154,6 +154,11 @@ export default {
       this.clientSideReload()
     }
   },
+  watch: {
+    'isCitizen'() {
+      this.clientSideReload()
+    }
+  },
   methods: {
     personaIsAssigned(id) {
       return this.question.assigned_personas.find(persona => persona.id === id)

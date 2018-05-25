@@ -217,6 +217,11 @@ export default {
       this.clientSideReload()
     }
   },
+  watch: {
+    'isCitizen'() {
+      this.clientSideReload()
+    }
+  },
   methods: {
     onReview: debounce(function() {
       if(!this.isCitizen) {
