@@ -155,6 +155,20 @@ export default {
         this.$router.push('/')
       }
     },
+    isEditor() {
+      let flag = false
+      if(this.isLocal() && Array.isArray(this.roles)) {
+        flag = this.roles.filter(role => role.name === 'editor').length > 0
+      }
+      return flag
+    },
+    isGod() {
+      let flag = false
+      if(this.isLocal() && Array.isArray(this.roles)) {
+        flag = this.roles.filter(role => role.name === 'god').length > 0
+      }
+      return flag
+    },
     hasRole(channel, name) {
       let hasRole = false
       if(this.isLocal() && Array.isArray(this.roles)) {
@@ -168,7 +182,7 @@ export default {
         }
         hasRole = filteredRoles.length > 0
       }
-      return hasRole
+      return hasRole || this.isEditor() || this.isGod()
     }
   }
 }

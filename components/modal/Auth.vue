@@ -9,7 +9,7 @@
         <text-editor placeholder="草民代號" v-model="credentials.join.handle" :classes="['park']" :simple="true" key="joinHandle" />
         <button type="button" class="button small park" @click.prevent="generateHandle">隨機</button>
       </div>
-      <div class="font-size-smaller text-color-nice-grey">草民代號是你在沃草共有地的獨特身份識別，無法更改，請謹慎選擇。你可以使用A-Z、a-z、0-9、_、-。</div>
+      <div class="font-size-small text-color-nice-grey">草民代號是你在沃草共有地的獨特身份識別，無法更改，請謹慎選擇。你可以使用A-Z、a-z、0-9、_、-。</div>
       <div class="field">
         <text-editor placeholder="Email" type="email" v-model="credentials.join.email" :classes="['park']" :simple="true" key="joinEmail" />
       </div>

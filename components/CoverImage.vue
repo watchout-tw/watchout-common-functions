@@ -1,12 +1,15 @@
 <template>
 <div class="cover-image" :class="classes" :width="width" :style="styles">
-  <div v-if="label" class="label">{{ label }}</div>
+  <div class="labels">
+    <div v-if="label" class="label">{{ label }}</div>
+    <div v-if="secondaryLabel" class="secondary-label">{{ secondaryLabel }}</div>
+  </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['url', 'label', 'type', 'width', 'classes'],
+  props: ['url', 'label', 'secondaryLabel', 'type', 'width', 'classes'],
   computed: {
     image() {
       if(!this.url) {
@@ -29,29 +32,40 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .cover-image {
+  background-color: $color-very-light-grey;
+  background-size: contain;
+  background-position: center center;
+
   &[width="2"] {
     @include rect(2/1);
   }
   &[width="4"] {
     @include rect(4/1);
   }
-  background-size: contain;
-  background-position: center center;
-
   &.shadow {
     @include shadow;
   }
-
-  > .label {
+  > .labels {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     line-height: 1;
-    padding: 0.25rem;
-    transform: translate(-50%, -50%);
-    background: white;
-    font-size: 1.25rem;
-    font-weight: bold;
+    > .label {      
+      padding: 0.25rem;
+      background: white;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    > .secondary-label {
+      padding: 0.25rem;
+      background: white;
+    }
   }
+
 }
 </style>

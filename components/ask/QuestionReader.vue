@@ -1,24 +1,23 @@
 <template>
 <div class="question-reader" :class="containerClasses">
   <div class="signature" :class="fullWidthSubcontainerClasses">
-    <cover-image :url="question.image" :label="topicTitle" type="topic" width="4" />
+    <cover-image :url="question.image" :label="topicTitle" :secondary-label="question.data.keyword" type="topic" width="4" />
     <div class="text tcl-left-right-margin">
       <component :is="isFull ? 'h1' : 'h2'" class="title" :class="isFull ? 'medium' : ''">
-        <nuxt-link v-if="isCompact" class="a-text" :to="linkToSelf">{{ question.title }}</nuxt-link>
-        <template v-else>{{ question.title }}</template>
+        <nuxt-link class="a-text" :to="linkToSelf">{{ question.title }}</nuxt-link>
       </component>
       <div class="excerpt" v-if="isCompact">
         <span>{{ excerpt }}</span>
-        <nuxt-link v-if="isCompact" class="read-more a-text font-size-smaller" :to="linkToSelf">繼續閱讀</nuxt-link>
+        <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
       <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
     </div>
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
-    <div class="status-description">
-      <div class="font-size-smaller"><span class="latin-within-han first">{{ question.push.count }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
-      <div class="font-size-smaller"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
+    <div class="status-description secondary-text">
+      <div class="font-size-small"><span class="latin-within-han first">{{ pushCount }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
+      <div class="font-size-small"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
     </div>
     <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @reset="onPushButtonReset" />
   </div>
@@ -26,7 +25,6 @@
     <div class="content">{{ question.content }}</div>
     <authorship :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
   </div>
-  <!-- TODO: Add style here -->
   <div class="references-container" :class="subcontainerClasses" v-if="isFull">
     <div class="section-title with-underline small">
       <span>參考資料</span>
@@ -40,7 +38,7 @@
           </template>
           <template v-else>{{ reference.title }}</template>
         </div>
-        <div v-if="reference.description" class="font-size-smaller">{{ reference.description }}</div>
+        <div v-if="reference.description" class="font-size-small">{{ reference.description }}</div>
       </li>
     </ul>
   </div>
@@ -74,7 +72,7 @@ import Quiero from './Quiero'
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['game', 'question', 'topics', 'mode', 'pushable', 'preview'],
+  props: ['game', 'question', 'pushCount', 'topics', 'mode', 'pushable', 'preview'],
   data() {
     return {
       currentTime: util.formatter.date(new Date()),
@@ -102,9 +100,6 @@ export default {
     },
     pushThreshold() {
       return this.question.data.threshold ? this.question.data.threshold : 0
-    },
-    pushCount() {
-      return this.question.push.count ? this.question.push.count : 0
     },
     containerClasses() {
       var classes = []
@@ -154,6 +149,16 @@ export default {
       return this.game && this.question ? this.getAskQuestionURL(this.game.slug, this.question.id) : null
     }
   },
+  beforeMount() {
+    if(!this.isPreview) {
+      this.clientSideReload()
+    }
+  },
+  watch: {
+    'isCitizen'() {
+      this.clientSideReload()
+    }
+  },
   methods: {
     personaIsAssigned(id) {
       return this.question.assigned_personas.find(persona => persona.id === id)
@@ -168,6 +173,7 @@ export default {
         core.pushQuestion(id).then(response => {
           this.pushButton.state = STATES.SUCCESS
           this.pushButton.message = '已連署'
+          this.pushed(response.data)
         }).catch(error => {
           this.pushButton.state = STATES.FAILED
           this.pushButton.message = '連署失敗'
@@ -176,10 +182,20 @@ export default {
       }
     },
     onPushButtonReset() {
-      this.pushed()
+      // TODO: pushQuestion callback & pushButton reset - which one finishes first?
     },
-    pushed() {
+    pushed(pushedQuestion) {
+      this.clientSideUpdate(pushedQuestion)
       this.$emit('pushed')
+    },
+    clientSideReload() {
+      core.getQuestion(this.question.id).then(responses => {
+        this.clientSideUpdate(responses.data)
+      })
+    },
+    clientSideUpdate(question) {
+      this.$emit('update:personaSpeeches', question.persona_speeches)
+      this.$emit('update:pushCount', question.push.count)
     }
   },
   components: {

@@ -1,7 +1,7 @@
 <template>
 <div class="modal private-info-registration">
   <h2>完整註冊資料</h2>
-  <div class="paragraphs first font-size-smaller">
+  <div class="paragraphs first font-size-small">
     <p>這個功能需要填寫完整的基本資料。</p>
   </div>
   <private-info />
