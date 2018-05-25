@@ -11,7 +11,7 @@
     </div>
     <share-button :classes="['top-right']" :item="answer" />
   </div>
-  <div v-if="!isPreview && !isFull" class="original-question" :class="subcontainerClasses">
+  <div v-if="!isPreview && showQuestion" class="original-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
       <span>原始問題</span>
     </div>
@@ -153,7 +153,7 @@ const likeButtonsConfig = {
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'reviewable', 'preview'],
+  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'showQuestion', 'reviewable', 'preview'],
   data() {
     return {
       likeButtonsConfig,
