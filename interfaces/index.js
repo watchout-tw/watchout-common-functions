@@ -1,3 +1,4 @@
+import knowsAudio from './knowsAudio'
 import knowsAuth from './knowsAuth'
 import knowsCaching from './knowsCaching'
 import knowsDOM from './knowsDOM'
@@ -8,6 +9,7 @@ import knowsWatchout from './knowsWatchout'
 import knowsWindowManagement from './knowsWindowManagement'
 
 export {
+  knowsAudio,
   knowsAuth,
   knowsCaching,
   knowsDOM,
