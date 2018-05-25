@@ -40,7 +40,7 @@
       </li>
     </ul>
   </div>
-  <div v-if="!isPreview" class="review" :class="subcontainerClasses">
+  <div v-if="!isPreview && reviewable" class="review" :class="subcontainerClasses">
     <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
     <div class="review-summary text-align-right font-size-small secondary-text">
       <template v-if="answer.review.count <= 0">還沒有人評分</template>
@@ -153,7 +153,7 @@ const likeButtonsConfig = {
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'preview'],
+  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'reviewable', 'preview'],
   data() {
     return {
       likeButtonsConfig,
