@@ -139,7 +139,7 @@ export default {
     },
     topicTitle() {
       if(this.topics && this.question) {
-        let topic = this.topics.find(topic => topic.id === this.question.topic_id)
+        let topic = this.topics.find(topic => topic.id === this.question.topic)
         if(topic) {
           return topic.title
         }
