@@ -111,12 +111,14 @@ export default {
     }
   }
   > .topics {
-    $margin: 0.375rem;
-    margin-left: -$margin;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
+
+    $margin: 0.375rem;
+    margin-left: -$margin;
+    margin-right: -$margin;
     > .topic {
       width: auto;
       flex-basis: auto;
