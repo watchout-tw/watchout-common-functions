@@ -1,7 +1,7 @@
 <template>
 <div class="topic-browser">
-  <div class="keywords secondary-text font-size-small" v-if="relatedKeywords.length > 0 && showKeywords" >
-    <span class="keyword" v-for="keyword in relatedKeywords">#{{ keyword }}</span>
+  <div class="keywords" v-if="relatedKeywords.length > 0 && showKeywords" >
+    <span class="keyword secondary-text font-size-small" v-for="keyword in relatedKeywords">{{ keyword }}</span>
   </div>
   <div class="topics" v-if="showTopics !== false">
     <button class="topic input button small toggle" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topicText(topic) }}</button>
@@ -107,7 +107,7 @@ export default {
   > .keywords {
     margin: 0.5rem 0;
     > .keyword {
-      padding-right: 0.3rem
+      padding-right: 1em
     }
   }
   > .topics {
