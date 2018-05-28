@@ -1,23 +1,32 @@
 <template>
 <div class="topic-browser">
-  <div class="keywords" v-if="relatedKeywords.length > 0 && showKeywords" >
-    <span class="keyword secondary-text font-size-small" v-for="keyword in relatedKeywords">{{ keyword }}</span>
+  <div class="filtered-keywords" v-if="internalShowFilteredKeywords">
+    <div class="keywords">
+      <span class="keyword secondary-text font-size-small" v-for="keyword in filteredKeywords">{{ keyword }}</span>
+    </div>
   </div>
   <div class="topics" v-if="showTopics !== false">
     <button class="topic input button small toggle" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topicText(topic) }}</button>
   </div>
   <a class="toggle-ignore-filter-text font-size-small a-text" v-if="showTopics !== false && filterText && filterText != ''" @click.prevent="toggleIgnoreFilterText">{{ ignoreFilterText ? '啟用關鍵字過濾' : '顯示所有議題' }}</a>
+  <div class="selected-topic-keywords" v-if="internalShowSelectedTopicKeywords">
+    <div class="section-title with-underline small margin-top-bottom-4" ><span>熱門關鍵字</span></div>
+    <div class="keywords" v-if="internalShowSelectedTopicKeywords">
+      <span class="keyword secondary-text font-size-small" v-for="keyword in selectedTopicKeywords">{{ keyword }}</span>
+    </div>
+  </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['limit', 'types', 'topics', 'selectedTopics', 'mutable', 'filterText', 'showTopics', 'showKeywords'],
+  props: ['limit', 'types', 'topics', 'selectedTopics', 'mutable', 'filterText', 'showTopics', 'showKeywords', 'showSelectedTopicKeywords'],
   data() {
     return {
       internalTopics: this.generateInternalTopics(),
       ignoreFilterText: false,
-      relatedKeywords: []
+      filteredKeywords: [],
+      selectedTopicKeywords: []
     }
   },
   computed: {
@@ -26,6 +35,12 @@ export default {
     },
     customTopicClasses() {
       return this.buttonClasses(this.customTopicSelected)
+    },
+    internalShowFilteredKeywords() {
+      return this.filteredKeywords.length > 0 && this.showKeywords !== false
+    },
+    internalShowSelectedTopicKeywords() {
+      return this.selectedTopicKeywords.length > 0 && this.showSelectedTopicKeywords !== false
     }
   },
   watch: {
@@ -47,7 +62,7 @@ export default {
       }))
     },
     generateInternalTopics() {
-      this.relatedKeywords = []
+      this.filteredKeywords = []
       var filteredTopics = this.getSelectedTopics().filter(topic => {
         let flag
         if(this.ignoreFilterText) {
@@ -59,7 +74,7 @@ export default {
         } else {
           flag = topic.data.keywords.filter(word => {
             if(word.includes(this.filterText)) {
-              this.relatedKeywords.push(word)
+              this.filteredKeywords.push(word)
               return true
             } else {
               return false
@@ -86,14 +101,18 @@ export default {
       return topic.hasOwnProperty('battlefield') ? (topic.year + topic.title) : topic.title
     },
     toggle(topicID, isSelected) {
-      if (this.limit && this.selectedTopics.length >= this.limit) {
+      if(this.limit && this.selectedTopics.length >= this.limit) {
         this.selectedTopics.shift()
       }
-      if (isSelected) {
+      if(isSelected) {
         this.selectedTopics.splice(this.selectedTopics.indexOf(topicID), 1)
       } else {
         this.selectedTopics.push(topicID)
       }
+      this.selectedTopicKeywords = [].concat(...this.selectedTopics.map(topicID => {
+        let topic = this.internalTopics.filter(topic => topic.id === topicID).pop()
+        return (topic && topic.data && topic.data.keywords) ? topic.data.keywords : []
+      }))
     },
     toggleIgnoreFilterText() {
       this.ignoreFilterText = !this.ignoreFilterText
@@ -104,10 +123,10 @@ export default {
 
 <style lang="scss">
 .topic-browser {
-  > .keywords {
-    margin: 0.5rem 0;
+  .keywords {
     > .keyword {
-      padding-right: 1em
+      display: inline-block;
+      padding-right: 1em;
     }
   }
   > .topics {
