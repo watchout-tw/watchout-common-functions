@@ -27,7 +27,7 @@
       <drop-down-select :options="allNeighborhoods" placeholder="戶籍村里" v-model="voter_neighborhood" />
     </div>
     <div class="form-field-buttons no-wrap">
-      <button class="input button" @click="clear()">清空</button>
+      <button type="button" class="input button" @click="clear()">清空</button>
       <submit-button type="submit" :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>
   </form>
@@ -127,7 +127,7 @@ export default {
     onSubmit() {
       let payload = {}
       this.cols.forEach(col => {
-        if(!this[col]) {
+        if(!(this.hasOwnProperty(col) && this[col] !== undefined && this[col] !== null)) {
           this[col] = null
         }
         payload[col] = this[col]
