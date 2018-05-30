@@ -53,7 +53,7 @@ export default {
             this.message = '請收信'
           })
         } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
-          core.requrestPasswordReset({
+          core.requestPasswordReset({
             email: this.email
           }).then(response => {
             this.state = STATES.SUCCESS
