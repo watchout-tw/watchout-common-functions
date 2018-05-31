@@ -51,7 +51,12 @@ export default {
         dimensions = id === 'anon' ? systemAvatars.find(avatar => avatar.id === 'anon') : (type === 'system' ? systemAvatars.find(avatar => avatar.id === 'default') : this.avatar)
       }
       url = id ? `${id}.png` : url
-      let image = require('watchout-common-assets/images/avatar/' + url)
+      let image
+      try {
+        image = require('watchout-common-assets/images/avatar/' + url)
+      } catch(e) {
+        image = require('watchout-common-assets/images/avatar/default.png')
+      }
       return Object.assign({ type, image }, dimensions)
     },
     imageStyles() {
