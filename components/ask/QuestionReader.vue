@@ -168,7 +168,7 @@ export default {
         this.addModal({ id: 'auth', joinOrLogin: 'login' })
       } else if(!this.activePersonaIsWithInfo) {
         this.addModal('private-info-registration')
-      } else if(!util.questionIsPushedByMe(this.question)) {
+      } else if(!util.questionIsPushedByMe(this.question) && !util.questionIsOverdue(this.question)) {
         this.pushButton.state = STATES.LOADING
         core.pushQuestion(id).then(response => {
           this.pushButton.state = STATES.SUCCESS
