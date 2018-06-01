@@ -132,11 +132,9 @@ export default {
         }
         payload[col] = this[col]
       })
-      console.log(payload)
       if(Object.keys(payload).length > 0) {
         this.state = STATES.LOADING
         core.patchCitizen(payload).then(response => {
-          console.log(response)
           this.state = STATES.SUCCESS
           this.message = '更新成功'
         }).catch(error => {
