@@ -1,12 +1,12 @@
 <template>
 <div class="topic-browser">
-  <div class="filtered-keywords" v-if="internalShowFilteredKeywords">
+  <div class="filtered-keywords" v-if="internalShowMatchedKeywords">
     <div class="keywords">
-      <span class="keyword secondary-text font-size-small" v-for="keyword in filteredKeywords">{{ keyword }}</span>
+      <span class="keyword secondary-text font-size-small" v-for="keyword in matchedKeywords">{{ keyword }}</span>
     </div>
   </div>
   <div class="topics" v-if="showTopics !== false">
-    <button type="button" class="topic input button small toggle" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic.selected)" @click="isMutable ? toggle(topic.id, topic.selected) : false">{{ topicText(topic) }}</button>
+    <button type="button" class="topic input button small toggle" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic)" @click="isMutable ? toggle(topic.id) : false">{{ topicText(topic) }}</button>
   </div>
   <a class="toggle-ignore-filter-text font-size-small a-text" v-if="showTopics !== false && filterText && filterText != ''" @click.prevent="toggleIgnoreFilterText">{{ ignoreFilterText ? '啟用關鍵字過濾' : '顯示所有議題' }}</a>
   <div class="selected-topic-keywords" v-if="internalShowSelectedTopicKeywords">
@@ -23,94 +23,83 @@ export default {
   props: ['limit', 'types', 'topics', 'selectedTopics', 'mutable', 'filterText', 'showTopics', 'showKeywords', 'showSelectedTopicKeywords'],
   data() {
     return {
-      internalTopics: this.generateInternalTopics(),
       ignoreFilterText: false,
-      filteredKeywords: [],
+      matchedKeywords: [],
       selectedTopicKeywords: []
     }
   },
   computed: {
+    internalTopics() {
+      let types = this.types && Array.isArray(this.types) && this.types.length > 0 ? this.types : ['watchout']
+      // filter topic with types
+      let topics = this.topics.filter(topic => types.includes(topic.type))
+      if(!this.ignoreFilterText && this.filterText !== undefined && this.filterText !== null && this.filterText !== '') {
+        // filter topic with keywords
+        this.matchedKeywords = []
+        topics = topics.filter(topic => {
+          if(topic.data.keywords && Array.isArray(topic.data.keywords)) {
+            return topic.data.keywords.filter(word => {
+              if(word.includes(this.filterText)) {
+                this.matchedKeywords.push(word)
+                return true
+              } else {
+                return false
+              }
+            }).length > 0
+          } else {
+            return false
+          }
+        })
+      }
+      return topics
+    },
     isMutable() {
       return !(this.mutable === false)
     },
     customTopicClasses() {
       return this.buttonClasses(this.customTopicSelected)
     },
-    internalShowFilteredKeywords() {
-      return this.filteredKeywords.length > 0 && this.showKeywords !== false
+    internalShowMatchedKeywords() {
+      return this.matchedKeywords.length > 0 && this.showKeywords !== false
     },
     internalShowSelectedTopicKeywords() {
       return this.selectedTopicKeywords.length > 0 && this.showSelectedTopicKeywords !== false
     }
   },
   watch: {
-    'selectedTopics'() {
-      this.internalTopics = this.generateInternalTopics()
-    },
     'filterText'() {
-      this.internalTopics = this.generateInternalTopics()
+      // this.internalTopics = this.generateInternalTopics()
     },
     'ignoreFilterText'() {
-      this.internalTopics = this.generateInternalTopics()
+      // this.internalTopics = this.generateInternalTopics()
     }
   },
   methods: {
-    getSelectedTopics() {
-      return this.topics.filter(topic => this.types.includes(topic.type)).map(topic => ({
-        ...topic,
-        selected: this.selectedTopics ? this.selectedTopics.includes(topic.id) : false
-      }))
+    topicIsSelected(topicID) {
+      return this.selectedTopics && Array.isArray(this.selectedTopics) ? this.selectedTopics.includes(topicID) : false
     },
-    generateInternalTopics() {
-      this.filteredKeywords = []
-      var filteredTopics = this.getSelectedTopics().filter(topic => {
-        let flag
-        if(this.ignoreFilterText) {
-          return true
-        } else if(!topic.data.keywords) {
-          flag = false
-        } else if(!this.filterText) {
-          flag = true
-        } else {
-          flag = topic.data.keywords.filter(word => {
-            if(word.includes(this.filterText)) {
-              this.filteredKeywords.push(word)
-              return true
-            } else {
-              return false
-            }
-          }).length > 0
-        }
-        return flag
-      })
-      if(filteredTopics.length === 0) {
-        filteredTopics = this.getSelectedTopics().filter(topic => {
-          return topic.slug === 'other'
-        })
-      }
-      return filteredTopics
-    },
-    buttonClasses(selected) {
+    buttonClasses(topic) {
       var classes = []
       classes.push(this.topics[0].hasOwnProperty('battlefield') ? 'ask' : 'park') // FIXME: quick hack
       classes.push(this.isMutable ? 'mutable' : 'immutable')
-      classes.push(selected ? 'active' : 'inactive')
+      classes.push(this.topicIsSelected(topic.id) ? 'active' : 'inactive')
       return classes
     },
     topicText(topic) {
       return topic.hasOwnProperty('battlefield') ? (topic.year + topic.title) : topic.title
     },
-    toggle(topicID, isSelected) {
-      if(this.limit && this.selectedTopics.length >= this.limit) {
-        this.selectedTopics.shift()
-      }
+    toggle(topicID) {
+      let isSelected = this.topicIsSelected(topicID)
       if(isSelected) {
         this.selectedTopics.splice(this.selectedTopics.indexOf(topicID), 1)
       } else {
+        if(this.limit && this.selectedTopics.length >= this.limit) {
+          this.selectedTopics.shift()
+        }
         this.selectedTopics.push(topicID)
       }
       this.selectedTopicKeywords = [].concat(...this.selectedTopics.map(topicID => {
-        let topic = this.internalTopics.filter(topic => topic.id === topicID).pop()
+        let topic = this.internalTopics.filter(topic => topic.id === topicID)[0]
         return (topic && topic.data && topic.data.keywords) ? topic.data.keywords : []
       }))
     },
