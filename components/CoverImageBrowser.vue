@@ -123,11 +123,12 @@ export default {
       position: relative;
       flex-basis: calc(50% - #{$margin});
       margin: $margin 0;
-      filter: grayscale(1);
       cursor: pointer;
-
-      &.active {
-        filter: none;
+      > .cover-image {
+        opacity: 0.25;
+      }
+      &.active > .cover-image {
+        opacity: 1;
       }
       > input[type="checkbox"] {
         position: absolute;
