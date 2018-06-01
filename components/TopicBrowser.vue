@@ -66,14 +66,6 @@ export default {
       return this.selectedTopicKeywords.length > 0 && this.showSelectedTopicKeywords !== false
     }
   },
-  watch: {
-    'filterText'() {
-      // this.internalTopics = this.generateInternalTopics()
-    },
-    'ignoreFilterText'() {
-      // this.internalTopics = this.generateInternalTopics()
-    }
-  },
   methods: {
     topicIsSelected(topicID) {
       return this.selectedTopics && Array.isArray(this.selectedTopics) ? this.selectedTopics.includes(topicID) : false
