@@ -254,6 +254,9 @@ export default {
     }
     > .personas {
       > .persona {
+        &:not(:last-child) {
+          margin-bottom: 0.5rem;
+        }
         display: flex;
         align-items: center;
         > .assigned {
