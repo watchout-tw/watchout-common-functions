@@ -9,7 +9,7 @@
       </div>
       <authorship v-if="!isFull" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :date="answer.review.startDate" score="4.2" />
     </div>
-    <share-button :classes="['top-right']" :item="answer" />
+    <share-button :classes="['top-right']" :url="shareURL" />
   </div>
   <div v-if="!isPreview && showQuestion" class="original-question" :class="subcontainerClasses">
     <div class="section-title with-underline small">
@@ -153,7 +153,7 @@ const likeButtonsConfig = {
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'showQuestion', 'reviewable', 'preview'],
+  props: ['game', 'answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'showQuestion', 'reviewable', 'preview'],
   data() {
     return {
       likeButtonsConfig,
@@ -210,6 +210,9 @@ export default {
           great: score === REVIEWS.GREAT
         }
       }
+    },
+    shareURL() {
+      return this.game && this.answer ? this.getAskAnswerURL(this.game.slug, this.answer.id) : null
     }
   },
   beforeMount() {
