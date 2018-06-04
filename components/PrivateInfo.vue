@@ -86,7 +86,9 @@ export default {
       this.cols.forEach(col => {
         this[col] = response.data[col]
       })
+      // These column has default value
       this.country_code = this.country_code ? this.country_code : '886'
+      this.gender = this.gender ? this.gender : 0
     }).catch(this.handleError)
   },
   computed: {
