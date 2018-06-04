@@ -5,6 +5,7 @@ import knowsDOM from './knowsDOM'
 import knowsError from './knowsError'
 import knowsMarkdown from './knowsMarkdown'
 import knowsScrolling from './knowsScrolling'
+import knowsValidator from './validator'
 import knowsWatchout from './knowsWatchout'
 import knowsWindowManagement from './knowsWindowManagement'
 
@@ -16,6 +17,7 @@ export {
   knowsError,
   knowsMarkdown,
   knowsScrolling,
+  knowsValidator,
   knowsWatchout,
   knowsWindowManagement
 }
