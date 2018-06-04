@@ -38,7 +38,8 @@
 import * as core from '../lib/core'
 import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
-import { knowsAuth, knowsError, knowsWindowManagement } from '../interfaces'
+import * as validation from '../config/validation'
+import { knowsAuth, knowsError, knowsValidator, knowsWindowManagement } from '../interfaces'
 import administrativeDivision from '../data/hoods-20170131.json'
 import TextEditor from './TextEditor'
 import GenderSlider from './GenderSlider'
@@ -53,7 +54,7 @@ function integerRange(from, to) {
   return range
 }
 export default {
-  mixins: [knowsAuth, knowsError, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsValidator, knowsWindowManagement],
   data() {
     return {
       allYears: integerRange(1900, new Date().getFullYear() - 4),
@@ -85,6 +86,7 @@ export default {
       this.cols.forEach(col => {
         this[col] = response.data[col]
       })
+      this.country_code = this.country_code ? this.country_code : '886'
     }).catch(this.handleError)
   },
   computed: {
@@ -132,6 +134,12 @@ export default {
         }
         payload[col] = this[col]
       })
+      var result = this.validate(validation.privateInfo, payload)
+      if(result.error) {
+        this.state = STATES.FAILED
+        this.message = result.message
+        return
+      }
       if(Object.keys(payload).length > 0) {
         this.state = STATES.LOADING
         core.patchCitizen(payload).then(response => {
