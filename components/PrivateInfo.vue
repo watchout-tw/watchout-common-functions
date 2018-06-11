@@ -40,7 +40,7 @@ import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
 import * as validation from '../config/validation'
 import { knowsAuth, knowsError, knowsValidator, knowsWindowManagement } from '../interfaces'
-import administrativeDivision from '../data/hoods-201804.json'
+import * as administrativeDivision from '../lib/administrative_division'
 import TextEditor from './TextEditor'
 import GenderSlider from './GenderSlider'
 import DropDownSelect from './DropDownSelect'
@@ -102,16 +102,16 @@ export default {
       return integerRange(1, days)
     },
     allCities() {
-      return administrativeDivision.cities
+      return administrativeDivision.cities()
     },
     allDistricts() {
-      let city = administrativeDivision.districts.find(city => city.city_name === this.voter_city)
+      let city = administrativeDivision.districts().find(city => city.city_name === this.voter_city)
       if(city) {
         return city.districts
       }
     },
     allNeighborhoods() {
-      let city = administrativeDivision.neighborhoods.find(city => city.city_name === this.voter_city)
+      let city = administrativeDivision.neighborhoods().find(city => city.city_name === this.voter_city)
       if(city) {
         let district = city.districts.find(district => district.district_name === this.voter_district)
         if(district) {
