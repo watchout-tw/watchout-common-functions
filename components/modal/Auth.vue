@@ -5,7 +5,7 @@
   </div>
   <div class="action" v-if="data.joinOrLogin === 'join'">
     <form @submit.prevent="join">
-      <div class="form-field-many-inputs">
+      <div class="form-field-many-inputs no-wrap">
         <text-editor placeholder="草民代號" v-model="credentials.join.handle" :classes="['park']" :simple="true" key="joinHandle" />
         <button type="button" class="button small park" @click.prevent="generateHandle">隨機</button>
       </div>
@@ -24,7 +24,7 @@
       </div>
     </form>
     <div class="the-other-action text-align-right">
-      <a class="a-text" href="#" @click.stop.prevent="switchTo('login')">點這裡登入</a>
+      <a class="a-text font-weight-bold" href="#" @click.stop.prevent="switchTo('login')">我要登入</a>
     </div>
   </div>
   <div class="action" v-if="data.joinOrLogin === 'login'">
@@ -40,9 +40,15 @@
       </div>
     </form>
     <div class="the-other-action text-align-right">
-      <a class="a-block" href="#" @click.stop.prevent="addModal({ id: 'emailer', action: EMAILER_ACTIONS.REQ_EMAIL_VERIF })"><span class="a-target">重發認證信</span></a>
-      <a class="a-block" href="#" @click.stop.prevent="addModal({ id: 'emailer', action: EMAILER_ACTIONS.REQ_PWD_RESET })"><span class="a-target">忘記密碼</span></a>
-      <a class="a-block" href="#" @click.stop.prevent="switchTo('join')"><span class="a-target">點這裡註冊</span></a>
+      <div class="font-size-small">
+        <span class="secondary-text">沒收到認證信嗎？</span>
+        <a class="a-text" href="#" @click.stop.prevent="addModal({ id: 'emailer', action: EMAILER_ACTIONS.REQ_EMAIL_VERIF })">重發認證信</a>
+      </div>
+      <div class="font-size-small">
+        <span class="secondary-text">忘記密碼了嗎？</span>
+        <a class="a-text" href="#" @click.stop.prevent="addModal({ id: 'emailer', action: EMAILER_ACTIONS.REQ_PWD_RESET })"><span class="a-target">重設密碼</span></a>
+      </div>
+      <a class="a-block font-weight-bold" href="#" @click.stop.prevent="switchTo('join')"><span class="a-target">我要註冊</span></a>
     </div>
   </div>
 </div>
