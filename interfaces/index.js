@@ -3,6 +3,7 @@ import knowsAuth from './knowsAuth'
 import knowsCaching from './knowsCaching'
 import knowsDOM from './knowsDOM'
 import knowsError from './knowsError'
+import knowsLabCaching from './knowsLabCaching'
 import knowsMarkdown from './knowsMarkdown'
 import knowsScrolling from './knowsScrolling'
 import knowsValidator from './validator'
@@ -15,6 +16,7 @@ export {
   knowsCaching,
   knowsDOM,
   knowsError,
+  knowsLabCaching,
   knowsMarkdown,
   knowsScrolling,
   knowsValidator,
