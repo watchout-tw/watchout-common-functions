@@ -3,7 +3,7 @@
   <div class="content">
     <div class="pages" @scroll="onScroll">
       <component :is="page.hasOwnProperty('link') ? 'a' : 'div'" class="page" :href="page.link ? page.link.url : null" v-for="(page, index) of pages" :key="index" :style="pageStyles(page)">
-          <video-player v-if="page.type === 'video'" :platform="page.platform" :id="page.id" :classes="[]" />
+        <video-player v-if="page.type === 'video'" :platform="page.platform" :id="page.id" :classes="[]" />
       </component>
     </div>
   </div>
@@ -25,18 +25,18 @@ const SCROLL = 2
 /* FIXME: Current assumptions
 
 - A carousel sets its own size ONLY at DOM ready
-- A carousel is of these sizes
-  - default: 2-to-1 on smaller devices & 4-to-1 on larger decives with a 576px breakpoint
-  - slides: 3-to-2 and non-responsive
+- A carousel only has one breakpoint at 688px
+- A carousel is of one of these sizes
+  - default: 2-to-1 => bp => 4-to-1
+  - immersive: square => bp => 2-to-1
+  - slides: 3-to-2
 
 */
 export default {
   props: ['responsive', 'pages', 'stops', 'width', 'height', 'classes'],
   data() {
     return {
-      bp: {
-        sm: 576
-      },
+      bp: 688,
       currentPage: 0,
       scrollElement: null,
       windowSize: {
@@ -98,7 +98,7 @@ export default {
     pageStyles(page) {
       var styles = {}
       if(page.type === 'image') {
-        styles.backgroundImage = `url(${this.responsive && this.windowSize.width > this.bp.sm ? page.urls.wide : page.urls.default})`
+        styles.backgroundImage = `url(${this.responsive && this.windowSize.width >= this.bp ? page.urls.wide : page.urls.default})`
       }
       return styles
     },
@@ -148,7 +148,7 @@ export default {
   &.default {
     @include rect(2/1);
     &.responsive {
-      @include tcl-md {
+      @include tcl-md { // this should match this.bp
         @include rect(4/1);
       }
     }
@@ -156,7 +156,7 @@ export default {
   &.immersive {
     @include rect(1);
     &.responsive {
-      @include tcl-md {
+      @include tcl-md { // this should match this.bp
         @include rect(2/1);
       }
     }
