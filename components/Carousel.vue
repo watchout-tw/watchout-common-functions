@@ -146,18 +146,26 @@ export default {
     margin-bottom: $dot-size * 5;
   }
   &.default {
-    @include rect(2/1)
+    @include rect(2/1);
     &.responsive {
       @include tcl-md {
-        @include rect(4/1)
+        @include rect(4/1);
+      }
+    }
+  }
+  &.immersive {
+    @include rect(1);
+    &.responsive {
+      @include tcl-md {
+        @include rect(2/1);
       }
     }
   }
   &.slides {
-    @include rect(3/2)
+    @include rect(3/2);
   }
   &.video {
-    @include rect(16/9)
+    @include rect(16/9);
   }
   &.shadow-lifted-darker {
     @include shadow-lifted-darker;
