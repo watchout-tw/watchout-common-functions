@@ -1,11 +1,8 @@
 <template>
 <div class="authorship">
-  <component :is="hasLink ? 'a' : 'div'" :href="link" class="author a-block">
-    <avatar :avatar="avatar" :classes="['shadow', 'inline', 'small']"/>
-    <span class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
-    <!-- TODO: styling enhancement needed -->
-    <span v-if="score" class="score bg-ask font-size-small text-color-white">{{ score }}</span>
-  </component>
+  <avatar :avatar="avatar" :classes="['shadow', 'inline']" :name="name"
+           size="small" :link="link" orientation="horizontal" :secondaryText="score"
+           :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
   <div class="date font-size-small">{{ dateString }}</div>
 </div>
 </template>
@@ -13,6 +10,7 @@
 <script>
 import * as util from '../../lib/util'
 import Avatar from '../Avatar'
+
 export default {
   props: ['avatar', 'name', 'link', 'date', 'score'],
   computed: {
