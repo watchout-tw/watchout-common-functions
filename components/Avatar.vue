@@ -1,10 +1,26 @@
 <template>
-<div class="avatar" :class="classes">
-  <div class="image" :style="imageStyles"></div>
+<div>
+  <component :is="hasLink ? 'a' : 'div'" :href="link" :class="{ 'a-block': hasLink, 'horizontal': isHorizontal, 'vertical': isVertical}">
+    <div class="avatar" :class="classes">
+      <div class="image" :style="imageStyles"></div>
+    </div>
+    <div v-if="name && isVertical" class="name margin-top-4 line-height-tight font-size-small">
+      <label class="a-target">{{ name }}</label>
+    </div>
+    <div v-if="secondaryText && isVertical" :class="secondaryClasses">
+      <label>{{ secondaryText }}</label>
+    </div>
+    <div v-if="decoration" class="flag">
+      <party-flag :id="decoration.data" :parties="decorationRef" class="small"></party-flag>
+    </div>
+    <span v-if="name && isHorizontal" class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
+    <span v-if="secondaryText && isHorizontal" :class="secondaryClasses">{{ secondaryText }}</span>
+  </component>
 </div>
 </template>
 
 <script>
+import PartyFlag from './PartyFlag'
 
 const DEFAULT_SIZE = 48
 const DEFAULT_WIDTH = 48
@@ -28,9 +44,21 @@ const systemAvatars = [
   }
 ]
 
+// Size: small, normal, large
+
 export default {
-  props: ['avatar', 'classes'],
+  props: ['orientation', 'avatar', 'name', 'link', 'decoration', 'size',
+    'classes', 'secondaryText', 'secondaryClasses', 'decoration', 'decorationRef'],
   computed: {
+    hasLink() {
+      return !!(this.link)
+    },
+    isHorizontal () {
+      return this.orientation === 'horizontal'
+    },
+    isVertical () {
+      return this.orientation === 'vertical'
+    },
     internalAvatar() {
       let type = 'system'
       let id = 'default'
@@ -59,14 +87,12 @@ export default {
       }
       return Object.assign({ type, image }, dimensions)
     },
-    imageStyles() {
-      let r = 1
-      if(this.classes) {
-        if(this.classes.includes('small')) {
-          r = 0.5
-        } else if(this.classes.includes('large')) {
-          r = 2
-        }
+    imageStyles () {
+      let r = 1 // normal
+      if (this.size === 'small') {
+        r = 0.5
+      } else if (this.size === 'large') {
+        r = 2
       }
       let size = this.internalAvatar.size * r
       let width = this.internalAvatar.width * r
@@ -80,6 +106,9 @@ export default {
         backgroundPosition: `${left}px ${top}px`
       }
     }
+  },
+  components: {
+    PartyFlag
   }
 }
 </script>
@@ -104,6 +133,28 @@ export default {
   &.centered {
     display: flex;
     justify-content: center;
+  }
+}
+.name {
+  line-height: $line-height-tight;
+  margin-top: 0.125rem;
+  margin-left: 0.25rem;
+}
+.score {
+  margin: 0 0.25rem;
+  padding: 0.125rem 0.25rem;
+}
+.horizontal {
+  margin: 0.25rem 0;
+}
+.vertical {
+  position: relative;
+  margin: 0.5rem;
+  > .flag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(12.5%, -50%);
   }
 }
 </style>
