@@ -4,7 +4,7 @@ export const privateInfo = {
     regex: null,
     label: '真實姓名',
     messages: {
-      missing: '你叫什麼名字？'
+      missing: '你的名字？'
     }
   },
   birth_year: {
@@ -12,7 +12,7 @@ export const privateInfo = {
     regex: null,
     label: '出生年',
     messages: {
-      missing: '你幾年出生？'
+      missing: '你的出生年？'
     }
   },
   birth_month: {
@@ -20,7 +20,7 @@ export const privateInfo = {
     regex: null,
     label: '月',
     messages: {
-      missing: '你幾月出生？'
+      missing: '你的出生月？'
     }
   },
   birth_date: {
@@ -28,7 +28,7 @@ export const privateInfo = {
     regex: null,
     label: '日',
     messages: {
-      missing: '你幾號出生？'
+      missing: '你的出生日？'
     }
   },
   country_code: {
@@ -36,7 +36,7 @@ export const privateInfo = {
     regex: null,
     label: '國碼',
     messages: {
-      missing: '請填入電話國碼'
+      missing: '國碼？'
     }
   },
   phone_number: {
@@ -44,7 +44,7 @@ export const privateInfo = {
     regex: null,
     label: '行動電話',
     messages: {
-      missing: '請填入行動電話'
+      missing: '行動電話？'
     }
   },
   gender: {
@@ -52,7 +52,7 @@ export const privateInfo = {
     regex: null,
     label: '性別',
     messages: {
-      missing: '請填入性別'
+      missing: '你的性別？'
     }
   },
   voter_type: {
@@ -60,7 +60,7 @@ export const privateInfo = {
     regex: null,
     label: '投票人類別',
     messages: {
-      missing: '請填入類別'
+      missing: '投票人類別？'
     }
   },
   voter_city: {
@@ -68,7 +68,7 @@ export const privateInfo = {
     regex: null,
     label: '戶籍城市',
     messages: {
-      missing: '你的戶籍在哪個城市？'
+      missing: '戶籍城市？'
     }
   },
   voter_district: {
@@ -76,7 +76,7 @@ export const privateInfo = {
     regex: null,
     label: '戶籍區域',
     messages: {
-      missing: '你的戶籍在哪一區？'
+      missing: '戶籍區域？'
     }
   },
   voter_neighborhood: {
@@ -84,7 +84,7 @@ export const privateInfo = {
     regex: null,
     label: '戶籍村里',
     messages: {
-      missing: '你的戶籍在哪個村里？'
+      missing: '戶籍村里？'
     }
   }
 }
