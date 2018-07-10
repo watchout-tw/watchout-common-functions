@@ -1,22 +1,20 @@
 <template>
-<div class="avatar">
-  <component :is="hasLink ? 'a' : 'div'" :href="link" :class="{ 'a-block': hasLink, 'horizontal': isHorizontal, 'vertical': isVertical}">
-    <div class="avatar-image" :class="classes">
-      <div class="image" :style="imageStyles"></div>
-    </div>
-    <div v-if="name && isVertical" class="name margin-top-4 line-height-tight font-size-small">
-      <label class="a-target">{{ name }}</label>
-    </div>
-    <div v-if="secondaryText && isVertical" :class="secondaryClasses">
-      <label>{{ secondaryText }}</label>
-    </div>
-    <div v-if="decoration" class="flag">
-      <party-flag :id="decoration.data" :parties="decorationRef" class="small"></party-flag>
-    </div>
-    <span v-if="name && isHorizontal" class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
-    <span v-if="secondaryText && isHorizontal" :class="secondaryClasses">{{ secondaryText }}</span>
-  </component>
-</div>
+<component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="{ 'a-block': hasLink, 'horizontal': isHorizontal, 'vertical': isVertical}">
+  <div class="avatar-image" :class="classes">
+    <div class="image" :style="imageStyles"></div>
+  </div>
+  <div v-if="name && isVertical" class="name margin-top-4 line-height-tight font-size-small">
+    <label class="a-target">{{ name }}</label>
+  </div>
+  <div v-if="secondaryText && isVertical" :class="secondaryClasses">
+    <label>{{ secondaryText }}</label>
+  </div>
+  <div v-if="decoration" class="flag">
+    <party-flag :id="decoration.data" :parties="decorationRef" class="small"></party-flag>
+  </div>
+  <span v-if="name && isHorizontal" class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
+  <span v-if="secondaryText && isHorizontal" :class="secondaryClasses">{{ secondaryText }}</span>
+</component>
 </template>
 
 <script>
@@ -116,7 +114,27 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .avatar {
-  > .horizontal {
+  > .avatar-image {
+    > .image {
+      border-radius: 50%;
+      background-color: $color-avatar-background-white;
+      background-repeat: no-repeat;
+    }
+    &.shadow {
+      > .image {
+        @include shadow;
+      }
+    }
+    &.inline {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &.centered {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  &.horizontal {
     margin: 0.25rem 0;
     > .name {
       line-height: $line-height-tight;
@@ -128,7 +146,7 @@ export default {
       padding: 0.125rem 0.25rem;
     }
   }
-  > .vertical {
+  &.vertical {
     position: relative;
     margin: 0.5rem;
     > .flag {
@@ -137,26 +155,6 @@ export default {
       right: 0;
       transform: translate(12.5%, -50%);
     }
-  }
-}
-.avatar .avatar-image {
-  > .image {
-    border-radius: 50%;
-    background-color: $color-avatar-background-white;
-    background-repeat: no-repeat;
-  }
-  &.shadow {
-    > .image {
-      @include shadow;
-    }
-  }
-  &.inline {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  &.centered {
-    display: flex;
-    justify-content: center;
   }
 }
 </style>
