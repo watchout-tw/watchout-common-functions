@@ -45,8 +45,7 @@ const systemAvatars = [
 // Size: small, normal, large
 
 export default {
-  props: ['orientation', 'avatar', 'name', 'link',  'size', 'classes',
-    'secondaryText', 'secondaryClasses', 'decoration', 'decorationRef'],
+  props: ['orientation', 'avatar', 'name', 'link', 'size', 'classes', 'secondaryText', 'secondaryClasses', 'decoration', 'decorationRef'],
   computed: {
     hasLink() {
       return !!(this.link)
