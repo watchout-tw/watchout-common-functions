@@ -1,7 +1,7 @@
 <template>
-<div>
+<div class="avatar">
   <component :is="hasLink ? 'a' : 'div'" :href="link" :class="{ 'a-block': hasLink, 'horizontal': isHorizontal, 'vertical': isVertical}">
-    <div class="avatar" :class="classes">
+    <div class="avatar-image" :class="classes">
       <div class="image" :style="imageStyles"></div>
     </div>
     <div v-if="name && isVertical" class="name margin-top-4 line-height-tight font-size-small">
@@ -116,6 +116,30 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .avatar {
+  > .horizontal {
+    margin: 0.25rem 0;
+    > .name {
+      line-height: $line-height-tight;
+      margin-top: 0.125rem;
+      margin-left: 0.25rem;
+    }
+    > .score {
+      margin: 0 0.25rem;
+      padding: 0.125rem 0.25rem;
+    }
+  }
+  > .vertical {
+    position: relative;
+    margin: 0.5rem;
+    > .flag {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(12.5%, -50%);
+    }
+  }
+}
+.avatar .avatar-image {
   > .image {
     border-radius: 50%;
     background-color: $color-avatar-background-white;
@@ -133,28 +157,6 @@ export default {
   &.centered {
     display: flex;
     justify-content: center;
-  }
-}
-.name {
-  line-height: $line-height-tight;
-  margin-top: 0.125rem;
-  margin-left: 0.25rem;
-}
-.score {
-  margin: 0 0.25rem;
-  padding: 0.125rem 0.25rem;
-}
-.horizontal {
-  margin: 0.25rem 0;
-}
-.vertical {
-  position: relative;
-  margin: 0.5rem;
-  > .flag {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(12.5%, -50%);
   }
 }
 </style>
