@@ -129,7 +129,7 @@ export default {
         }
       }
     },
-    logout() {
+    clearAuth() {
       // update store
       this.$store.dispatch('auth/toggle', false)
       // unauthenticate coreInstance
@@ -147,6 +147,10 @@ export default {
         // clear cookie
         this.clearTokenCookie()
       }
+    },
+    logout() {
+      // clear auth data
+      this.clearAuth()
       // transport back to home
       this.$router.push('/')
     },
