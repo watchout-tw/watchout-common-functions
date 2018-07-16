@@ -23,9 +23,10 @@ import { knowsAuth, knowsError } from 'watchout-common-functions/interfaces'
 
 export default {
   mixins: [knowsAuth, knowsError],
+  props: ['presetAccount'],
   data() {
     return {
-      account: null,
+      account: this.presetAccount ? this.presetAccount : null,
       password: null,
       state: STATES.DEFAULT,
       message: null
@@ -54,10 +55,12 @@ export default {
       }
     },
     onSubmitButtonReset() {
-      this.password = null
+      if(this.state === STATES.SUCCESS) {
+        this.$emit('success')
+      }
       this.state = STATES.DEFAULT
       this.message = null
-      this.$emit('success')
+      this.password = null
     }
   },
   components: {

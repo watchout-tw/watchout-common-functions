@@ -74,10 +74,12 @@ export default {
       }
     },
     onSubmitButtonReset() {
-      this.password = null
+      if(this.state === STATES.SUCCESS) {
+        this.$emit('success')
+      }
       this.state = STATES.DEFAULT
       this.message = null
-      this.$emit('success')
+      this.password = null
     }
   },
   components: {
