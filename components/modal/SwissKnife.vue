@@ -1,6 +1,8 @@
 <template>
 <div class="modal swiss-knife">
-  <div class="name">{{ activePersona ? (activePersona.name ? activePersona.name : '你的顯示名稱') : '沒有人' }}</div>
+  <div class="self">
+    <avatar-self :show="['avatar', 'name']" :classes="['horizontal']" />
+  </div>
   <div class="actions">
     <a class="action" :href="activePersona ? getParkPersonaProfileURL(activePersona.id) : '#'">個人檔案</a>
     <a class="action" :href="getParkSettingsURL()">變更設定</a>
@@ -10,7 +12,8 @@
 </template>
 
 <script>
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import AvatarSelf from 'watchout-common-functions/components/AvatarSelf'
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   methods: {
@@ -18,6 +21,9 @@ export default {
       this.logout()
       this.removeModal('swiss-knife')
     }
+  },
+  components: {
+    AvatarSelf
   }
 }
 </script>
@@ -29,8 +35,8 @@ export default {
   width: 18rem;
   background-color: $color-park-light;
   @include shadow;
-  > .name {
-    padding: 1rem;
+  > .self {
+    padding: 0.5rem;
     font-weight: bold;
     background-color: $color-park-light;
   }
