@@ -1,7 +1,7 @@
 <template>
 <div class="authorship">
-  <avatar :avatar="avatar" :classes="['shadow', 'inline']" :name="name"
-           size="small" :link="link" orientation="horizontal" :secondaryText="score"
+  <avatar :avatar="avatar" :classes="['horizontal', 'shadow', 'inline']" :name="name"
+           size="small" :link="link" :secondaryText="score"
            :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
   <div class="date font-size-small">{{ dateString }}</div>
 </div>

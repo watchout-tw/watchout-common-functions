@@ -4,13 +4,13 @@
     <div class="image" :style="imageStyles"></div>
   </div>
   <div v-if="name && isVertical" class="name margin-top-4 line-height-tight font-size-small">
-    <label class="a-target">{{ name }}</label>
+    <span class="a-target">{{ name }}</span>
   </div>
-  <div v-if="secondaryText && isVertical" :class="secondaryClasses">
-    <label>{{ secondaryText }}</label>
+  <div v-if="secondaryText && isVertical" class="secondary-text line-height-tight margin-top-4" :class="secondaryClasses">
+    <span>{{ secondaryText }}</span>
   </div>
-  <div v-if="decoration" class="flag">
-    <party-flag :id="decoration.data" :parties="decorationRef" class="small"></party-flag>
+  <div v-if="party" class="party-flag-container">
+    <party-flag :id="party" :parties="parties" class="small"></party-flag>
   </div>
   <span v-if="name && isHorizontal" class="name a-target">{{ name ? name : '作者尚未設定顯示名稱' }}</span>
   <span v-if="secondaryText && isHorizontal" :class="secondaryClasses">{{ secondaryText }}</span>
@@ -18,49 +18,32 @@
 </template>
 
 <script>
+import { knowsAvatar } from 'watchout-common-functions/interfaces'
 import PartyFlag from './PartyFlag'
 
-const DEFAULT_SIZE = 48
-const DEFAULT_WIDTH = 48
-const DEFAULT_TOP = 0
-const DEFAULT_LEFT = 0
-
-const systemAvatars = [
-  {
-    id: 'anon',
-    size: DEFAULT_SIZE,
-    width: 44,
-    top: 8,
-    left: 2
-  },
-  {
-    id: 'default',
-    size: DEFAULT_SIZE,
-    width: DEFAULT_WIDTH,
-    top: DEFAULT_TOP,
-    left: DEFAULT_LEFT
-  }
-]
-
-// Size: small, normal, large
+/*
+Sizes: small, normal, large
+Classes: shadow, centered
+*/
 
 export default {
-  props: ['orientation', 'avatar', 'name', 'link', 'size', 'classes', 'secondaryText', 'secondaryClasses', 'decoration', 'decorationRef'],
+  mixins: [knowsAvatar],
+  props: ['size', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'party', 'parties'],
   computed: {
     hasLink() {
       return !!(this.link)
     },
-    isHorizontal () {
-      return this.orientation === 'horizontal'
+    isHorizontal() {
+      return Array.isArray(this.classes) && this.classes.includes('horizontal')
     },
-    isVertical () {
-      return this.orientation === 'vertical'
+    isVertical() {
+      return Array.isArray(this.classes) && this.classes.includes('vertical')
     },
     internalAvatar() {
       let type = 'system'
       let id = 'default'
       let url = null
-      let dimensions = Object.assign({}, systemAvatars.find(avatar => avatar.id === 'id'))
+      let dimensions = this.getSystemAvatar(id)
       if(this.avatar) {
         if(typeof this.avatar === 'string') {
           id = this.avatar
@@ -73,7 +56,7 @@ export default {
             url = this.avatar.url
           }
         }
-        dimensions = id === 'anon' ? systemAvatars.find(avatar => avatar.id === 'anon') : (type === 'system' ? systemAvatars.find(avatar => avatar.id === 'default') : this.avatar)
+        dimensions = id === 'anon' ? this.getSystemAvatar('anon') : (type === 'system' ? this.getSystemAvatar('default') : Object.assign({}, this.avatar))
       }
       url = id ? `${id}.png` : url
       let image
@@ -84,7 +67,7 @@ export default {
       }
       return Object.assign({ type, image }, dimensions)
     },
-    imageStyles () {
+    imageStyles() {
       let r = 1 // normal
       if (this.size === 'small') {
         r = 0.5
@@ -148,7 +131,7 @@ export default {
   &.vertical {
     position: relative;
     margin: 0.5rem;
-    > .flag {
+    > .party-flag-container {
       position: absolute;
       top: 0;
       right: 0;
