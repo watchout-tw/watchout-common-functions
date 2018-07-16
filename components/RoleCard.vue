@@ -1,6 +1,6 @@
 <template>
-<div class="role-card">
-  <div class="secondary-text font-size-small">目前角色</div>
+<div class="role-card bg-park-light">
+  <div class="secondary-text font-size-small">目前權限</div>
   <div>{{ roleText }}</div>
 </div>
 </template>
@@ -31,6 +31,5 @@ export default {
 
 .role-card {
   padding: 0.75rem;
-  background-color: $color-park-light;
 }
 </style>
