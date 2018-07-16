@@ -28,7 +28,7 @@
       <drop-down-select :options="allNeighborhoods" placeholder="戶籍村里" v-model="voter_neighborhood" />
     </div>
     <div class="form-field-buttons no-wrap">
-      <button type="button" class="input button" @click="clear()">清空</button>
+      <button type="button" class="input button" @click="clear()">重填</button>
       <submit-button type="submit" :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
     </div>
   </form>
