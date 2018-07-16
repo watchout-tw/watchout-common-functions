@@ -22,7 +22,7 @@ export default {
         if(!obj.hasOwnProperty(key)) {
           return error(config[key].messages.missing)
         }
-        if(!config[key].allowNull && (obj[key] === null || obj[key] === undefined)) {
+        if(!config[key].allowNull && (obj[key] === null || obj[key] === undefined || obj[key] === '')) {
           return error(config[key].messages.missing)
         }
         if(!config[key].allowNull && config[key].isArray && obj[key].length === 0) {
