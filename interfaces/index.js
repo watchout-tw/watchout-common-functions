@@ -4,6 +4,7 @@ import knowsAvatar from './knowsAvatar'
 import knowsCaching from './knowsCaching'
 import knowsDOM from './knowsDOM'
 import knowsError from './knowsError'
+import knowsFormatting from './knowsFormatting'
 import knowsLabCaching from './knowsLabCaching'
 import knowsMarkdown from './knowsMarkdown'
 import knowsScrolling from './knowsScrolling'
@@ -18,6 +19,7 @@ export {
   knowsCaching,
   knowsDOM,
   knowsError,
+  knowsFormatting,
   knowsLabCaching,
   knowsMarkdown,
   knowsScrolling,

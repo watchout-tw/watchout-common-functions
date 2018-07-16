@@ -49,8 +49,7 @@
     <div class="personas">
       <div class="persona" v-for="player of game.players">
         <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" disabled />
-        <avatar :avatar="player.persona.avatar" :classes="['shadow']" />
-        <div class="name">{{ player.persona.id === 0 ? '所有參賽選手' : player.persona.name }}</div>
+        <avatar :avatar="player.persona.avatar" :name="player.persona.name" :link="getParkPersonaProfileURL(player.persona.id)" :classes="['horizontal', 'shadow']" :party="player.persona.data ? player.persona.data.party : 1" :parties="parties" />
       </div>
     </div>
   </div>
@@ -72,7 +71,7 @@ import Quiero from './Quiero'
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
-  props: ['game', 'question', 'pushCount', 'topics', 'mode', 'pushable', 'preview'],
+  props: ['game', 'question', 'pushCount', 'topics', 'mode', 'pushable', 'preview', 'parties'],
   data() {
     return {
       currentTime: util.formatter.date(new Date()),
@@ -199,8 +198,8 @@ export default {
     }
   },
   components: {
-    Authorship,
     Avatar,
+    Authorship,
     CoverImage,
     Quiero,
     ShareButton,
@@ -254,9 +253,6 @@ export default {
     }
     > .personas {
       > .persona {
-        &:not(:last-child) {
-          margin-bottom: 0.5rem;
-        }
         display: flex;
         align-items: center;
         > .assigned {

@@ -1,19 +1,17 @@
 <template>
-<component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="{ 'a-block': hasLink, 'horizontal': isHorizontal, 'vertical': isVertical }">
-  <div class="avatar-image" :class="classes">
+<component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="{ 'a-block': hasLink, 'small': isSmall, 'horizontal': isHorizontal, 'vertical': isVertical }">
+  <div class="avatar-image-container" :class="classes">
     <div class="image" :style="imageStyles"></div>
+    <div v-if="party && parties" class="party-flag-container">
+      <party-flag :id="party" :parties="parties" class="small"></party-flag>
+    </div>
   </div>
-  <div v-if="name && isVertical" class="name font-size-small line-height-tight margin-top-4">
-    <span class="a-target">{{ name }}</span>
+  <div v-if="name" class="name line-height-tight" :class="nameClasses">
+    <span class="a-target">{{ name ? name : '顯示名稱尚未設定' }}</span>
   </div>
-  <div v-if="secondaryText && isVertical" class="secondary-text line-height-tight margin-top-4" :class="secondaryClasses">
+  <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
     <span>{{ secondaryText }}</span>
   </div>
-  <div v-if="party" class="party-flag-container">
-    <party-flag :id="party" :parties="parties" class="small"></party-flag>
-  </div>
-  <span v-if="name && isHorizontal" class="name a-target">{{ name ? name : '顯示名稱尚未設定' }}</span>
-  <span v-if="secondaryText && isHorizontal" :class="secondaryClasses">{{ secondaryText }}</span>
 </component>
 </template>
 
@@ -22,7 +20,7 @@ import { knowsAvatar } from 'watchout-common-functions/interfaces'
 import PartyFlag from './PartyFlag'
 
 /*
-Sizes: small, normal, large
+Sizes: small, normal (default), large
 Classes: shadow, centered
 */
 
@@ -32,6 +30,9 @@ export default {
   computed: {
     hasLink() {
       return !!(this.link)
+    },
+    isSmall() {
+      return this.size === 'small'
     },
     isHorizontal() {
       return Array.isArray(this.classes) && this.classes.includes('horizontal')
@@ -96,47 +97,75 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .avatar {
-  > .avatar-image {
-    > .image {
-      border-radius: 50%;
-      background-color: $color-avatar-background-white;
-      background-repeat: no-repeat;
-    }
+  margin: 0.25rem;
+  > .avatar-image-container {
+    position: relative;
     &.shadow {
       > .image {
         @include shadow;
       }
     }
-    &.inline {
-      display: inline-block;
-      vertical-align: middle;
-    }
     &.centered {
       display: flex;
       justify-content: center;
     }
+
+    > .image {
+      border-radius: 50%;
+      background-color: $color-avatar-background-white;
+      background-repeat: no-repeat;
+    }
+  }
+  &:not(.small) {
+    > .avatar-image-container {
+      > .party-flag-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(50%);
+      }
+    }
+  }
+  &.small {
+    > .avatar-image-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      > .party-flag-container {
+        transform: translateX(-12.5%);
+      }
+    }
   }
   &.horizontal {
-    margin: 0.25rem 0;
-    > .name {
-      line-height: $line-height-tight;
-      margin-top: 0.125rem;
-      margin-left: 0.25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &.small {
+      > .name {
+        padding: 0 0.25em;
+        font-size: $font-size-small;
+      }
     }
-    > .score {
-      margin: 0 0.25rem;
-      padding: 0.125rem 0.25rem;
+    &:not(.small) {
+      > .name {
+        padding: 0 0.5em;
+      }
     }
   }
   &.vertical {
     position: relative;
-    margin: 0.5rem;
-    > .party-flag-container {
-      position: absolute;
-      top: 0;
-      right: 0;
-      transform: translate(12.5%, -50%);
+    text-align: center;
+    > .name {
+      margin: 0.25rem 0;
+      font-size: $font-size-small;
     }
+    > .secondary-text {
+      margin: 0.25rem 0;
+    }
+  }
+  > .score {
+    margin: 0 0.25rem;
+    padding: 0.125rem 0.25rem;
   }
 }
 </style>

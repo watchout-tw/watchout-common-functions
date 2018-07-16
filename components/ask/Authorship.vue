@@ -1,26 +1,25 @@
 <template>
 <div class="authorship">
-  <avatar :avatar="avatar" :classes="['horizontal', 'shadow', 'inline']" :name="name"
-           size="small" :link="link" :secondaryText="score"
-           :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
-  <div class="date font-size-small">{{ dateString }}</div>
+  <avatar size="small"
+    :avatar="avatar"
+    :name="name"
+    :link="link"
+    :party="party"
+    :parties="parties"
+    :classes="['horizontal', 'shadow', 'inline']"
+    :secondaryText="score"
+    :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
+  <div class="date font-size-small">{{ getDateString(date) }}</div>
 </div>
 </template>
 
 <script>
-import * as util from '../../lib/util'
-import Avatar from '../Avatar'
+import { knowsFormatting } from 'watchout-common-functions/interfaces'
+import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
-  props: ['avatar', 'name', 'link', 'date', 'score'],
-  computed: {
-    hasLink() {
-      return !!(this.link)
-    },
-    dateString() {
-      return util.formatter.date(this.date)
-    }
-  },
+  mixins: [knowsFormatting],
+  props: ['avatar', 'name', 'link', 'party', 'parties', 'score', 'date'],
   components: {
     Avatar
   }
