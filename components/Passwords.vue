@@ -19,7 +19,6 @@
 
 <script>
 import * as core from '../lib/core'
-import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
 import { knowsError } from '../interfaces'
 import TextEditor from './TextEditor'
@@ -58,13 +57,11 @@ export default {
         }, this.data.token)
 
         request.then(response => {
-          console.log(response)
           this.state = STATES.SUCCESS
           this.message = '密碼已更新；請重新登入'
         }).catch(error => {
-          let message = error.response.data.message
           this.state = STATES.FAILED
-          this.message = ERRORS.MAP[message]
+          this.message = this.humanizeError(error)
           this.currentPassword = this.newPassword = this.newPasswordConfirmation = null
           this.handleError(error)
         })

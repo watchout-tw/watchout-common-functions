@@ -37,7 +37,6 @@
 
 <script>
 import * as core from '../lib/core'
-import * as ERRORS from '../lib/errors'
 import * as STATES from '../lib/states'
 import * as validation from '../config/validation'
 import { knowsAuth, knowsError, knowsValidator, knowsWindowManagement } from '../interfaces'
@@ -150,7 +149,7 @@ export default {
           this.message = '更新成功'
         }).catch(error => {
           this.state = STATES.FAILED
-          this.message = ERRORS.MAP[error.response.message]
+          this.message = this.humanizeError(error)
           this.handleError(error)
         })
       }

@@ -1,5 +1,15 @@
+import { MAP } from 'watchout-common-functions/lib/errors'
+
 export default {
   methods: {
+    humanizeError(error) {
+      let machineMessage = error.response.data.message
+      let humanMessage = '錯誤'
+      if(MAP.hasOwnProperty(machineMessage)) {
+        humanMessage = MAP[machineMessage]
+      }
+      return humanMessage
+    },
     handleError(error) {
       let response = error.response
       let status = response && response.hasOwnProperty('status') ? parseInt(response.status) : -1

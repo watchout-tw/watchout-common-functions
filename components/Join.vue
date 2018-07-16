@@ -23,7 +23,6 @@
 <script>
 import * as util from 'watchout-common-functions/lib/util'
 import * as core from 'watchout-common-functions/lib/core'
-import * as ERRORS from 'watchout-common-functions/lib/errors'
 import * as STATES from 'watchout-common-functions/lib/states'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 import SubmitButton from 'watchout-common-functions/components/button/Submit.vue'
@@ -59,9 +58,8 @@ export default {
             this.state = STATES.SUCCESS
             this.message = '認證信已寄出'
           }).catch(error => {
-            let message = error.response.data.message
             this.state = STATES.FAILED
-            this.message = ERRORS.MAP[message]
+            this.message = this.humanizeError(error)
             this.handleError(error)
           })
         } else {
