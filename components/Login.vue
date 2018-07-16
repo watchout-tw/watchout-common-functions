@@ -32,6 +32,11 @@ export default {
       message: null
     }
   },
+  watch: {
+    'presetAccount'() {
+      this.account = this.presetAccount
+    }
+  },
   methods: {
     login() {
       if(this.state === STATES.DEFAULT && this.account && this.password) {
