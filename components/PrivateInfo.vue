@@ -18,6 +18,7 @@
       <gender-slider :value.sync="gender" />
     </div>
     <div class="section-title with-underline small with-increased-top-margin"><span>選舉人資訊</span></div>
+    <div class="secondary-text font-size-small margin-top-bottom-4">填寫選舉人資訊，沃草就可以提供關於你選區的資訊。</div>
     <div class="form-field-many-inputs no-wrap">
       <drop-down-select :options="allVoterTypes" placeholder="選擇類別" v-model="voter_type" />
       <drop-down-select :options="allCities" placeholder="戶籍城市" v-model="voter_city" />
