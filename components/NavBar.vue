@@ -7,7 +7,7 @@
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })">
-    <avatar :avatar="isCitizen ? activePersona.avatar : anon" />
+    <avatar-self :show="['avatar']" />
   </div>
 </nav>
 </template>
@@ -15,7 +15,7 @@
 <script>
 // FIXME: perhaps better not use relative path
 import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../interfaces'
-import Avatar from './Avatar'
+import AvatarSelf from './AvatarSelf'
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
@@ -44,7 +44,7 @@ export default {
     this.checkAuth()
   },
   components: {
-    Avatar
+    AvatarSelf
   }
 }
 </script>
