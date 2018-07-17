@@ -6,7 +6,7 @@
       <party-flag :id="party" :parties="parties" class="small"></party-flag>
     </div>
   </div>
-  <div v-if="name" class="name line-height-tight" :class="nameClasses">
+  <div v-if="name" class="name line-height-tight">
     <span class="a-target">{{ name ? name : '顯示名稱尚未設定' }}</span>
   </div>
   <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
