@@ -1,30 +1,63 @@
 <template>
-<div class="ad standard">
-  <component :is="hasLink ? 'a' : 'div'" :href="hasLink ? data.link.url : null" target="_blank" class="content" :class="contentClasses" v-if="data" :style="contentStyles"></component>
-</div>
+<component class="ad standard" :is="hasLink ? 'a' : 'div'" :href="hasLink ? link : null" target="_blank" :class="containerClasses" :style="containerStyles">
+  <div class="content" :class="contentClasses">{{ contentText }}</div>
+</component>
 </template>
 
 <script>
 export default {
   props: ['data'],
   computed: {
-    hasLink() {
-      return this.data.link && this.data.url
+    hasData() {
+      return this.data !== undefined && typeof this.data === 'object'
     },
-    contentClasses() {
-      let classes = []
+    hasLink() {
+      return this.hasData && this.data.link && this.data.link.url
+    },
+    contentText() {
+      let text = '這是廣告'
+      if(this.hasData) {
+        if(this.type === 'text') {
+          text = this.data.content.text
+        } else if(this.type === 'image') {
+          text = ''
+        }
+      }
+      return text
+    },
+    type() {
+      return this.hasData ? this.data.type : null
+    },
+    link() {
+      return this.hasLink ? this.data.link.url : null
+    },
+    containerClasses() {
+      let classes = [this.type]
+      if(!this.hasData) {
+        classes.push('empty')
+      }
       if(this.hasLink) {
         classes.push('shadow')
       }
       return classes
     },
-    contentStyles() {
+    containerStyles() {
       let styles = {}
-      if(this.data.type === 'image') {
-        let image = require('watchout-common-assets/images/ads/' + this.data.url)
-        styles.backgroundImage = 'url(' + image + ')'
+      if(this.type === 'image') {
+        let content = this.data.content.url
+        if(!content.includes('http')) {
+          content = require('watchout-common-assets/images/ads/' + content)
+        }
+        styles.backgroundImage = 'url(' + content + ')'
       }
       return styles
+    },
+    contentClasses() {
+      let classes = []
+      if(!this.hasData) {
+        classes.push('not-available', 'font-size-small')
+      }
+      return classes
     }
   }
 }
@@ -33,14 +66,18 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 .ad.standard {
-  > .content {
-    @include rect(4/1);
+  @include rect(4/1);
+  &.empty {
+    background-color: $color-very-light-grey;
+  }
+  &.image {
     background-size: contain;
-    border-radius: 1px;
-
-    &.shadow {
-      @include shadow;
-    }
+  }
+  &.shadow {
+    @include shadow;
+  }
+  > .content {
+    padding: 1rem;
   }
 }
 </style>
