@@ -5,7 +5,7 @@
       <text-editor placeholder="請輸入你的註冊Email" type="email" v-model="email" :classes="['park']" :simple="true" key="email" />
     </div>
     <div class="form-field with-double-top-margin">
-      <submit-button type="submit" :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
+      <submit-button type="submit" :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" />
     </div>
   </form>
 </div>
@@ -69,10 +69,8 @@ export default {
         this.message = '這不是Email'
       }
     },
-    onSubmitButtonReset() {
-      if(this.state === STATES.SUCCESS) {
-        this.removeModal('emailer')
-      }
+    onSubmitSuccess() {
+      this.removeModal('emailer')
     }
   },
   components: {

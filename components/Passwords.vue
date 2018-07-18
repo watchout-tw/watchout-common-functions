@@ -11,7 +11,7 @@
       <text-editor placeholder="確認新密碼" type="password" v-model="newPasswordConfirmation" :classes="['park']" :simple="true" key="Confirmation"/>
     </div>
     <div class="form-field with-double-top-margin">
-      <submit-button type="submit" :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
+      <submit-button type="submit" :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
     </div>
   </form>
 </div>
@@ -67,12 +67,16 @@ export default {
         })
       }
     },
-    onSubmitButtonReset() {
-      if(this.state === STATES.FAILED) {
-        this.currentPassword = this.newPassword = this.newPasswordConfirmation = null
-      } else if(this.state === STATES.SUCCESS) {
-        this.$emit('success')
-      }
+    reset() {
+      this.currentPassword = this.newPassword = this.newPasswordConfirmation = null
+    },
+    onSubmitSuccess() {
+      this.reset()
+      this.$emit('success')
+    },
+    onSubmitFailed() {
+      this.reset()
+      this.$emit('failed')
     }
   },
   components: {

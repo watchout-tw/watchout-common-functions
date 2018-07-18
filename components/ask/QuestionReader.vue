@@ -19,7 +19,7 @@
       <div class="font-size-small"><span class="latin-within-han first">{{ pushCount }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
       <div class="font-size-small"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
     </div>
-    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @reset="onPushButtonReset" />
+    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @success="onPushSuccess" />
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
@@ -180,7 +180,7 @@ export default {
         })
       }
     },
-    onPushButtonReset() {
+    onPushSuccess() {
       // TODO: pushQuestion callback & pushButton reset - which one finishes first?
     },
     pushed(pushedQuestion) {

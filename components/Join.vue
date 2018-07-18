@@ -15,7 +15,7 @@
     <label class="form-input-check-label"><input type="checkbox" class="park" v-model="iAgree"><span>我同意<a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></span></label>
   </div>
   <div class="form-field with-double-top-margin">
-    <submit-button type="submit" :classes="['park']" label="註冊" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
+    <submit-button type="submit" :classes="['park']" label="註冊" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
   </div>
 </form>
 </template>
@@ -71,13 +71,13 @@ export default {
         this.message = '資料不完整'
       }
     },
-    onSubmitButtonReset() {
-      if(this.state === STATES.SUCCESS) {
-        this.$emit('success')
-      }
-      this.state = STATES.DEFAULT
-      this.message = null
+    onSubmitSuccess() {
       this.password = null
+      this.$emit('success')
+    },
+    onSubmitFailed() {
+      this.password = null
+      this.$emit('failed')
     }
   },
   components: {

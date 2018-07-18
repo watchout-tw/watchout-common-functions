@@ -7,7 +7,7 @@
     <text-editor placeholder="密碼" type="password" v-model="password" :classes="['park']" :simple="true" key="loginPassword" />
   </div>
   <div class="form-field with-double-top-margin">
-    <submit-button type="submit" :classes="['park']" label="登入" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
+    <submit-button type="submit" :classes="['park']" label="登入" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
   </div>
 </form>
 </template>
@@ -57,13 +57,13 @@ export default {
         this.message = '資料不完整'
       }
     },
-    onSubmitButtonReset() {
-      if(this.state === STATES.SUCCESS) {
-        this.$emit('success')
-      }
-      this.state = STATES.DEFAULT
-      this.message = null
+    onSubmitSuccess() {
       this.password = null
+      this.$emit('success')
+    },
+    onSubmitFailed() {
+      this.password = null
+      this.$emit('failed')
     }
   },
   components: {

@@ -29,7 +29,7 @@
     </div>
     <div class="form-field-buttons no-wrap">
       <button type="button" class="input button" @click="clear()">重填</button>
-      <submit-button type="submit" :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @reset="onSubmitButtonReset" />
+      <submit-button type="submit" :classes="['park']" label="更新" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" />
     </div>
   </form>
 </div>
@@ -154,11 +154,9 @@ export default {
         })
       }
     },
-    onSubmitButtonReset() {
-      if(this.state === STATES.SUCCESS) {
-        this.removeModal('private-info-registration')
-        this.reloadAuth()
-      }
+    onSubmitSuccess() {
+      this.removeModal('private-info-registration')
+      this.reloadAuth()
     }
   },
   components: {

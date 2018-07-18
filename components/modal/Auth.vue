@@ -46,6 +46,7 @@ export default {
       this.addModal({ id: 'emailer', action: EMAILER_ACTIONS.REQ_PWD_RESET })
     },
     onJoinSuccess() {
+      this.removeModal('auth')
     },
     onLoginSuccess() {
       this.removeModal('auth')

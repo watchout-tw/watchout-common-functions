@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import * as STATES from '../../lib/states'
+import * as STATES from 'watchout-common-functions/lib/states'
 
 const DEFAULT_FONT_SIZE = 16
 const DEFAULT_SYMBOL_SIZE = DEFAULT_FONT_SIZE * 1.5
@@ -27,6 +27,7 @@ export default {
       fontSize: DEFAULT_FONT_SIZE,
       symbolSize: DEFAULT_SYMBOL_SIZE,
       symbolAnimationDuration: 500, // FIXME: this is hard coded
+      finalizeAfter: 2000, // FIXME: this is hard coded
       hasBeenDone: false
     }
   },
@@ -50,7 +51,7 @@ export default {
     }
   },
   watch: {
-    state() {
+    state(nextState, prevState) {
       setTimeout(() => {
         if(this.message) {
           // animate after symbolAnimation
@@ -59,10 +60,10 @@ export default {
           this.symbolOffsetX = (messageWidth / 2 + this.fontSize / 4) * -1
           this.showMessage = true
         }
-        if(this.state === STATES.SUCCESS) {
+        if(nextState === STATES.SUCCESS) {
           this.hasBeenDone = true
         }
-        setTimeout(this.reset, 2000)
+        setTimeout(this.finalize, this.finalizeAfter)
       }, this.symbolAnimationDuration)
     }
   },
@@ -72,14 +73,21 @@ export default {
   },
   methods: {
     reset() {
-      this.$emit('reset')
-      if(this.once === true && this.state === STATES.SUCCESS) {
-        return
-      }
       this.symbolOffsetX = 0
       this.showMessage = false
-      this.$emit('update:state', this.STATES.DEFAULT)
+      this.$emit('update:state', STATES.DEFAULT)
       this.$emit('update:message', null)
+    },
+    finalize() {
+      if(this.state === STATES.SUCCESS) {
+        if(!this.once) {
+          this.reset()
+        }
+        this.$emit('success')
+      } else if([STATES.FAILED, STATES.INCOMPLETE].includes(this.state)) {
+        this.reset()
+        this.$emit('failed') // TODO: failed & incomplete might need separate events
+      }
     }
   }
 }
