@@ -1,13 +1,13 @@
 <template>
 <component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="{ 'a-block': hasLink, 'small': isSmall, 'horizontal': isHorizontal, 'vertical': isVertical }">
-  <div class="avatar-image-container" :class="classes">
+  <div v-if="isShowing('avatar')" class="avatar-image-container" :class="classes">
     <div class="image" :style="imageStyles"></div>
     <div v-if="party && parties" class="party-flag-container">
       <party-flag :id="party" :parties="parties" class="small"></party-flag>
     </div>
   </div>
-  <div v-if="name" class="name line-height-tight">
-    <span class="a-target">{{ name ? name : '顯示名稱尚未設定' }}</span>
+  <div v-if="isShowing('name')" class="name line-height-tight">
+    <span class="a-target">{{ name !== null && name !== '' ? name : '顯示名稱尚未設定' }}</span>
   </div>
   <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
     <span>{{ secondaryText }}</span>
@@ -26,7 +26,7 @@ Classes: shadow, centered
 
 export default {
   mixins: [knowsAvatar],
-  props: ['size', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'party', 'parties'],
+  props: ['size', 'show', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'party', 'parties'],
   computed: {
     hasLink() {
       return !!(this.link)
@@ -86,6 +86,11 @@ export default {
         backgroundSize: width + 'px',
         backgroundPosition: `${left}px ${top}px`
       }
+    }
+  },
+  methods: {
+    isShowing(key) {
+      return Array.isArray(this.show) ? this.show.includes(key) : false
     }
   },
   components: {

@@ -49,7 +49,7 @@
     <div class="personas">
       <div class="persona" v-for="player of game.players">
         <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" disabled />
-        <avatar :avatar="player.persona.avatar" :name="player.persona.name" :link="getParkPersonaProfileURL(player.persona.id)" :classes="['horizontal', 'shadow']" :party="player.persona.data ? player.persona.data.party : 1" :parties="parties" />
+        <avatar :show="['avatar', 'name']" :avatar="player.persona.avatar" :name="player.persona.name" :link="getParkPersonaProfileURL(player.persona.id)" :classes="['horizontal', 'shadow']" :party="player.persona.data ? player.persona.data.party : 1" :parties="parties" />
       </div>
     </div>
   </div>

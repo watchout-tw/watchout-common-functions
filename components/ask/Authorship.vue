@@ -1,6 +1,7 @@
 <template>
 <div class="authorship">
   <avatar size="small"
+    :show="['avatar', 'name']"
     :avatar="avatar"
     :name="name"
     :link="link"
