@@ -171,6 +171,9 @@ export default {
         padding: 0 0.5em;
       }
     }
+    > .name:first-child {
+      padding-left: 0.125em;
+    }
   }
   &.vertical {
     position: relative;
@@ -185,7 +188,6 @@ export default {
   }
   &.deactivated {
     filter: grayscale(1);
-    opacity: 0.5;
   }
   > .score {
     margin: 0 0.25rem;
