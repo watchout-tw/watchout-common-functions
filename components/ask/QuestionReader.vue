@@ -10,7 +10,7 @@
         <span>{{ excerpt }}</span>
         <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
-      <authorship v-if="!isFull" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
+      <authorship v-if="!isFull" :persona="question.persona" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
     </div>
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
@@ -23,7 +23,7 @@
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content">{{ question.content }}</div>
-    <authorship :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
+    <authorship :persona="question.persona" :avatar="question.persona.avatar" :name="question.persona.name" :link="getParkPersonaProfileURL(question.persona.id)" :date="question.push.startDate" />
   </div>
   <div class="references-container" :class="subcontainerClasses" v-if="isFull">
     <div class="section-title with-underline small">
@@ -49,7 +49,7 @@
     <div class="personas">
       <div class="persona" v-for="player of game.players">
         <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" disabled />
-        <avatar :show="['avatar', 'name']" :avatar="player.persona.avatar" :name="player.persona.name" :link="getParkPersonaProfileURL(player.persona.id)" :classes="['horizontal', 'shadow']" :party="player.persona.data ? player.persona.data.party : 1" :parties="parties" />
+        <avatar :show="['avatar', 'name']" :avatar="player.persona.avatar" :name="player.persona.name" :link="getParkPersonaProfileURL(player.persona.id)" :classes="['horizontal', 'shadow', player.persona.status]" :party="player.persona.data ? player.persona.data.party : 1" :parties="parties" />
       </div>
     </div>
   </div>

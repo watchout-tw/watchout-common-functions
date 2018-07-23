@@ -1,5 +1,5 @@
 <template>
-<avatar :size="size" :show="show" :avatar="avatar" :name="name" :classes="classes" />
+<avatar :size="size" :show="show" :avatar="avatar" :name="name" :classes="internalClasses" />
 </template>
 
 <script>
@@ -33,6 +33,13 @@ export default {
         }
       }
       return name
+    },
+    internalClasses() {
+      let classes = [].concat(Array.isArray(this.classes) ? this.classes : [])
+      if(this.hasActivePersona) {
+        classes.push(this.activePersona.status)
+      }
+      return classes
     }
   },
   methods: {

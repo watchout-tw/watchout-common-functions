@@ -7,7 +7,7 @@
     :link="link"
     :party="party"
     :parties="parties"
-    :classes="['horizontal', 'shadow', 'inline']"
+    :classes="['horizontal', 'shadow', 'inline', persona.status]"
     :secondaryText="score"
     :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
   <div class="date font-size-small">{{ getDateString(date) }}</div>
@@ -20,7 +20,7 @@ import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
   mixins: [knowsFormatting],
-  props: ['avatar', 'name', 'link', 'party', 'parties', 'score', 'date'],
+  props: ['persona', 'avatar', 'name', 'link', 'party', 'parties', 'score', 'date'],
   components: {
     Avatar
   }

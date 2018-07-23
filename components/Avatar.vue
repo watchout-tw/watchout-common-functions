@@ -1,6 +1,6 @@
 <template>
-<component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="{ 'a-block': hasLink, 'small': isSmall, 'horizontal': isHorizontal, 'vertical': isVertical }">
-  <div v-if="isShowing('avatar')" class="avatar-image-container" :class="classes">
+<component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="internalClasses">
+  <div v-if="isShowing('avatar')" class="avatar-image-container">
     <div class="image" :style="imageStyles"></div>
     <div v-if="party && parties" class="party-flag-container">
       <party-flag :id="party" :parties="parties" class="small"></party-flag>
@@ -22,6 +22,8 @@ import PartyFlag from './PartyFlag'
 /*
 Sizes: small, normal (default), large
 Classes: shadow, centered
+Induced classes: small (from size)
+Inherent classes: deactivated (from Persona.status)
 */
 
 export default {
@@ -39,6 +41,16 @@ export default {
     },
     isVertical() {
       return Array.isArray(this.classes) && this.classes.includes('vertical')
+    },
+    internalClasses() {
+      let classes = [].concat(Array.isArray(this.classes) ? this.classes : [])
+      if(this.hasLink) {
+        classes.push('a-block')
+      }
+      if(this.isSmall) {
+        classes.push('small')
+      }
+      return classes
     },
     internalAvatar() {
       let type = 'system'
@@ -105,20 +117,23 @@ export default {
   margin: 0.25rem;
   > .avatar-image-container {
     position: relative;
-    &.shadow {
-      > .image {
-        @include shadow;
-      }
-    }
-    &.centered {
-      display: flex;
-      justify-content: center;
-    }
-
     > .image {
       border-radius: 50%;
       background-color: $color-avatar-background-white;
       background-repeat: no-repeat;
+    }
+  }
+  &.shadow {
+    > .avatar-image-container {
+      > .image {
+        @include shadow;
+      }
+    }
+  }
+  &.centered {
+    > .avatar-image-container {
+      display: flex;
+      justify-content: center;
     }
   }
   &:not(.small) {
@@ -167,6 +182,10 @@ export default {
     > .secondary-text {
       margin: 0.25rem 0;
     }
+  }
+  &.deactivated {
+    filter: grayscale(1);
+    opacity: 0.5;
   }
   > .score {
     margin: 0 0.25rem;
