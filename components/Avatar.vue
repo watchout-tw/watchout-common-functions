@@ -120,11 +120,8 @@ export default {
       }
       return name
     },
-    isDefaultPersona() {
-      return this.persona && this.persona.type === 'default'
-    },
     isShowingParty() {
-      return this.persona ? !this.isDefaultPersona : false
+      return this.persona ? !(this.persona && this.persona.type === 'default') : false
     },
     internalParty() {
       return this.persona && this.persona.data ? this.persona.data.party : null

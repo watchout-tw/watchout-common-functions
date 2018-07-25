@@ -15,7 +15,7 @@ export default {
       return this.persona.data && Array.isArray(this.persona.data.identityTags)
     },
     hasIdentity() {
-      return !this.isDefaultPersona || this.hasIdentityTags
+      return !(this.persona && this.persona.type === 'default') || this.hasIdentityTags
     },
     badge() {
       return this.hasIdentity
