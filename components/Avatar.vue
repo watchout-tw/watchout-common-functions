@@ -12,17 +12,14 @@
   <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
     <span>{{ secondaryText }}</span>
   </div>
-  <template v-if="isShowing('identity') && hasIdentity">
-    <div v-if="identity.badge" class="identity-badge"></div>
-    <div v-if="identity.label" class="identity-label font-size-tiny text-color-park">{{ identity.label }}</div>
-  </template>
+  <identity v-if="isShowing('identity')" :persona="persona" class="small" />
 </component>
 </template>
 
 <script>
 import { knowsAvatar, knowsWatchout } from 'watchout-common-functions/interfaces'
 import PartyFlag from './PartyFlag'
-import { MAP as ID_MAP } from 'watchout-common-functions/lib/identities'
+import Identity from './Identity'
 
 /*
 Sizes: small, normal (default), large
@@ -131,27 +128,6 @@ export default {
     },
     internalParty() {
       return this.persona && this.persona.data ? this.persona.data.party : null
-    },
-    hasIdentityTags() {
-      return this.persona.data && Array.isArray(this.persona.data.identityTags)
-    },
-    hasIdentity() {
-      return !this.isDefaultPersona || this.hasIdentityTags
-    },
-    identity() {
-      let badge = this.hasIdentity
-      let label = this.hasIdentity && ID_MAP.hasOwnProperty(this.persona.type) ? ID_MAP[this.persona.type] : null
-      if(this.hasIdentity && this.hasIdentityTags) {
-        for(let tag of this.persona.data.identityTags) {
-          if(ID_MAP.hasOwnProperty(tag)) {
-            label = ID_MAP[tag]
-          }
-        }
-      }
-      return {
-        badge,
-        label
-      }
     }
   },
   methods: {
@@ -160,7 +136,8 @@ export default {
     }
   },
   components: {
-    PartyFlag
+    PartyFlag,
+    Identity
   }
 }
 </script>
@@ -236,16 +213,6 @@ export default {
   }
   &.deactivated {
     filter: grayscale(1);
-  }
-  > .identity-badge {
-    width: 1rem;
-    height: 1rem;
-    background-image: url('~watchout-common-assets/images/identity-badges/default.png');
-    background-size: contain;
-    border-radius: 50%;
-  }
-  > .identity-label {
-    margin: 0 0.125rem;
   }
   > .score {
     margin: 0 0.25rem;
