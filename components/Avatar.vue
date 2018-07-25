@@ -1,40 +1,50 @@
 <template>
-<component :is="hasLink ? 'a' : 'div'" :href="link" class="avatar" :class="internalClasses">
+<component :is="hasLink ? 'a' : 'div'" :href="internalLink" class="avatar" :class="internalClasses">
   <div v-if="isShowing('avatar')" class="avatar-image-container">
-    <div class="image" :style="imageStyles"></div>
-    <div v-if="party && parties" class="party-flag-container">
-      <party-flag :id="party" :parties="parties" class="small"></party-flag>
+    <div class="image" :style="avatarImageStyles"></div>
+    <div v-if="isShowingParty" class="party-flag-container">
+      <party-flag :id="internalParty" :parties="parties" :class="!isLarge ? 'small' : ''"></party-flag>
     </div>
   </div>
   <div v-if="isShowing('name')" class="name line-height-tight">
-    <span class="a-target">{{ name !== null && name !== '' ? name : '顯示名稱尚未設定' }}</span>
+    <span class="a-target">{{ internalName }}</span>
   </div>
   <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
     <span>{{ secondaryText }}</span>
+  </div>
+  <div v-if="isShowing('identity') && hasIdentity">
+    {{ identity }}
   </div>
 </component>
 </template>
 
 <script>
-import { knowsAvatar } from 'watchout-common-functions/interfaces'
+import { knowsAvatar, knowsWatchout } from 'watchout-common-functions/interfaces'
 import PartyFlag from './PartyFlag'
 
 /*
 Sizes: small, normal (default), large
-Classes: shadow, centered
+Classes: shadow
 Induced classes: small (from size)
 Inherent classes: deactivated (from Persona.status)
+Show: avatar, name, identity
 */
 
 export default {
-  mixins: [knowsAvatar],
-  props: ['size', 'show', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'party', 'parties'],
+  mixins: [knowsAvatar, knowsWatchout],
+  props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'parties'],
   computed: {
+    internalLink() {
+      return typeof this.link === 'string' ? this.link : (this.link && this.persona ? this.getParkPersonaProfileURL(this.persona.id) : null)
+    },
     hasLink() {
-      return !!(this.link)
+      return !!(this.internalLink)
     },
     isSmall() {
       return this.size === 'small'
+    },
+    isLarge() {
+      return this.size === 'large'
     },
     isHorizontal() {
       return Array.isArray(this.classes) && this.classes.includes('horizontal')
@@ -50,6 +60,9 @@ export default {
       if(this.isSmall) {
         classes.push('small')
       }
+      if(this.persona) {
+        classes.push(this.persona.status)
+      }
       return classes
     },
     internalAvatar() {
@@ -57,19 +70,21 @@ export default {
       let id = 'default'
       let url = null
       let dimensions = this.getSystemAvatar(id)
-      if(this.avatar) {
-        if(typeof this.avatar === 'string') {
-          id = this.avatar
-        } else if(typeof this.avatar === 'object') {
-          if(this.avatar.type === 'system' && this.avatar.hasOwnProperty('id')) {
-            id = this.avatar.id
+
+      let avatar = this.avatar ? this.avatar : (this.persona ? this.persona.avatar : 'anon')
+      if(avatar) {
+        if(typeof avatar === 'string') {
+          id = avatar
+        } else if(typeof avatar === 'object') {
+          if(avatar.type === 'system' && avatar.hasOwnProperty('id')) {
+            id = avatar.id
           } else {
-            type = this.avatar.type
+            type = avatar.type
             id = null
-            url = this.avatar.url
+            url = avatar.url
           }
         }
-        dimensions = id === 'anon' ? this.getSystemAvatar('anon') : (type === 'system' ? this.getSystemAvatar('default') : Object.assign({}, this.avatar))
+        dimensions = id === 'anon' ? this.getSystemAvatar('anon') : (type === 'system' ? this.getSystemAvatar('default') : Object.assign({}, avatar))
       }
       url = id ? `${id}.png` : url
       let image
@@ -80,7 +95,7 @@ export default {
       }
       return Object.assign({ type, image }, dimensions)
     },
-    imageStyles() {
+    avatarImageStyles() {
       let r = 1 // normal
       if (this.size === 'small') {
         r = 0.5
@@ -98,6 +113,22 @@ export default {
         backgroundSize: width + 'px',
         backgroundPosition: `${left}px ${top}px`
       }
+    },
+    internalName() {
+      let name = this.name ? this.name : (this.persona ? this.persona.name : null)
+      if([undefined, null, ''].includes(name)) {
+        name = '顯示名稱尚未設定'
+      }
+      return name
+    },
+    isShowingParty() {
+      return this.persona ? this.persona.type !== 'default' : false
+    },
+    internalParty() {
+      return this.persona && this.persona.data ? this.persona.data.party : null
+    },
+    hasIdentity() {
+      return false
     }
   },
   methods: {
@@ -117,7 +148,10 @@ export default {
   margin: 0.25rem;
   > .avatar-image-container {
     position: relative;
+    display: flex;
+    justify-content: center;
     > .image {
+      position: relative;
       border-radius: 50%;
       background-color: $color-avatar-background-white;
       background-repeat: no-repeat;
@@ -130,19 +164,13 @@ export default {
       }
     }
   }
-  &.centered {
-    > .avatar-image-container {
-      display: flex;
-      justify-content: center;
-    }
-  }
   &:not(.small) {
     > .avatar-image-container {
       > .party-flag-container {
         position: absolute;
         top: 0;
-        right: 0;
-        transform: translateX(50%);
+        left: 50%;
+        transform: translateX(75%);
       }
     }
   }
@@ -151,9 +179,6 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
-      > .party-flag-container {
-        transform: translateX(-12.5%);
-      }
     }
   }
   &.horizontal {

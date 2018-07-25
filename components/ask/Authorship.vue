@@ -1,13 +1,11 @@
 <template>
 <div class="authorship">
   <avatar size="small"
-    :show="['avatar', 'name']"
-    :avatar="avatar"
-    :name="name"
-    :link="link"
-    :party="party"
+    :show="['avatar', 'name', 'identity']"
+    :persona="persona"
+    :link="true"
     :parties="parties"
-    :classes="['horizontal', 'shadow', 'inline', persona.status]"
+    :classes="['horizontal', 'shadow', 'inline']"
     :secondaryText="score"
     :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
   <div class="date font-size-small">{{ getDateString(date) }}</div>
@@ -20,7 +18,7 @@ import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
   mixins: [knowsFormatting],
-  props: ['persona', 'avatar', 'name', 'link', 'party', 'parties', 'score', 'date'],
+  props: ['persona', 'parties', 'score', 'date'],
   components: {
     Avatar
   }

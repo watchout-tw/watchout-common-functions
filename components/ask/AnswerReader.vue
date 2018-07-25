@@ -7,7 +7,7 @@
         <span>{{ excerpt }}</span>
         <nuxt-link v-if="isCompact" class="read-more a-text font-size-small" :to="linkToSelf">繼續閱讀</nuxt-link>
       </div>
-      <authorship v-if="!isFull" :persona="answer.persona" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" score="4.2" :date="answer.review.startDate" />
+      <authorship v-if="!isFull" :persona="answer.persona" :parties="parties" score="4.2" :date="answer.review.startDate" />
     </div>
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
@@ -21,7 +21,7 @@
   </div>
   <div v-if="isFull" class="detail" :class="subcontainerClasses">
     <div class="content">{{ answer.content }}</div>
-    <authorship v-if="!isPreview" :persona="answer.persona" :avatar="answer.persona.avatar" :name="answer.persona.name" :link="getParkPersonaProfileURL(answer.persona.id)" :party="answer.persona.data ? answer.persona.data.party : 1" :parties="parties" score="4.2" :date="answer.review.startDate" />
+    <authorship v-if="!isPreview" :persona="answer.persona" :parties="parties" score="4.2" :date="answer.review.startDate" />
   </div>
   <div v-if="isFull" class="references-container" :class="subcontainerClasses">
     <div class="section-title with-underline small">

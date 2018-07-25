@@ -1,7 +1,7 @@
 <template>
 <div class="modal swiss-knife">
   <div class="self">
-    <avatar-self :show="['avatar', 'name']" :classes="['horizontal']" />
+    <avatar :show="['avatar', 'name']" :persona="activePersona" :classes="['horizontal']" />
   </div>
   <div class="actions">
     <a class="action" :href="activePersona ? getParkPersonaProfileURL(activePersona.id) : '#'">個人檔案</a>
@@ -13,7 +13,7 @@
 
 <script>
 import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
-import AvatarSelf from 'watchout-common-functions/components/AvatarSelf'
+import Avatar from 'watchout-common-functions/components/Avatar'
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   methods: {
@@ -23,7 +23,7 @@ export default {
     }
   },
   components: {
-    AvatarSelf
+    Avatar
   }
 }
 </script>
