@@ -54,6 +54,7 @@ export default {
   > .label {
     margin: 0 0.25rem;
     font-size: $font-size-small;
+    line-height: $line-height-tight;
   }
   &.small {
     > .badge {

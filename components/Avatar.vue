@@ -201,7 +201,7 @@ export default {
     position: relative;
     text-align: center;
     > .name {
-      margin: 0.25rem 0;
+      margin: 0.25rem 0 0;
       font-size: $font-size-small;
     }
     > .secondary-text {
