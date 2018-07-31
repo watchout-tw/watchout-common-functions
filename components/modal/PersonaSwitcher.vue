@@ -10,15 +10,18 @@
 
 <script>
 import * as core from 'watchout-common-functions/lib/core'
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
-  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
   methods: {
     switchTo(nextPersonaID) {
       if(nextPersonaID !== this.personaID) {
-        core.loginWithTokenWithPersonaID(this.getTokenCookie(), nextPersonaID)
+        core.loginWithTokenWithPersonaID(this.getTokenCookie(), nextPersonaID).then(response => {
+          this.setAuth(response.data)
+          this.removeModalAfter('persona-switcher', 250)
+        }).catch(this.handleError)
       }
     }
   },
