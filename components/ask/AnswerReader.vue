@@ -20,7 +20,7 @@
     </div>
   </div>
   <div v-if="isFull" class="detail" :class="subcontainerClasses">
-    <div class="content">{{ answer.content }}</div>
+    <div class="content paragraphs first" v-html="minimalMarkdown(answer.content)"></div>
     <authorship v-if="!isPreview" :persona="answer.persona" :parties="parties" score="4.2" :date="answer.review.startDate" />
   </div>
   <div v-if="isFull" class="references-container" :class="subcontainerClasses">
@@ -56,7 +56,7 @@
 import debounce from 'lodash.debounce'
 import * as core from '../../lib/core'
 import * as util from '../../lib/util'
-import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import Authorship from './Authorship'
 import CoverImage from '../CoverImage'
 import LikeButtons from '../button/Like'
@@ -152,7 +152,7 @@ const likeButtonsConfig = {
 }
 
 export default {
-  mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement],
   props: ['game', 'answer', 'personaSpeeches', 'reviewCount', 'reviewAverage', 'mode', 'showQuestion', 'reviewable', 'preview', 'parties'],
   data() {
     return {

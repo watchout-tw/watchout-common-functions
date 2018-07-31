@@ -22,7 +22,7 @@
     <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @success="onPushSuccess" />
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
-    <div class="content">{{ question.content }}</div>
+    <div class="content paragraphs first" v-html="minimalMarkdown(question.content)"></div>
     <authorship :persona="question.persona" :parties="parties" :date="question.push.startDate" />
   </div>
   <div class="references-container" :class="subcontainerClasses" v-if="isFull">
@@ -61,7 +61,7 @@
 import * as core from '../../lib/core'
 import * as STATES from '../../lib/states'
 import * as util from '../../lib/util'
-import { knowsAuth, knowsError, knowsWatchout, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement } from '../../interfaces'
 import CoverImage from '../CoverImage'
 import Authorship from './Authorship'
 import Avatar from '../Avatar'
@@ -70,7 +70,7 @@ import SubmitButton from '../button/Submit'
 import Quiero from './Quiero'
 
 export default {
-  mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement],
   props: ['game', 'question', 'pushCount', 'topics', 'mode', 'pushable', 'preview', 'parties'],
   data() {
     return {
