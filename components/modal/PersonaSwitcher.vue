@@ -2,7 +2,7 @@
 <div class="modal persona-switcher">
   <div class="personas">
     <div class="persona" v-for="persona of personas" :key="persona.id" :class="persona.id === personaID ? ['active'] : []" @click="switchTo(persona.id)">
-      <avatar :show="['avatar', 'name', 'identity']" :persona="persona" :classes="['vertical', 'shadow']" />
+      <avatar :show="['avatar', 'name', 'identity']" :persona="persona" :classes="['vertical', 'shadow']" :parties="parties" />
     </div>
   </div>
 </div>
@@ -15,6 +15,7 @@ import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
   mixins: [knowsAuth, knowsError, knowsWatchout, knowsWindowManagement],
+  props: ['parties'],
   methods: {
     switchTo(nextPersonaID) {
       if(nextPersonaID !== this.personaID) {

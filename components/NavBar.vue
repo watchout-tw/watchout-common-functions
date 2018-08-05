@@ -7,7 +7,7 @@
   <div class="nav-item menu-container"></div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })">
-    <avatar :show="['avatar']" :persona="activePersona" />
+    <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
   </div>
 </nav>
 </template>
@@ -19,7 +19,7 @@ import Avatar from './Avatar'
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
-  props: ['channel'],
+  props: ['channel', 'parties'],
   data () {
     return {
       anon: { id: 'anon', type: 'system' }

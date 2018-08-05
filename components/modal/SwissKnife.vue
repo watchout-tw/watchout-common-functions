@@ -1,7 +1,7 @@
 <template>
 <div class="modal swiss-knife">
   <div class="self">
-    <avatar :show="['avatar', 'name', 'identity']" :persona="activePersona" :classes="['horizontal']" />
+    <avatar :show="['avatar', 'name', 'identity']" :persona="activePersona" :classes="['horizontal']" :parties="parties" />
   </div>
   <div class="actions">
     <a class="action" :href="activePersona ? getParkPersonaProfileURL(activePersona.id) : '#'">個人檔案</a>
@@ -17,6 +17,7 @@ import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common
 import Avatar from 'watchout-common-functions/components/Avatar'
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
+  props: ['parties'],
   methods: {
     switchPersona() {
       this.addModal('persona-switcher')

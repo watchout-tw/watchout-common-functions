@@ -2,7 +2,7 @@
 <div class="modal-manager">
   <transition name="modal" appear v-for="modal of modals" :key="modal.id">
     <div class="modal-overlay"  @click.self="removeModal(modal.id)">
-      <component :is="modal.id" :data="modal"></component>
+      <component :is="modal.id" :data="modal" :parties="parties"></component>
     </div>
   </transition>
 </div>
@@ -13,6 +13,7 @@ import { knowsWindowManagement } from '../interfaces' // FIXME: no relative path
 import * as modals from './modal'
 export default {
   mixins: [knowsWindowManagement],
+  props: ['parties'],
   components: modals
 }
 </script>
