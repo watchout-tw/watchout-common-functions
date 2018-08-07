@@ -91,7 +91,7 @@ const linkGroups = [
       },
       {
         title: '公民學院',
-        url: env.channels.edu.links.home
+        url: env.channels.uc.links.home
       }
     ]
   },

@@ -10,7 +10,7 @@
 import { env } from 'watchout-common-assets'
 import { knowsWatchout } from '../../interfaces' // FIXME: no relative paths
 
-const channelIDs = ['park', 'musou', 'ask', 'musou-media-experiment', 'lab', 'edu', 'watchout']
+const channelIDs = ['park', 'musou', 'ask', 'musou-media-experiment', 'lab', 'uc', 'watchout']
 export default {
   mixins: [knowsWatchout],
   data() {
