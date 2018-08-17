@@ -1,11 +1,15 @@
 <template>
 <div class="identity">
   <div v-if="badge" class="badge"></div>
-  <div v-if="label" class="label text-color-park">{{ label }}</div>
+  <div v-if="duration || title" class="label text-color-park">
+    <span v-if="duration" class="duration ">{{ duration }}</span>
+    <span v-if="title" class="title">{{ title }}</span>
+  </div>
 </div>
 </template>
 
 <script>
+import { mysqlTSToDateObj } from 'watchout-common-functions/lib/util'
 import { MAP as ID_MAP } from 'watchout-common-functions/lib/identities'
 
 export default {
@@ -20,16 +24,21 @@ export default {
     badge() {
       return this.hasIdentity
     },
-    label() {
-      let label = this.hasIdentity && ID_MAP.hasOwnProperty(this.persona.type) ? ID_MAP[this.persona.type] : null
+    duration() {
+      let startDateString = this.persona.start_date ? mysqlTSToDateObj(this.persona.start_date).getFullYear() : null
+      let endDateString = this.persona.end_date ? mysqlTSToDateObj(this.persona.end_date).getFullYear() : null
+      return startDateString ? startDateString + (endDateString && endDateString !== startDateString ? '-' + endDateString : '') : null
+    },
+    title() {
+      let title = this.hasIdentity && ID_MAP.hasOwnProperty(this.persona.type) ? ID_MAP[this.persona.type] : null
       if(this.hasIdentity && this.hasIdentityTags) {
         for(let tag of this.persona.data.identityTags) {
           if(ID_MAP.hasOwnProperty(tag)) {
-            label = ID_MAP[tag]
+            title = ID_MAP[tag]
           }
         }
       }
-      return label
+      return title
     }
   }
 }
@@ -50,16 +59,25 @@ export default {
     background-image: url('~watchout-common-assets/images/identity-badges/default.png');
     background-size: contain;
     border-radius: 50%;
+    margin-right: 0.25rem;
+  }
+  > .duration,
+  > .label {
+    font-size: $font-size-small;
+    line-height: $line-height-tight;
   }
   > .label {
     margin: 0 0.25rem;
-    font-size: $font-size-small;
-    line-height: $line-height-tight;
+    > .duration {
+      margin-right: 0.125rem;
+      font-weight: normal;
+    }
   }
   &.small {
     > .badge {
       width: 1rem;
       height: 1rem;
+      margin-right: 0.125rem;
     }
     > .label {
       margin: 0 0.125rem;
