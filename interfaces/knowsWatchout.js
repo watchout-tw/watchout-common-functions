@@ -4,7 +4,8 @@ const WHATPORT = {
   park: 9487,
   watchout: 9000,
   ask: 9010,
-  musou: 9020
+  musou: 9020,
+  lab: 9192
 }
 
 export default {
@@ -28,15 +29,15 @@ export default {
     getBaseURL(channelID, forceProductionURL = false) {
       let protocol = 'https://'
       let url = protocol + (channelID === 'watchout' ? 'watchout.tw/' : `${channelID}.watchout.tw/`)
-      if(process.broswer && window && !forceProductionURL) {
-        const currentURL = window.location.hostname
+      if(process.browser && !forceProductionURL) {
+        const currentBaseURL = process.env.baseURL
         let port = WHATPORT[channelID]
         if(!port) {
-          console.warn('getBaseURL: Service at unknown port.')
-        } else if(currentURL.includes('localhost')) {
+          console.warn('getBaseURL: Service at unknown port')
+        } else if(currentBaseURL.includes('localhost')) {
           protocol = 'http://'
           url = `${protocol}dev.localhost:${port}/`
-        } else if(currentURL.split('.')[0] === 'beta') {
+        } else if(currentBaseURL.split('.')[0] === 'beta') {
           url = protocol + (channelID === 'watchout' ? 'beta.watchout.tw/' : `beta.${channelID}.watchout.tw/`)
         }
       }
