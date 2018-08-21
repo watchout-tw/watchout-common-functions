@@ -1,8 +1,9 @@
 import defaultImage from 'watchout-common-assets/images/default.gif'
+import config from 'watchout-common-functions/config/config'
 
-const WHATPORT = {
-  park: 9487,
+const channelAtPort = {
   watchout: 9000,
+  park: 9487,
   ask: 9010,
   musou: 9020,
   lab: 9192
@@ -29,15 +30,12 @@ export default {
     getBaseURL(channelID, forceProductionURL = false) {
       let protocol = 'https://'
       let url = protocol + (channelID === 'watchout' ? 'watchout.tw/' : `${channelID}.watchout.tw/`)
-      if(process.browser && !forceProductionURL) {
-        const currentBaseURL = process.env.baseURL
-        let port = WHATPORT[channelID]
-        if(!port) {
-          console.warn('getBaseURL: Service at unknown port')
-        } else if(currentBaseURL.includes('localhost')) {
+      let port = channelAtPort[channelID]
+      if(!forceProductionURL) {
+        if(config.env === 'dev') {
           protocol = 'http://'
           url = `${protocol}dev.localhost:${port}/`
-        } else if(currentBaseURL.split('.')[0] === 'beta') {
+        } else if(config.env === 'beta') {
           url = protocol + (channelID === 'watchout' ? 'beta.watchout.tw/' : `beta.${channelID}.watchout.tw/`)
         }
       }
