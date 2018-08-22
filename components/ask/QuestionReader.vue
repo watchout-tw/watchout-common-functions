@@ -16,8 +16,24 @@
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
     <div class="status-description secondary-text">
-      <div class="font-size-small"><span class="latin-within-han first">{{ pushCount }}</span>人已連署；還需要<span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>人</div>
-      <div class="font-size-small"><span class="latin-within-han first">{{ questionEndDate }}</span>截止</div>
+      <template v-if="pushCount < pushThreshold">
+        <div class="font-size-small">
+          <span class="latin-within-han first">{{ pushCount }}</span>
+          <span>人連署；還需要</span>
+          <span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>
+          <span>人</span>
+        </div>
+        <div class="font-size-small">
+          <span class="latin-within-han first">{{ questionEndDate }}</span>
+          <span>截止</span>
+        </div>
+      </template>
+      <template v-else>
+        <div class="font-size-small">
+          <span class="latin-within-han first">{{ pushCount }}</span>
+          <span>人連署，門檻已過</span>
+        </div>
+      </template>
     </div>
     <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @success="onPushSuccess" />
   </div>
