@@ -15,25 +15,26 @@
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
   <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
-    <div class="status-description secondary-text">
-      <template v-if="pushCount < pushThreshold">
-        <div class="font-size-small">
-          <span class="latin-within-han first">{{ pushCount }}</span>
-          <span>人連署；還需要</span>
-          <span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>
-          <span>人</span>
-        </div>
-        <div class="font-size-small">
-          <span class="latin-within-han first">{{ questionEndDate }}</span>
-          <span>截止</span>
-        </div>
-      </template>
-      <template v-else>
-        <div class="font-size-small">
-          <span class="latin-within-han first">{{ pushCount }}</span>
-          <span>人連署，門檻已過</span>
-        </div>
-      </template>
+    <div class="progress push-count">
+      <div class="description font-size-tiny" v-if="pushCount < pushThreshold">
+        <span>連署</span>
+        <span class="latin-within-han">{{ pushCount }}</span>
+        <span>､尚須</span>
+        <span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>
+      </div>
+      <div class="description font-size-tiny" v-else>
+        <span>連署</span>
+        <span class="latin-within-han first">{{ pushCount }}</span>
+        <span>､門檻已過</span>
+      </div>
+      <progress-bar :p="pushCount" :q="pushThreshold" />
+    </div>
+    <div class="progress push-duration" v-if="pushCount < pushThreshold">
+      <div class="description font-size-tiny">
+        <span class="latin-within-han first">{{ pushDuration - pushElapsedDuration }}</span>
+        <span>天後截止</span>
+      </div>
+      <progress-bar :p="pushElapsedDuration" :q="pushDuration" />
     </div>
     <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @success="onPushSuccess" />
   </div>
@@ -74,16 +75,17 @@
 </template>
 
 <script>
-import * as core from '../../lib/core'
-import * as STATES from '../../lib/states'
-import * as util from '../../lib/util'
-import { knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement } from '../../interfaces'
-import CoverImage from '../CoverImage'
-import Authorship from './Authorship'
-import Avatar from '../Avatar'
-import ShareButton from '../button/Share'
-import SubmitButton from '../button/Submit'
-import Quiero from './Quiero'
+import * as core from 'watchout-common-functions/lib/core'
+import * as STATES from 'watchout-common-functions/lib/states'
+import * as util from 'watchout-common-functions/lib/util'
+import { knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import CoverImage from 'watchout-common-functions/components/CoverImage'
+import Authorship from 'watchout-common-functions/components/ask/Authorship'
+import Avatar from 'watchout-common-functions/components/Avatar'
+import ShareButton from 'watchout-common-functions/components/button/Share'
+import SubmitButton from 'watchout-common-functions/components/button/Submit'
+import Quiero from 'watchout-common-functions/components/ask/Quiero'
+import ProgressBar from 'watchout-common-functions/components/ProgressBar'
 
 export default {
   mixins: [knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement],
@@ -112,6 +114,16 @@ export default {
     },
     questionEndDate() {
       return util.formatter.date(util.getQuestionEndDate(this.question))
+    },
+    pushDuration() {
+      let startDate = new Date(this.questionStartDate)
+      let endDate = new Date(this.questionEndDate)
+      return Math.floor((endDate - startDate) / 24 / 60 / 60 / 1000)
+    },
+    pushElapsedDuration() {
+      let startDate = new Date(this.questionStartDate)
+      let now = new Date()
+      return Math.floor((now - startDate) / 24 / 60 / 60 / 1000)
     },
     pushThreshold() {
       return this.question.data.threshold ? this.question.data.threshold : 0
@@ -219,7 +231,8 @@ export default {
     CoverImage,
     Quiero,
     ShareButton,
-    SubmitButton
+    SubmitButton,
+    ProgressBar
   }
 }
 </script>
@@ -257,6 +270,12 @@ export default {
     justify-content: space-between;
     margin-top: 0.25rem;
     margin-bottom: 1rem;
+    > .progress {
+      flex-grow: 1;
+      margin-right: 0.5rem;
+      > .description {
+      }
+    }
   }
   > .references-container {
     > .section-title {
