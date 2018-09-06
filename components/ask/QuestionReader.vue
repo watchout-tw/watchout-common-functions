@@ -14,7 +14,7 @@
     </div>
     <share-button :classes="['top-right']" :url="shareURL" />
   </div>
-  <div class="status" :class="subcontainerClasses" v-if="!isPreview && pushable">
+  <div class="status" :class="subcontainerClasses" v-if="!isPreview">
     <div class="progress push-count">
       <div class="description font-size-tiny" v-if="pushCount < pushThreshold">
         <span>連署</span>
@@ -29,14 +29,14 @@
       </div>
       <progress-bar :p="pushCount" :q="pushThreshold" />
     </div>
-    <div class="progress push-duration" v-if="pushCount < pushThreshold">
+    <div class="progress push-duration" v-if="pushCount < pushThreshold && pushable">
       <div class="description font-size-tiny">
         <span class="latin-within-han first">{{ pushDuration - pushElapsedDuration }}</span>
         <span>天後截止</span>
       </div>
       <progress-bar :p="pushElapsedDuration" :q="pushDuration" />
     </div>
-    <submit-button :classes="pushClasses" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @success="onPushSuccess" />
+    <submit-button :classes="pushClasses" v-if="pushable" :label="pushText" :state.sync="pushButton.state" :message.sync="pushButton.message" @click.native="push(question.id)" @success="onPushSuccess" />
   </div>
   <div class="detail" :class="subcontainerClasses" v-if="isFull">
     <div class="content paragraphs first" v-html="minimalMarkdown(question.content)"></div>
