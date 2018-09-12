@@ -4,7 +4,9 @@
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
     <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)"/>
   </nuxt-link>
-  <div class="nav-item menu-container"></div>
+  <div class="nav-item menu-container">
+    <nav-bar-menu :menu="menu" />
+  </div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })">
     <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
@@ -14,12 +16,13 @@
 
 <script>
 // FIXME: perhaps better not use relative path
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from '../interfaces'
-import Avatar from './Avatar'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
+import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
-  props: ['channel', 'parties'],
+  props: ['channel', 'menu', 'parties'],
   data () {
     return {
       anon: { id: 'anon', type: 'system' }
@@ -44,6 +47,7 @@ export default {
     this.checkAuth()
   },
   components: {
+    NavBarMenu,
     Avatar
   }
 }
@@ -65,12 +69,14 @@ nav.nav-bar {
     flex-grow: 0;
   }
   > .switcher {
+    flex-shrink: 0;
     flex-basis: 52px;
     background-size: cover;
     background-position: center;
     cursor: pointer;
   }
   > .logo-with-type {
+    flex-shrink: 0;
     display: block;
     width: 64px;
     overflow-x: hidden;
