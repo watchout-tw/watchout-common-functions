@@ -21,7 +21,7 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 
-.card {
+.ghost-card {
   > .content {
     > .card.default {
       padding: 1rem;
