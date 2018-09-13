@@ -7,7 +7,6 @@
       <ghost-card v-if="section[0] === 10" :key="index" :card="doc.cards[section[1]]" />
     </template>
   </div>
-  <!--<div class="content a-text-parent" v-html="content"></div>-->
 </div>
 </template>
 
@@ -23,14 +22,6 @@ export default {
     doc() {
       return JSON.parse(this.article.mobiledoc)
     }
-    /*
-    content() {
-      let card = JSON.parse(this.article.mobiledoc).cards[0][1] // Ghost 1.x
-      let content = card.markdown
-      return this.markdown(content)
-        .replace(/<p><img(.*)src="(.*)"(.*)alt="(.*)"(.*)><\/p>/g, '<div class="image-container document"><img src="//bunko.watchout.tw$2" alt="$4" /></div>')
-    }
-    */
   },
   components: {
     GhostMarkup,
@@ -42,30 +33,9 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 
-$left-brace: '【';
-$right-brace: '】';
-
 .ghost-article {
   > .title {
     margin: 2rem 0 1rem;
-  }
-  > .content {
-    .time {
-      font-size: 0.875rem;
-      color: $color-nice-grey;
-    }
-    .appendix-index {
-      margin-top: 2rem;
-    }
-    .appendix-link {
-      font-size: 0.875rem;
-      &:before {
-        content: $left-brace;
-      }
-      &:after {
-        content: $right-brace;
-      }
-    }
   }
 }
 </style>
