@@ -1,11 +1,17 @@
 <template>
 <div class="ghost-card">
   <div class="content" v-if="type === 'html'" v-html="content.html"></div>
+  <div class="content paragraphs a-text-parent" v-else-if="type === 'markdown'" v-html="markdown(content.markdown)"></div>
+  <div class="content image-container document" v-else-if="type === 'image'">
+    <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
+  </div>
 </div>
 </template>
 
 <script>
+import { knowsMarkdown } from 'watchout-common-functions/interfaces'
 export default {
+  mixins: [knowsMarkdown],
   props: ['card'],
   computed: {
     type() {
