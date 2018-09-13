@@ -45,6 +45,7 @@ export default {
   }
   > .children {
     display: none;
+    margin-top: 0.25rem;
     padding-right: 1.5rem; // close
     position: relative;
     background: $color-modal-overlay-white;
