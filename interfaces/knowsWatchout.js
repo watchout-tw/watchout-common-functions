@@ -6,7 +6,8 @@ const channelAtPort = {
   park: 9487,
   ask: 9010,
   musou: 9020,
-  lab: 9192
+  lab: 9192,
+  uc: 9210
 }
 
 export default {
