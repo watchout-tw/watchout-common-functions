@@ -67,6 +67,12 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 .ad.standard {
   @include rect(4/1);
+  &.size-41 {
+    @include rect(4/1);
+  }
+  &.size-31 {
+    @include rect(3/1);
+  }
   &.empty {
     background-color: $color-very-light-grey;
   }
