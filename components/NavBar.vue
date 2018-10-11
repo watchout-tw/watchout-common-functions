@@ -8,9 +8,9 @@
     <nav-bar-menu :menu="menu" />
   </div>
   <div class="nav-item search-container"></div>
-  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })">
+  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })"><no-ssr>
     <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
-  </div>
+  </no-ssr></div>
 </nav>
 </template>
 
