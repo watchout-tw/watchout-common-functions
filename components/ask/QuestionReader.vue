@@ -31,8 +31,11 @@
     </div>
     <div class="progress push-duration" v-if="pushCount < pushThreshold && pushable">
       <div class="description font-size-tiny">
-        <span class="latin-within-han first">{{ pushDuration - pushElapsedDuration }}</span>
-        <span>天後截止</span>
+        <template v-if="pushRemainingTime.duration > 0">
+          <span class="latin-within-han first" >{{ pushRemainingTime.duration }}</span>
+          <span>{{ pushRemainingTime.unit }}後截止</span>
+        </template>
+        <span v-else>連署已截止</span>
       </div>
       <progress-bar :p="pushElapsedDuration" :q="pushDuration" />
     </div>
@@ -78,6 +81,7 @@
 import * as core from 'watchout-common-functions/lib/core'
 import * as STATES from 'watchout-common-functions/lib/states'
 import * as util from 'watchout-common-functions/lib/util'
+import * as TIME from 'watchout-common-functions/lib/time'
 import { knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import CoverImage from 'watchout-common-functions/components/CoverImage'
 import Authorship from 'watchout-common-functions/components/ask/Authorship'
@@ -118,12 +122,26 @@ export default {
     pushDuration() {
       let startDate = new Date(this.questionStartDate)
       let endDate = new Date(this.questionEndDate)
-      return Math.floor((endDate - startDate) / 24 / 60 / 60 / 1000)
+      return Math.floor((endDate - startDate) / 1000) // duration in seconds
     },
     pushElapsedDuration() {
       let startDate = new Date(this.questionStartDate)
       let now = new Date()
-      return Math.floor((now - startDate) / 24 / 60 / 60 / 1000)
+      return Math.floor((now - startDate) / 1000) // duration in seconds
+    },
+    pushRemainingTime() {
+      let duration = this.pushDuration - this.pushElapsedDuration
+      let unit = null
+      duration = duration > 0 ? duration : 0
+      if(duration > 0) {
+        let key = (duration >= TIME.UNITS.day.seconds ? 'day' : (duration >= TIME.UNITS.hour.seconds ? 'hour' : (duration >= TIME.UNITS.minute.seconds ? 'minute' : 'second')))
+        unit = TIME.UNITS[key].name
+        duration = Math.floor(duration / TIME.UNITS[key].seconds)
+      }
+      return {
+        duration,
+        unit
+      }
     },
     pushThreshold() {
       return this.question.data.threshold ? this.question.data.threshold : 0
