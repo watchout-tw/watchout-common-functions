@@ -74,25 +74,18 @@ export default {
       if(avatar) {
         if(typeof avatar === 'string') {
           id = avatar
-        } else if(typeof avatar === 'object') {
-          if(avatar.type === 'system' && avatar.hasOwnProperty('id')) {
-            id = avatar.id
-          } else {
-            type = avatar.type
-            id = null
-            url = avatar.url
-          }
+        } else if(typeof avatar === 'object' && avatar.hasOwnProperty('type') && !(!avatar.hasOwnProperty('id') && !avatar.hasOwnProperty('url'))) {
+          // custom avatar data obj require type
+          // EITHER id OR url
+          type = avatar.type
+          id = avatar.id ? avatar.id : null
+          url = avatar.url ? avatar.url : null
         }
-        dimensions = id === 'anon' ? this.getSystemAvatar('anon') : (type === 'system' ? this.getSystemAvatar('default') : Object.assign({}, avatar))
+        dimensions = type === 'system' ? this.getSystemAvatar('default') : Object.assign({}, avatar)
       }
-      url = id ? `${id}.png` : url
-      let image
-      try {
-        image = require('watchout-common-assets/images/avatar/' + url)
-      } catch(e) {
-        image = require('watchout-common-assets/images/avatar/default.png')
-      }
-      return Object.assign({ type, image }, dimensions)
+      // FIXME: assume everything is github://
+      url = 'https://raw.githubusercontent.com/watchout-tw/watchout-common-assets/master/images/avatar/' + (id ? `${id}.png` : url)
+      return Object.assign({ type, image: url }, dimensions)
     },
     avatarImageStyles() {
       let r = 1 // normal
