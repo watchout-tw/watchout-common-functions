@@ -5,7 +5,7 @@
     <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)"/>
   </nuxt-link>
   <div class="nav-item menu-container">
-    <nav-bar-menu :menu="menu" />
+    <nav-bar-menu :menu="menu" v-if="menu"/>
   </div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })"><no-ssr>
