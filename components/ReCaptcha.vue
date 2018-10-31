@@ -6,11 +6,9 @@
         <div id="recaptcha-placeholder" class="g-recaptcha"></div>
         <script src="https://www.google.com/recaptcha/api.js?onload=reCaptchaIsLoaded&render=explicit" async defer></script>
       </div>
-      <div class="paragraphs font-size-small secondary-text">
-        <p>藉由《媒體實驗》，我們希望更了解台灣人在想什麼。你在這個頁面的操作將被紀錄，我們會用這些寶貴的資料做出更多作品，刺激思考，促進對話。</p>
-      </div>
+      <div class="font-size-small secondary-text">藉由《媒體實驗》，我們希望更了解台灣人在想什麼。你在這個頁面的操作將被紀錄，我們會用這些寶貴的資料做出更多作品，刺激思考，促進對話。</div>
       <div class="recaptcha-text font-size-small secondary-text">
-        <img :src="require('watchout-common-assets/images/attributions/recaptcha.svg')" />
+        <img :src="require('watchout-common-assets/images/attributions/recaptcha.svg')" v-if="tokenSource !== 'watchout'" />
         <div>
           <span v-if="tokenSource !== 'watchout'">你尚未登入。</span>
           <template v-if="tokenSource !== 'watchout'"><a class="a-text" @click.prevent="addModal({ id: 'auth', joinOrLogin: 'login' })">按這裡登入</a><span>，紀錄你參與過的《媒體實驗》。</span></template>
