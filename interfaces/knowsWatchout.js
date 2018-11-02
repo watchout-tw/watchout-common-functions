@@ -61,7 +61,7 @@ export default {
       return this.getBaseURL('musou') + moduleID + '/' + projectID
     },
     generateMeta(channelID, pageTitle, pageDescription, image = defaultImage) {
-      let baseURL = this.getBaseURL(channelID, true)
+      let baseURL = this.getBaseURL(channelID)
       image = baseURL + (image.substring(0, 1) === '/' ? image.substring(1) : image)
       return [
         {
