@@ -68,6 +68,7 @@ export default {
     > img {
       width: 4rem;
       height: 4rem;
+      flex-shrink: 0;
     }
   }
 }
