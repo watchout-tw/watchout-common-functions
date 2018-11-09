@@ -5,6 +5,7 @@
     <div v-if="isShowingParty" class="party-flag-container">
       <party-flag :id="internalParty" :parties="parties" :class="!isLarge ? 'small' : ''"></party-flag>
     </div>
+    <div v-if="index" class="index d-flex align-items-center justify-content-center text-align-center" :class="indexClasses"><span>{{ index }}</span></div>
   </div>
   <div v-if="isShowing('name')" class="name line-height-tight">
     <span class="a-target">{{ internalName }}</span>
@@ -12,6 +13,7 @@
   <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
     <span>{{ secondaryText }}</span>
   </div>
+
   <identity v-if="isShowing('identity')" :persona="persona" class="small" />
 </component>
 </template>
@@ -31,7 +33,7 @@ Show: avatar, name, identity
 
 export default {
   mixins: [knowsAvatar, knowsWatchout],
-  props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'parties'],
+  props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'index', 'indexClasses', 'parties'],
   computed: {
     internalLink() {
       return typeof this.link === 'string' ? this.link : (this.link && this.persona ? this.getParkPersonaProfileURL(this.persona.id) : null)
@@ -145,6 +147,21 @@ export default {
       border-radius: 50%;
       background-color: $color-avatar-background-white;
       background-repeat: no-repeat;
+    }
+    > .index.candidate-number {
+      $size: 1.25rem;
+      position: absolute;
+      right: $size / -2;
+      bottom: 0;
+      width: $size;
+      height: $size;
+      border-radius: $size;
+      background: $color-avatar-background-white;
+      border: $color-musou 2px solid;
+      font-size: $font-size-small;
+      font-weight: bold;
+      color: $color-musou;
+      @include shadow;
     }
   }
   &.shadow {
