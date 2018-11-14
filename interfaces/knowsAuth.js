@@ -49,11 +49,16 @@ export default {
     },
     setTokenCookie(token) {
       let domain = getCookieDomain()
-      document.cookie = `watchout_token=${token};Domain=${domain};Path=/`
+      document.cookie = `watchout_token=${token}`
+      document.cookie = `Domain=${domain}`
+      document.cookie = 'Path=/'
     },
     clearTokenCookie() {
       let domain = getCookieDomain()
-      document.cookie = `watchout_token=;Domain=${domain};Path=/;Expires=Thu, 01 Jan 1970 00:00:01 GMT;`
+      document.cookie = `watchout_token=`
+      document.cookie = `Domain=${domain}`
+      document.cookie = 'Path=/'
+      document.cookie = 'Expires=Thu, 01 Jan 1970 00:00:01 GMT'
     },
     reloadAuth() {
       if(this.isLocal()) {
