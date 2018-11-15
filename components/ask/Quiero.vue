@@ -1,14 +1,14 @@
 <template>
-<div class="quiero" :class="internalClasses">
-  <div class="to" @click="linkTo()">
-    <div class="button" :class="internalClasses" :style="buttonStyles"></div>
-    <label class="label">{{ label }}</label>
-  </div>
-</div>
+<a class="quiero a-block" :class="internalClasses" @click="linkTo()">
+  <div class="button" :class="internalClasses" :style="buttonStyles"></div>
+  <span class="label a-target">{{ label }}</span>
+</a>
 </template>
 
 <script>
-import { knowsAuth, knowsWindowManagement } from '../../interfaces'
+import { knowsAuth, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+
+const defaultIconImage = 'highFive'
 
 export default {
   mixins: [knowsAuth, knowsWindowManagement],
@@ -30,7 +30,7 @@ export default {
       return classes
     },
     iconImage() {
-      return require(`watchout-common-assets/images/quiero/${this.icon}.png`)
+      return require(`watchout-common-assets/images/quiero/${this.icon ? this.icon : defaultIconImage}.png`)
     },
     buttonStyles() {
       return {
@@ -60,32 +60,36 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 $circle-size: 4.25rem;
-.quiero {
-  > .to {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
+a.quiero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
 
+  > .button {
+    height: $circle-size;
+    width: $circle-size;
+    border-radius: 50%;
+    background-size: contain;
+  }
+  > .label {
+    display: block;
+    position: relative;
+    margin-top: 0.625rem;
+    line-height: $line-height-tight;
+  }
+  &.text-only {
     > .button {
-      height: $circle-size;
-      width: $circle-size;
-      border-radius: 50%;
-      background-size: contain;
+      display: none;
     }
     > .label {
-      display: block;
-      position: relative;
-      margin-top: 0.625rem;
-      line-height: 1;
+      margin-top: 0;
     }
   }
   &.disabled {
-    > .to {
-      cursor: default;
-      > .label {
-        color: $color-generic-grey;
-      }
+    cursor: default;
+    > .label {
+      color: $color-generic-grey;
     }
   }
 }
