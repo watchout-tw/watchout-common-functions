@@ -6,4 +6,5 @@ node_modules
 
 # config
 config/config.js
+config/firebase.config.js
 config/socket.config.js
