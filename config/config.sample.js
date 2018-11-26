@@ -5,5 +5,6 @@ export default {
   reCaptchaType: 'invisible',
   ghostClient: 'ghost-client-slug',
   ghostClientSecret: 'ghost-client-secret',
+  mapboxAccessToken: 'mapbox-access-token',
   env: 'dev' // dev OR beta OR production
 }
