@@ -4,6 +4,9 @@ export default {
   methods: {
     getDateString(d) {
       return util.formatter.date(d)
+    },
+    getDateTimeString(d) {
+      return util.formatter.datetime(d)
     }
   }
 }
