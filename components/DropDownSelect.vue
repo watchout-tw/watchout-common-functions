@@ -43,8 +43,11 @@ export default {
     position: absolute;
     top: 0.25rem;
     right: 0;
-    @include triangleDown;
-    z-index: -1;
+
+    &:before {
+      content: '';
+      @include triangleDown;
+    }
   }
   > .placeholder {
     position: absolute;
