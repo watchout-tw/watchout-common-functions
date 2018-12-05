@@ -2,9 +2,9 @@
 <div class="drop-down-select input">
   <div class="triangle"></div>
   <div class="placeholder" v-if="!value">{{ placeholder }}</div>
-  <select ref="inputElement" v-model="selectedItem" @input="$emit('input', $event.target.value)">
+  <select ref="inputElement" v-model="internalValue" @input="$emit('input', $event.target.value)">
     <option disabled selected></option>
-    <option v-for="option of options" :value="typeof option !== 'object' ? option : option.value">{{ typeof option !== 'object' ? option : option.label }}</option>
+    <option v-for="option of internalOptions" :value="option.value">{{ option.label }}</option>
   </select>
 </div>
 </template>
@@ -14,12 +14,26 @@ export default {
   props: ['options', 'placeholder', 'value'],
   data() {
     return {
-      selectedItem: ''
+      internalValue: null
     }
   },
+  computed: {
+    internalOptions() {
+      let options = this.options
+      if(Array.isArray(this.options)) {
+        options = this.options.map(option => {
+          return typeof option === 'object' ? option : { value: option, label: option }
+        })
+      }
+      return options
+    }
+  },
+  beforeMount() {
+    this.internalValue = this.value
+  },
   watch: {
-    'value'() {
-      this.selectedItem = this.value
+    value() {
+      this.internalValue = this.value
     }
   }
 }
