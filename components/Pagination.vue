@@ -1,7 +1,7 @@
 <template>
 <div class="paging-container">
   <div class="controls form-field-many-inputs form-field-align-center">
-    <submit-button :classes="['ask', 'medium']" v-if="prevPageExists" label="第一頁" @click.native="firstPage" />
+    <submit-button :classes="['ask', 'medium']" v-if="prevPageExists && showBoundary" label="第一頁" @click.native="firstPage" />
     <submit-button :classes="['ask', 'medium']" v-if="prevPageExists" label="上一頁" @click.native="prevPage" />
     <div class="current-state">
       <span class="font-size-tiny">第</span>
@@ -11,6 +11,7 @@
       <span class="font-size-tiny">頁</span>
     </div>
     <submit-button :classes="['ask', 'medium']" v-if="nextPageExists" label="下一頁" @click.native="nextPage" />
+    <submit-button :classes="['ask', 'medium']" v-if="nextPageExists && showBoundary" label="最末頁" @click.native="lastPage" />
   </div>
 </div>
 </template>
@@ -19,7 +20,7 @@
 import SubmitButton from './button/Submit'
 
 export default {
-  props: ['totalItems', 'currentPage', 'pageSize'],
+  props: ['totalItems', 'currentPage', 'pageSize', 'boundaryLinks'],
   data () {
     return {}
   },
@@ -32,6 +33,9 @@ export default {
     },
     nextPageExists() {
       return this.currentPage * this.pageSize < this.totalItems
+    },
+    showBoundary() {
+      return boundaryLinks
     }
   },
   methods: {
@@ -49,6 +53,9 @@ export default {
         return
       }
       this.$emit('update:currentPage', this.currentPage - 1)
+    },
+    lastPage() {
+      this.$emit('update:currentPage', Math.ceil(this.totalItems / this.pageSize))
     }
   },
   components: {
