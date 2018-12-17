@@ -115,7 +115,7 @@ export default {
     > .symbol {
     }
     > .loading {
-      @include spinner();
+      @include spinner;
     }
     > .checkmark {
       @include checkmark-animated;
