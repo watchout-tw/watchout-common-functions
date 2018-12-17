@@ -5,6 +5,9 @@
   <div class="content image-container document" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
   </div>
+  <div class="content" v-else-if="type === 'hr'">
+    <div class="divider"></div>
+  </div>
 </div>
 </template>
 
@@ -39,6 +42,11 @@ export default {
         font-size: 1rem;
         line-height: $line-height-default;
       }
+    }
+    > .divider {
+      margin: 2rem auto;
+      max-width: 2rem;
+      border-bottom: 2px solid $color-very-light-grey;
     }
   }
 }
