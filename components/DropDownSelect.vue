@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  props: ['options', 'placeholder', 'value'],
+  props: ['placeholder', 'options', 'value'],
   data() {
     return {
       internalValue: null
