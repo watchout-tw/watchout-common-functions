@@ -1,8 +1,10 @@
-import * as core from '../lib/core'
+import * as core from 'watchout-common-functions/lib/core'
+import * as firestore from 'watchout-common-functions/lib/firestore'
 
 export const state = () => ({
   topics: [],
   parties: [],
+  authors: [],
   reps: [],
   caucuses: [],
   gov_agencies: [],
@@ -17,6 +19,10 @@ export const actions = {
   async cacheParties({ commit }) {
     let parties = await core.getParties()
     commit('cacheParties', parties.data.rows.map(row => Object.assign(row, { code: row.emblem, colors: [row.color] })))
+  },
+  async cacheAuthors({ commit }) {
+    let authors = await firestore.bunko.getAuthors()
+    commit('cacheAuthors', authors)
   },
   async cacheReps({ commit }) {
     let reps = await core.getReps()
@@ -43,6 +49,9 @@ export const mutations = {
   cacheParties(state, value) {
     state.parties = value
   },
+  cacheAuthors(state, value) {
+    state.authors = value
+  },
   cacheReps(state, value) {
     state.reps = value
   },
@@ -63,6 +72,9 @@ export const getters = {
   },
   parties(state) {
     return state.parties
+  },
+  authors(state) {
+    return state.authors
   },
   reps(state) {
     return state.reps
