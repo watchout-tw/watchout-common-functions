@@ -1,6 +1,7 @@
 import knowsAudio from './knowsAudio'
 import knowsAuth from './knowsAuth'
 import knowsAvatar from './knowsAvatar'
+import knowsBunko from './knowsBunko'
 import knowsCaching from './knowsCaching'
 import knowsCoralReef from './knowsCoralReef'
 import knowsDOM from './knowsDOM'
@@ -18,6 +19,7 @@ export {
   knowsAudio,
   knowsAuth,
   knowsAvatar,
+  knowsBunko,
   knowsCaching,
   knowsCoralReef,
   knowsDOM,
