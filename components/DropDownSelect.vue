@@ -70,5 +70,8 @@ export default {
     color: $color-secondary-text-grey;
     z-index: -1;
   }
+  &.small {
+    font-size: 0.875rem;
+  }
 }
 </style>
