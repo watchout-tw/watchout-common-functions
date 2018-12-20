@@ -1,22 +1,20 @@
 <template>
-<div class="array-editor">
-  <div class="values">
+<div class="array-editor form-field-many-inputs no-wrap tight">
+  <div class="input values">
     <div class="value" v-for="(value, index) of values" :key="index">
       <span>{{ getLabel(values[index]) }}</span>
       <div class="close" @click="removeValue(index)"></div>
     </div>
     <div class="not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
   </div>
-  <div class="new-value-input form-field-many-inputs no-wrap">
-    <template v-if="type === 'select'">
-      <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" />
-    </template>
-    <template v-else>
-      <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
-    </template>
-    <button class="input button small" @click="addValue">新增</button>
-    <button class="input button small" @click="clearValues">清空</button>
-  </div>
+  <template v-if="type === 'select'">
+    <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" :style="{ flexShrink: 0 }" /><!-- FIXME: quick hack -->
+  </template>
+  <template v-else>
+    <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
+  </template>
+  <button class="input button small" @click="addValue">新增</button>
+  <button class="input button small" @click="clearValues">清空</button>
 </div>
 </template>
 
@@ -64,14 +62,17 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 
 .array-editor {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.5rem 0;
   > .values {
     display: flex;
+    align-items: flex-start;
     flex-wrap: wrap;
-    flex-grow: 1;
-    padding: 0.25rem 0;
     > .value {
       flex-grow: 0;
       position: relative;
+      margin: 0.125rem;
       padding: 0.25rem 0.375rem;
       padding-right: 1.5rem;
       border-style: solid;
@@ -81,14 +82,11 @@ export default {
     }
     > .not-available {
       flex-shrink: 0;
+      margin: 0.125rem 0;
       padding: 0.25rem 0.375rem;
       border-top: 1px solid transparent;
       border-bottom: 1px solid transparent;
     }
-  }
-  > .new-value-input {
-    flex-grow: 0;
-    flex-shrink: 1;
   }
 }
 </style>
