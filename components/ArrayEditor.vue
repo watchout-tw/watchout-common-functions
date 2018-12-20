@@ -82,6 +82,8 @@ export default {
     > .not-available {
       flex-shrink: 0;
       padding: 0.25rem 0.375rem;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
     }
   }
   > .new-value-input {
