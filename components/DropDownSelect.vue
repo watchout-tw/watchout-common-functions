@@ -45,6 +45,8 @@ export default {
 .drop-down-select {
   position: relative;
   border-bottom: 1px solid $color-light-border-grey;
+  padding-right: 1rem;
+  z-index: 0;
   > select {
     appearance: none;
     width: 100%;
