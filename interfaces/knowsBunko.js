@@ -8,6 +8,9 @@ export default {
   },
   methods: {
     getPubDest,
-    getPubDestFromContent
+    getPubDestFromContent,
+    isPublished(doc) {
+      return doc.publishedFrom === 'firestore'
+    }
   }
 }
