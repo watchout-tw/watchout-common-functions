@@ -1,8 +1,8 @@
 <template>
 <div class="paging-container">
   <div class="controls form-field-many-inputs form-field-align-center">
-    <submit-button :classes="['ask', 'medium']" v-if="prevPageExists && showBoundary" label="第一頁" @click.native="firstPage" />
-    <submit-button :classes="['ask', 'medium']" v-if="prevPageExists" label="上一頁" @click.native="prevPage" />
+    <submit-button :classes="['ask', 'medium']" v-if="prevPageExists && showBoundary" label="第一頁" :state.sync="allButtonStatuses.firstPage.state" :message.sync="allButtonStatuses.firstPage.message" @click.native="firstPage" />
+    <submit-button :classes="['ask', 'medium']" v-if="prevPageExists" label="上一頁" :state.sync="allButtonStatuses.prevPage.state" :message.sync="allButtonStatuses.prevPage.message" @click.native="prevPage" />
     <div class="current-state">
       <span class="font-size-tiny">第</span>
       <span class="latin-within-han">{{ currentPage }}</span>
@@ -10,19 +10,53 @@
       <span class="latin-within-han">{{ totalPageCount }}</span>
       <span class="font-size-tiny">頁</span>
     </div>
-    <submit-button :classes="['ask', 'medium']" v-if="nextPageExists" label="下一頁" @click.native="nextPage" />
-    <submit-button :classes="['ask', 'medium']" v-if="nextPageExists && showBoundary" label="最末頁" @click.native="lastPage" />
+    <submit-button :classes="['ask', 'medium']" v-if="nextPageExists" label="下一頁" :state.sync="allButtonStatuses.nextPage.state" :message.sync="allButtonStatuses.nextPage.message" @click.native="nextPage" />
+    <submit-button :classes="['ask', 'medium']" v-if="nextPageExists && showBoundary" label="最末頁" :state.sync="allButtonStatuses.lastPage.state" :message.sync="allButtonStatuses.lastPage.message" @click.native="lastPage" />
   </div>
 </div>
 </template>
 
 <script>
+import * as STATES from '../lib/states'
 import SubmitButton from './button/Submit'
 
 export default {
-  props: ['totalItems', 'currentPage', 'pageSize', 'boundaryLinks'],
+  props: {
+    totalItems: Number,
+    currentPage: Number,
+    pageSize: {
+      type: Number,
+      default: 20
+    },
+    boundaryLinks: {
+      type: Boolean,
+      default: true
+    },
+    currentButtonStatus: Object
+  },
   data () {
-    return {}
+    return {
+      buttonClicked: '',
+      allButtonStatuses: {
+        firstPage: { state: STATES.DEFAULT, message: null, success: '更新成功', failed: '更新失敗' },
+        prevPage: { state: STATES.DEFAULT, message: null, success: '更新成功', failed: '更新失敗' },
+        nextPage: { state: STATES.DEFAULT, message: null, success: '更新成功', failed: '更新失敗' },
+        lastPage: { state: STATES.DEFAULT, message: null, success: '更新成功', failed: '更新失敗' }
+      }
+    }
+  },
+  watch: {
+    'currentButtonStatus.state' (next, prev) {
+      if (this.buttonClicked === '') {
+        return
+      }
+      this.allButtonStatuses[this.buttonClicked].state = next
+      if (next === STATES.SUCCESS) {
+        this.allButtonStatuses[this.buttonClicked].message = this.allButtonStatuses[this.buttonClicked].success
+      } else if (next === STATES.FAILED) {
+        this.allButtonStatuses[this.buttonClicked].message = this.allButtonStatuses[this.buttonClicked].failed
+      }
+    }
   },
   computed: {
     totalPageCount() {
@@ -35,7 +69,7 @@ export default {
       return this.currentPage * this.pageSize < this.totalItems
     },
     showBoundary() {
-      return boundaryLinks
+      return this.boundaryLinks
     }
   },
   methods: {
@@ -43,18 +77,22 @@ export default {
       if(this.currentPage <= 1) {
         return
       }
+      this.buttonClicked = 'firstPage'
       this.$emit('update:currentPage', 1)
     },
     nextPage() {
+      this.buttonClicked = 'nextPage'
       this.$emit('update:currentPage', this.currentPage + 1)
     },
     prevPage() {
       if(this.currentPage <= 1) {
         return
       }
+      this.buttonClicked = 'prevPage'
       this.$emit('update:currentPage', this.currentPage - 1)
     },
     lastPage() {
+      this.buttonClicked = 'lastPage'
       this.$emit('update:currentPage', Math.ceil(this.totalItems / this.pageSize))
     }
   },
