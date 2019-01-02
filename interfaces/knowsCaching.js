@@ -27,6 +27,9 @@ export default {
     },
     cachedAuthorByContent(type, id) {
       return this.cachedAuthors.find(author => author.content.id === id)
+    },
+    cachedAuthorByPersona(personaID) {
+      return this.cachedAuthors.find(author => author.persona === personaID)
     }
   }
 }
