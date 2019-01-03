@@ -4,7 +4,7 @@
   <div class="doc">
     <template v-for="(section, index) of doc.sections">
       <ghost-markup v-if="section[0] === 1" :key="index" :tag-name="section[1]" :markers="section[2]" :atoms="doc.atoms" :markups="doc.markups" />
-      <ghost-card v-if="section[0] === 10" :key="index" :card="doc.cards[section[1]]" />
+      <ghost-card v-else-if="section[0] === 10" :key="index" :card="doc.cards[section[1]]" :data="data" />
     </template>
   </div>
 </div>
@@ -17,7 +17,7 @@ import GhostCard from 'watchout-common-functions/components/ghost/Card'
 
 export default {
   mixins: [knowsMarkdown],
-  props: ['article'],
+  props: ['article', 'data'],
   computed: {
     doc() {
       return JSON.parse(this.article.mobiledoc)
