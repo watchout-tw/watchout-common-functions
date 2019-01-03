@@ -1,4 +1,5 @@
 import { mapGetters } from 'vuex'
+import { parseReference } from 'watchout-common-functions/lib/bunko'
 
 export default {
   async fetch({ store, params }) {
@@ -26,7 +27,10 @@ export default {
       return this.cachedAuthors.find(author => author.id === id)
     },
     cachedAuthorByContent(type, id) {
-      return this.cachedAuthors.find(author => author.content.id === id)
+      return this.cachedAuthors.find(author => {
+        let ref = parseReference(author.reference)
+        return ref.type === type && ref.id === id
+      })
     },
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors.find(author => author.persona === personaID)

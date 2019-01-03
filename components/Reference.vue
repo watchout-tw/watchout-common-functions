@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { parseReference, makeReference } from 'watchout-common-functions/lib/bunko'
 import DropDownSelect from 'watchout-common-functions/components/DropDownSelect'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 
@@ -42,7 +43,6 @@ const types = [
   }
 ]
 
-const SEPARATOR = '://'
 export default {
   props: {
     reference: String,
@@ -59,30 +59,19 @@ export default {
   computed: {
     type: {
       get() {
-        let tokens = this.split()
-        return tokens[0]
+        return parseReference(this.reference).type
       },
       set(value) {
-        let [type, id] = this.split()
-        type = value
-        this.$emit('update:reference', type + SEPARATOR + (id !== null ? id : ''))
+        this.$emit('update:reference', makeReference(value, parseReference(this.reference).id))
       }
     },
     id: {
       get() {
-        let tokens = this.split()
-        return tokens[1]
+        return parseReference(this.reference).id
       },
       set(value) {
-        let [type, id] = this.split()
-        id = value
-        this.$emit('update:reference', (type !== null ? type : '') + SEPARATOR + id)
+        this.$emit('update:reference', makeReference(parseReference(this.reference).type, value))
       }
-    }
-  },
-  methods: {
-    split() {
-      return this.reference && this.reference.indexOf(SEPARATOR) > -1 ? this.reference.split(SEPARATOR) : [null, null]
     }
   },
   components: {
