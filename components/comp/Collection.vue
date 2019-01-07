@@ -3,7 +3,7 @@
   <h4 class="title section-title with-underline small margin-top-bottom-8"><span>{{ collection.title }}</span></h4>
   <div class="items" v-if="items">
     <a class="item a-block" v-for="item of items" :key="item.id">
-      <div class="image">{{ item.content.image }}</div>
+      <div class="image" v-if="item.content.image" :style="getItemImageStyles(item)"></div>
       <div class="summary">
         <h4 class="a-target">{{ item.content.title }}</h4>
       </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { makeReference } from 'watchout-common-functions/lib/bunko'
+import { makeReference, getContentPermalink } from 'watchout-common-functions/lib/bunko'
 
 export default {
   props: ['id', 'data'],
@@ -31,6 +31,16 @@ export default {
         })
       }) : null
     }
+  },
+  methods: {
+    getItemImageStyles(item) {
+      let styles = {}
+      let url = getContentPermalink(item.content.image)
+      if(url) {
+        styles.backgroundImage = `url(${url})`
+      }
+      return styles
+    }
   }
 }
 </script>
@@ -42,11 +52,17 @@ export default {
   > .items {
     > .item {
       margin: 1rem 0;
-      padding: 0.5rem 0.75rem;
       background-color: $color-very-very-light-grey;
       @include shadow;
       &:first-child {
         margin-top: 0;
+      }
+      > .image {
+        @include rect(4/1);
+        background-size: cover;
+      }
+      > .summary {
+        padding: 0.5rem 0.75rem;
       }
     }
   }
