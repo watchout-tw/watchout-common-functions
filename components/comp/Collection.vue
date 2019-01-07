@@ -1,12 +1,8 @@
 <template>
 <div class="comp-collection">
-  <div>
-    {{ reference }}
-  </div>
-  <div class="items">
-    <div class="item" v-for="item of collection.items">
-      {{ item }}
-    </div>
+  <div>{{ reference }}</div>
+  <div class="items" v-if="collection">
+    <div class="item" v-for="item of collection.items" :key="item.id">{{ item }}</div>
   </div>
 </div>
 </template>
@@ -21,7 +17,7 @@ export default {
       return makeReference('collection', this.id)
     },
     collection() {
-      return this.data[this.reference]
+      return this.data ? this.data[this.reference] : null
     }
   }
 }
