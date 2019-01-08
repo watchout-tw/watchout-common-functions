@@ -1,5 +1,6 @@
 import defaultImage from 'watchout-common-assets/images/default.gif'
 import config from 'watchout-common-functions/config/config'
+import env from 'watchout-common-assets/environment'
 
 const channelAtPort = {
   watchout: 9000,
@@ -27,6 +28,9 @@ export default {
         width: metadata.width + 'px',
         height: metadata.height + 'px'
       }
+    },
+    getName(id) {
+      return env.channels.hasOwnProperty(id) ? env.channels[id].name : '找不到名字'
     },
     getBaseURL(channelID, forceProductionURL = false) {
       let protocol = 'https://'
