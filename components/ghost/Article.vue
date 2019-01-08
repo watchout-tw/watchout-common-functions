@@ -1,6 +1,5 @@
 <template>
-<div class="ghost-article center-self with-left-right-margin">
-  <h1 class="title small">{{ article.title }}</h1>
+<div class="ghost-article">
   <div class="content">
     <template v-for="(section, index) of mobiledoc.sections">
       <!--<ghost-markup v-if="section[0] === 1" :key="index" :tag-name="section[1]" :markers="section[2]" :atoms="mobiledoc.atoms" :markups="mobiledoc.markups" />-->

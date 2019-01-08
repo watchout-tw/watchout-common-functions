@@ -1,9 +1,9 @@
 <template>
-<div class="comp-infobox margin-top-bottom-single">
-  <div class="content">
+<div class="comp-infobox tcl-container no-margin">
+  <div class="infobox tcl-panel no-margin tcl-left-right-margin">
     <h4>{{ doc.title }}</h4>
     <div class="content font-size-small">
-      <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">
+      <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">
         <div class="paragraphs last" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
       </div>
     </div>
@@ -18,6 +18,11 @@ import { makeReference } from 'watchout-common-functions/lib/bunko'
 export default {
   mixins: [knowsMarkdown],
   props: ['id', 'data'],
+  data() {
+    return {
+      maxNumSection: 3
+    }
+  },
   computed: {
     reference() {
       return makeReference('doc', this.id)
@@ -36,7 +41,7 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 
 .comp-infobox {
-  > .content {
+  > .infobox {
     padding: 0.5rem 0.75rem;
     background-color: $color-very-very-light-grey;
     @include shadow;

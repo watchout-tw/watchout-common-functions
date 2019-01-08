@@ -1,15 +1,25 @@
 <template>
 <div class="ghost-card">
-  <div class="content" v-if="type === 'reference'">
-    <comp-collection v-if="content.type === 'collection'" :id="content.id" :data="data" />
-    <comp-infobox v-if="content.type === 'doc' && content.params && content.params.display === 'infobox'" :id="content.id" :data="data" />
+  <div class="card" v-if="type === 'reference'">
+    <div class="content">
+      <comp-collection v-if="content.type === 'collection'" :id="content.id" :data="data" />
+      <comp-infobox v-if="content.type === 'doc' && content.params && content.params.display === 'infobox'" :id="content.id" :data="data" />
+    </div>
   </div>
-  <div class="content" v-if="type === 'html'" v-html="content.html"></div>
-  <div class="content paragraphs a-text-parent" v-else-if="type === 'markdown'" v-html="markdown(content.markdown)"></div>
-  <div class="content image-container document" v-else-if="type === 'image'">
+  <div class="card" v-else-if="type === 'html'">
+    <div class="content" v-html="content.html"></div>
+  </div>
+  <div class="card" v-else-if="type === 'markdown'">
+    <div class="tcl-container no-margin">
+      <div class="tcl-panel no-margin tcl-left-right-margin">
+        <div class="content paragraphs a-text-parent"  v-html="markdown(content.markdown)"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
   </div>
-  <div class="content" v-else-if="type === 'hr'">
+  <div class="card" v-else-if="type === 'hr'">
     <div class="divider"></div>
   </div>
 </div>
@@ -47,18 +57,7 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 
 .ghost-card {
-  > .content {
-    > .card.default {
-      padding: 1rem;
-      width: 16rem;
-      line-height: $line-height-default;
-      background-color: $color-watchout-light;
-      @include shadow;
-      > .title {
-        font-size: 1rem;
-        line-height: $line-height-default;
-      }
-    }
+  > .card {
     > .divider {
       margin: 2rem auto;
       max-width: 2rem;

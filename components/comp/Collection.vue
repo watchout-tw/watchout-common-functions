@@ -1,11 +1,15 @@
 <template>
 <div class="comp-collection margin-top-bottom-single">
-  <h4 class="title section-title with-underline small margin-top-bottom-8"><span>{{ collection.title }}</span></h4>
-  <div class="items" v-if="items">
-    <a class="item a-block" v-for="item of items" :key="item.id">
-      <div class="image" v-if="item.content.image" :style="getItemImageStyles(item)"></div>
+  <h4 class="title section-title with-underline small text-align-center margin-top-bottom-8"><span>{{ collection.title }}</span></h4>
+  <div class="items tcl-container no-margin" v-if="items">
+    <a class="item tcl-panel half-width a-block" v-for="item of items" :key="item.id">
+      <div class="pub-dest font-size-small" :class="'bg-' + item.content.publishedTo + '-light'">
+        <div class="logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(item.content.publishedTo) + ')' }"></div>
+        <label>{{ getName(item.content.publishedTo) }}</label>
+      </div>
+      <div class="image" :style="getItemImageStyles(item)"></div>
       <div class="summary">
-        <h4 class="a-target">{{ item.content.title }}</h4>
+        <h4 class="title a-target">{{ item.content.title }}</h4>
       </div>
     </a>
   </div>
@@ -13,9 +17,11 @@
 </template>
 
 <script>
-import { makeReference, getContentPermalink } from 'watchout-common-functions/lib/bunko'
+import { knowsWatchout } from 'watchout-common-functions/interfaces'
+import { parseReference, makeReference, getContentPermalink } from 'watchout-common-functions/lib/bunko'
 
 export default {
+  mixins: [knowsWatchout],
   props: ['id', 'data'],
   computed: {
     reference() {
@@ -33,6 +39,9 @@ export default {
     }
   },
   methods: {
+    getItemReference(item) {
+      return parseReference(item.reference)
+    },
     getItemImageStyles(item) {
       let styles = {}
       let url = getContentPermalink(item.content.image)
@@ -51,18 +60,25 @@ export default {
 .comp-collection {
   > .items {
     > .item {
-      margin: 1rem 0;
       background-color: $color-very-very-light-grey;
       @include shadow;
-      &:first-child {
-        margin-top: 0;
-      }
       > .image {
-        @include rect(4/1);
+        @include rect(2/1);
         background-size: cover;
+        background-position: center center;
       }
       > .summary {
         padding: 0.5rem 0.75rem;
+      }
+      > .pub-dest {
+        display: flex;
+        align-items: center;
+        > .logo {
+          width: 24px;
+          height: 24px;
+          background-size: contain;
+          margin-right: 4px;
+        }
       }
     }
   }
