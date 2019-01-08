@@ -2,7 +2,7 @@
 <div class="ghost-card">
   <div class="content" v-if="type === 'reference'">
     <comp-collection v-if="content.type === 'collection'" :id="content.id" :data="data" />
-    <comp-infobox v-if="content.type === 'doc'" :id="content.id" :data="data" />
+    <comp-infobox v-if="content.type === 'doc' && content.params && content.params.display === 'infobox'" :id="content.id" :data="data" />
   </div>
   <div class="content" v-if="type === 'html'" v-html="content.html"></div>
   <div class="content paragraphs a-text-parent" v-else-if="type === 'markdown'" v-html="markdown(content.markdown)"></div>
