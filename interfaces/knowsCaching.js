@@ -6,14 +6,16 @@ export default {
     await Promise.all([
       store.dispatch('caching/cacheTopics'),
       store.dispatch('caching/cacheParties'),
-      store.dispatch('caching/cacheAuthors')
+      store.dispatch('caching/cacheAuthors'),
+      store.dispatch('caching/cacheTags')
     ])
   },
   computed: {
     ...mapGetters({
       cachedTopics: 'caching/topics',
       cachedParties: 'caching/parties',
-      cachedAuthors: 'caching/authors'
+      cachedAuthors: 'caching/authors',
+      cachedTags: 'caching/tags'
     })
   },
   methods: {
@@ -34,6 +36,9 @@ export default {
     },
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors.find(author => author.persona === personaID)
+    },
+    cachedTag(id) {
+      return this.cachedTags.find(tag => tag.id === id)
     }
   }
 }

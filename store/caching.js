@@ -5,6 +5,7 @@ export const state = () => ({
   topics: [],
   parties: [],
   authors: [],
+  tags: [],
   reps: [],
   caucuses: [],
   gov_agencies: [],
@@ -23,6 +24,10 @@ export const actions = {
   async cacheAuthors({ commit }) {
     let authors = await firestore.bunko.getAuthors()
     commit('cacheAuthors', authors)
+  },
+  async cacheTags({ commit }) {
+    let tags = await firestore.bunko.getTags()
+    commit('cacheTags', tags)
   },
   async cacheReps({ commit }) {
     let reps = await core.getReps()
@@ -52,6 +57,9 @@ export const mutations = {
   cacheAuthors(state, value) {
     state.authors = value
   },
+  cacheTags(state, value) {
+    state.tags = value
+  },
   cacheReps(state, value) {
     state.reps = value
   },
@@ -75,6 +83,9 @@ export const getters = {
   },
   authors(state) {
     return state.authors
+  },
+  tags(state) {
+    return state.tags
   },
   reps(state) {
     return state.reps
