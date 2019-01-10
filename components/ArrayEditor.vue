@@ -1,20 +1,26 @@
 <template>
-<div class="array-editor form-field-many-inputs no-wrap tight">
-  <div class="input values">
-    <div class="value" v-for="(value, index) of values" :key="index">
-      <span>{{ getLabel(values[index]) }}</span>
-      <div class="close" @click="removeValue(index)"></div>
+<div class="array-editor">
+  <div class="row editor">
+    <div class="col items-container">
+      <div class="items">
+        <div class="item" v-for="(value, index) of values" :key="index">
+          <span>{{ getLabel(values[index]) }}</span>
+          <div class="close small" @click="removeValue(index)"></div>
+        </div>
+        <div class="not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
+      </div>
     </div>
-    <div class="not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
+    <div class="col form-field-many-inputs">
+      <template v-if="type === 'select'">
+        <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" :style="{ flexShrink: 0 }" /><!-- FIXME: quick hack -->
+      </template>
+      <template v-else>
+        <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
+      </template>
+      <button class="input button small" @click="addValue">新增</button>
+      <button class="input button small" @click="clearValues">清空</button>
+    </div>
   </div>
-  <template v-if="type === 'select'">
-    <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" :style="{ flexShrink: 0 }" /><!-- FIXME: quick hack -->
-  </template>
-  <template v-else>
-    <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
-  </template>
-  <button class="input button small" @click="addValue">新增</button>
-  <button class="input button small" @click="clearValues">清空</button>
 </div>
 </template>
 
@@ -62,30 +68,34 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 
 .array-editor {
-  display: flex;
-  align-items: flex-start;
-  margin: 0.5rem 0;
-  > .values {
+  width: 100%;
+  > .row {
     display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    > .value {
-      flex-grow: 0;
-      position: relative;
-      margin: 0.125rem;
-      padding: 0.25rem 0.375rem;
-      padding-right: 1.5rem;
-      border-style: solid;
-      border-color: $color-light-border-grey;
-      border-radius: 1px;
-      border-width: 1px;
+    align-items: center;
+    width: 100%;
+    > .col {
+      width: 50%;
     }
-    > .not-available {
-      flex-shrink: 0;
-      margin: 0.125rem 0;
-      padding: 0.25rem 0.375rem;
-      border-top: 1px solid transparent;
-      border-bottom: 1px solid transparent;
+  }
+  > .editor {
+    > .items-container {
+      > .items {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        font-size: 0.875rem;
+        > .item {
+          flex-grow: 0;
+          position: relative;
+          margin: 0.125em;
+          padding: 0.25em 0.375em;
+          padding-right: 1.5em;
+          border-style: solid;
+          border-color: $color-light-border-grey;
+          border-radius: 1px;
+          border-width: 1px;
+        }
+      }
     }
   }
 }
