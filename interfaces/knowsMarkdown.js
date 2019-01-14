@@ -21,7 +21,8 @@ const maxSanitizationOptions = Object.assign({}, minSanitizationOptions, {
     'ul',
     'ol',
     'li'
-  ]
+  ],
+  allowedAttributes: sanitizer.defaults.allowedAttributes
 })
 
 export default {
