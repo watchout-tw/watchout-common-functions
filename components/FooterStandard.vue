@@ -74,10 +74,6 @@ const linkGroups = [
         url: env.channels.musou.links.home
       },
       {
-        title: '媒體實驗',
-        url: env.channels['musou-media-experiment'].links.home
-      },
-      {
         title: '給問擂台',
         url: env.channels.ask.links.home
       },
