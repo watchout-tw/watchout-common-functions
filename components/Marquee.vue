@@ -1,21 +1,33 @@
 <template>
 <div class="marquee" :class="classes">
   <div class="content d-flex" :style="contentStyles">
-    <div v-for="ancm of announcements" class="announcement d-flex" :class="ancm.type">
-      <label>{{ typeLabels[ancm.type] }}</label>
-      <span>{{ ancm.content }}</span>
-      <a v-if="ancm.action" :href="ancm.action.link" class="a-text action">{{ ancm.action.label }}</a>
+    <div v-for="ancm of ancms" class="ancm" :class="ancm.type">
+      <span class="type">{{ types[ancm.type] }}</span>
+      <span>{{ ancm.description }}</span>
+      <a :href="ancm.actionLink" class="action a-text">{{ ancm.actionLabel }}</a>
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import env from 'watchout-common-assets/environment'
+import * as firestore from 'watchout-common-functions/lib/firestore'
 
 export default {
   props: ['classes'],
-  mounted() {
+  data() {
+    return {
+      types: {
+        breaking: '快訊',
+        livestream: '直播'
+      },
+      ancms: [],
+      animationDuration: 12
+    }
+  },
+  async mounted() {
+    let ancms = await firestore.watchout.getAncms()
+    this.ancms.push(...ancms)
     window.addEventListener('resize', this.setAnimationDuration)
     this.setAnimationDuration()
   },
@@ -30,16 +42,6 @@ export default {
       return {
         animationDuration: this.animationDuration + 's'
       }
-    }
-  },
-  data() {
-    return {
-      announcements: env.announcements.rows,
-      typeLabels: {
-        breaking: '快訊',
-        livestream: '直播'
-      },
-      animationDuration: 12
     }
   }
 }
@@ -56,14 +58,12 @@ export default {
     transform: translateX(-100%)
   }
 }
-
 .marquee {
   position: relative;
   width: 100%;
   height: 3rem;
   line-height: 1rem;
   overflow: hidden;
-
   > .content {
     position: absolute;
     display: block;
@@ -72,21 +72,19 @@ export default {
     white-space: nowrap;
     overflow: visible;
     animation: marquee 8s linear infinite;
-
-    > .announcement {
+    > .ancm {
       margin: 0 2rem;
       padding: 1rem;
-
-      > label {
+      display: flex;
+      > .type {
         font-weight: bold;
-        font-size: 0.75rem;
+        font-size: $font-size-small;
         margin-right: 0.25rem;
       }
       > .action {
         font-weight: bold;
-        font-size: 0.875rem;
+        font-size: $font-size-small;
       }
-
       &.breaking {
         &::before {
           content: '';
@@ -96,7 +94,7 @@ export default {
           border-radius: 1rem;
           background-color: $color-musou;
         }
-        > label {
+        > .type {
           color: $color-musou;
         }
       }
@@ -106,12 +104,5 @@ export default {
     -webkit-animation-play-state: paused;
     animation-play-state: paused;
   }
-}
-
-.marquee > .content > span::before {
-  content: '快訊';
-  padding-left: 4px;
-  padding-right: 4px;
-  color: #ff5368;
 }
 </style>
