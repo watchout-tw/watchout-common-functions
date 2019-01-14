@@ -10,17 +10,13 @@
     <div class="content" v-html="content.html"></div>
   </div>
   <div class="card" v-else-if="type === 'markdown'">
-    <div class="tcl-container no-margin">
-      <div class="tcl-panel no-margin tcl-left-right-margin">
-        <div class="content paragraphs a-text-parent"  v-html="markdown(content.markdown)"></div>
-      </div>
-    </div>
+    <div class="content paragraphs responsive-typesetting-container variable-font-size a-text-parent"  v-html="markdown(content.markdown)"></div>
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
   </div>
   <div class="card" v-else-if="type === 'hr'">
-    <div class="divider"></div>
+    <div class="content divider"></div>
   </div>
 </div>
 </template>
