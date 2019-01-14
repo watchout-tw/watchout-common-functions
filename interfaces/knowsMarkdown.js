@@ -1,6 +1,13 @@
 import marked from 'marked'
 const sanitizer = require('sanitize-html')
-const maxSanitizationOptions = {
+const minSanitizationOptions = {
+  allowedTags: false,
+  allowedAttributes: false,
+  transformTags: {
+    'a': sanitizer.simpleTransform('a', { target: '_blank' })
+  }
+}
+const maxSanitizationOptions = Object.assign({}, minSanitizationOptions, {
   allowedTags: [
     'b',
     'i',
@@ -15,7 +22,7 @@ const maxSanitizationOptions = {
     'ol',
     'li'
   ]
-}
+})
 
 export default {
   methods: {
@@ -23,7 +30,7 @@ export default {
       let result = ''
       if(typeof str === 'string') {
         str = str.trim()
-        result = marked(str)
+        result = sanitizer(marked(str), minSanitizationOptions)
       }
       return result
     },
