@@ -10,7 +10,7 @@
         <div class="not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
       </div>
     </div>
-    <div class="col form-field-many-inputs">
+    <div class="col form-field-many-inputs no-wrap">
       <template v-if="type === 'select'">
         <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" :style="{ flexShrink: 0 }" /><!-- FIXME: quick hack -->
       </template>
