@@ -8,7 +8,7 @@
         <label>{{ getName(item.content.publishedTo) }}</label>
       </div>
       <div class="image" :style="getItemImageStyles(item)">
-        <div v-if="getItemReference(item).type === 'video'" class="play-button"></div>
+        <div v-if="getItemReference(item).type === 'video'" class="button play"></div>
       </div>
       <div class="summary">
         <h4 class="title a-target">{{ item.content.title }}</h4>
@@ -68,7 +68,7 @@ export default {
         @include rect(2/1);
         background-size: cover;
         background-position: center center;
-        > .play-button {
+        > .button.play {
           position: absolute;
           top: 50%;
           left: 50%;
