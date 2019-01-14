@@ -11,6 +11,10 @@ const channelAtPort = {
   uc: 9210
 }
 
+const docURLPrefix = {
+  musou: 'read'
+}
+
 export default {
   methods: {
     getSmallProjectLogo(id) {
@@ -47,7 +51,7 @@ export default {
       return url
     },
     getDocURL(publishedTo, id) {
-      return this.getBaseURL(publishedTo) + `read/${id}`
+      return this.getBaseURL(publishedTo) + (docURLPrefix[publishedTo] ? docURLPrefix[publishedTo] : 'docs') + '/' + id
     },
     getAskGameURL(gameSlug) {
       return this.getBaseURL('ask') + `games/${gameSlug}`
