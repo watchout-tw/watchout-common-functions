@@ -10,7 +10,7 @@
     <div class="content" v-html="content.html"></div>
   </div>
   <div class="card" v-else-if="type === 'markdown'">
-    <div class="content paragraphs responsive-typesetting-container variable-font-size a-text-parent"  v-html="markdown(content.markdown)"></div>
+    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(content.markdown)"></div>
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
