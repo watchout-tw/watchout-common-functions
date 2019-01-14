@@ -46,6 +46,9 @@ export default {
       }
       return url
     },
+    getDocURL(publishedTo, id) {
+      return this.getBaseURL(publishedTo) + `read/${id}`
+    },
     getAskGameURL(gameSlug) {
       return this.getBaseURL('ask') + `games/${gameSlug}`
     },
