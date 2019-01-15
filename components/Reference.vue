@@ -1,6 +1,6 @@
 <template>
 <div class="reference">
-  <drop-down-select placeholder="類型" :options="types.filter(type => type.category === category)" v-model="type" class="small compact" />
+  <drop-down-select placeholder="類型" :options="types" v-model="type" class="small compact" />
   <text-editor placeholder="ID" v-model="id" :classes="['watchout']" :simple="true" />
 </div>
 </template>
@@ -10,7 +10,12 @@ import { parseReference, makeReference } from 'watchout-common-functions/lib/bun
 import DropDownSelect from 'watchout-common-functions/components/DropDownSelect'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 
-const types = [
+const allTypes = [
+  {
+    category: 'ghost',
+    value: 'ghost',
+    label: 'ghost'
+  },
   {
     category: 'video',
     value: 'youtube',
@@ -43,17 +48,23 @@ const types = [
   }
 ]
 
+const defaultCategory = 'watchout'
+
 export default {
   props: {
     reference: String,
     category: {
       type: String,
       default: 'watchout'
+    },
+    customTypes: {
+      type: Array,
+      default: () => [] // must use factory method here
     }
   },
   data() {
     return {
-      types
+      types: this.customTypes.length > 0 ? this.customTypes : allTypes.filter(type => type.category === (this.category ? this.category : defaultCategory))
     }
   },
   computed: {
