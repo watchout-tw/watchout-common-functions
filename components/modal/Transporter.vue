@@ -48,7 +48,7 @@ export default {
       @include shadow;
     }
     > .name {
-      margin: 0.5rem 0;
+      margin: 0.375rem 0;
     }
   }
 }
