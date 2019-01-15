@@ -1,4 +1,4 @@
-import { publishDestinations, getPubDest, getPubDestFromContent } from 'watchout-common-functions/lib/bunko'
+import { publishDestinations, getPubDest } from 'watchout-common-functions/lib/bunko'
 
 export default {
   data() {
@@ -8,7 +8,6 @@ export default {
   },
   methods: {
     getPubDest,
-    getPubDestFromContent,
     isPublished(doc) {
       return doc.publishedFrom === 'firestore'
     }
