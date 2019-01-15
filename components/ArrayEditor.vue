@@ -7,18 +7,18 @@
           <span>{{ getLabel(values[index]) }}</span>
           <div class="close small" @click="removeValue(index)"></div>
         </div>
-        <div class="not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
+        <div class="item placeholder not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
       </div>
     </div>
     <div class="col form-field-many-inputs no-wrap">
       <template v-if="type === 'select'">
-        <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" :style="{ flexShrink: 0 }" /><!-- FIXME: quick hack -->
+        <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" />
       </template>
       <template v-else>
         <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
       </template>
-      <button class="input button small" @click="addValue">新增</button>
-      <button class="input button small" @click="clearValues">清空</button>
+      <button class="input button tiny" @click="addValue">新增</button>
+      <button class="input button tiny" @click="clearValues">清空</button>
     </div>
   </div>
 </div>
@@ -89,11 +89,17 @@ export default {
           position: relative;
           margin: 0.125em;
           padding: 0.25em 0.375em;
-          padding-right: 1.5em;
           border-style: solid;
-          border-color: $color-light-border-grey;
+          border-color: transparent;
           border-radius: 1px;
           border-width: 1px;
+          &:not(.placeholder) {
+            padding-right: 1.5em;
+            border-color: $color-light-border-grey;
+          }
+          &.placeholder {
+            background-color: $color-light-border-grey;
+          }
         }
       }
     }
