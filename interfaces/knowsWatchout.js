@@ -53,6 +53,9 @@ export default {
     getDocURL(publishedTo, id) {
       return this.getBaseURL(publishedTo) + (docURLPrefix[publishedTo] ? docURLPrefix[publishedTo] : 'docs') + '/' + id
     },
+    getLabRepURL(repID) {
+      return this.getBaseURL('lab') + `reps/${repID}`
+    },
     getAskGameURL(gameSlug) {
       return this.getBaseURL('ask') + `games/${gameSlug}`
     },
