@@ -1,9 +1,10 @@
-import { publishDestinations, getPubDest } from 'watchout-common-functions/lib/bunko'
+import { publishDestinations, getPubDest, authorTypes } from 'watchout-common-functions/lib/bunko'
 
 export default {
   data() {
     return {
-      publishDestinations
+      publishDestinations,
+      authorTypes
     }
   },
   methods: {

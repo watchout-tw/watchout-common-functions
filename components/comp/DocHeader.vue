@@ -1,13 +1,10 @@
 <template>
-<div class="before-article responsive-typesetting-container margin-top-bottom-single">
+<div class="doc-header responsive-typesetting-container margin-top-bottom-single">
   <div class="title variable-font-size margin-top-bottom-single">
     <h1 class="medium">{{ doc.title }}</h1>
   </div>
   <div class="authors">
-    <template v-for="(author, index) of doc.authors">
-      <a class="author a-text" :href="getParkPersonaProfileURL(author)">{{ cachedAuthorByPersona(author).name }}</a>
-      <span v-if="index < doc.authors.length - 1">、</span>
-    </template>
+    <avatar v-for="(author, index) of doc.authors" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="author" />
   </div>
   <div class="dates font-size-small">
     <div><span>發佈時間</span><span class="full-width-punctuation">：</span><span>{{ getDateTimeString(doc.publishedAt) }}</span></div>
@@ -18,6 +15,7 @@
 
 <script>
 import { knowsFormatting, knowsWatchout } from 'watchout-common-functions/interfaces'
+import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
   mixins: [knowsFormatting, knowsWatchout],
@@ -26,6 +24,17 @@ export default {
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors.find(author => author.persona === personaID)
     }
+  },
+  components: {
+    Avatar
   }
 }
 </script>
+
+<style lang="scss">
+.doc-header {
+  > .authors {
+    display: flex;
+  }
+}
+</style>

@@ -28,14 +28,14 @@ export default {
     cachedAuthor(id) {
       return this.cachedAuthors.find(author => author.id === id)
     },
+    cachedAuthorByPersona(personaID) {
+      return this.cachedAuthors.find(author => author.persona === personaID)
+    },
     cachedAuthorByContent(type, id) {
       return this.cachedAuthors.find(author => {
         let ref = parseReference(author.reference)
         return ref.type === type && ref.id === id
       })
-    },
-    cachedAuthorByPersona(personaID) {
-      return this.cachedAuthors.find(author => author.persona === personaID)
     },
     cachedTag(id) {
       return this.cachedTags.find(tag => tag.id === id)
