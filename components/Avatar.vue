@@ -1,5 +1,5 @@
 <template>
-<component :is="hasLink ? 'a' : 'div'" :href="internalLink" class="avatar" :class="internalClasses">
+<component :is="componentIsTag" :href="internalLink" class="avatar" :class="internalClasses">
   <div v-if="isShowing('avatar')" class="avatar-image-container">
     <div class="image" :style="avatarImageStyles"></div>
     <div v-if="isShowingParty" class="party-flag-container">
@@ -13,7 +13,6 @@
   <div v-if="secondaryText" class="secondary-text line-height-tight" :class="secondaryClasses">
     <span>{{ secondaryText }}</span>
   </div>
-
   <identity v-if="isShowing('identity')" :persona="persona" class="small" />
 </component>
 </template>
@@ -35,6 +34,9 @@ export default {
   mixins: [knowsAvatar, knowsWatchout],
   props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'index', 'indexClasses', 'parties'],
   computed: {
+    componentIsTag() {
+      return this.hasLink ? 'a' : 'div'
+    },
     internalLink() {
       return typeof this.link === 'string' ? this.link : (this.link && this.persona ? this.getParkPersonaProfileURL(this.persona.id) : null)
     },
