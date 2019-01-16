@@ -25,8 +25,8 @@ import Identity from './Identity'
 
 /*
 Sizes: small, normal (default), large
-Classes: shadow
-Induced classes: small (from size)
+Classes: horizontal, shadow
+Induced classes: small (from size), shadow (from link)
 Inherent classes: deactivated (from Persona.status)
 Show: avatar, name, identity
 */
@@ -57,6 +57,7 @@ export default {
       let classes = [].concat(Array.isArray(this.classes) ? this.classes : [])
       if(this.hasLink) {
         classes.push('a-block')
+        classes.push('shadow')
       }
       if(this.isSmall) {
         classes.push('small')
@@ -64,6 +65,7 @@ export default {
       if(this.persona) {
         classes.push(this.persona.status)
       }
+      classes = [...new Set(classes)]
       return classes
     },
     internalAvatar() {
@@ -112,6 +114,9 @@ export default {
       let name = this.name ? this.name : (this.persona ? this.persona.name : null)
       if([undefined, null, ''].includes(name)) {
         name = '顯示名稱尚未設定'
+        if([undefined, null].includes(this.persona)) {
+          name = '查無此人'
+        }
       }
       return name
     },
