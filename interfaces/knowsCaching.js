@@ -16,7 +16,14 @@ export default {
       cachedParties: 'caching/parties',
       cachedAuthors: 'caching/authors',
       cachedTags: 'caching/tags'
-    })
+    }),
+    // FIXME: putting these here are a bit weird
+    authorOptions() {
+      return Array.isArray(this.cachedAuthors) ? this.cachedAuthors.map(author => ({ value: author.persona, label: (author.personaObj ? author.personaObj.name : author.persona) })) : []
+    },
+    tagOptions() {
+      return Array.isArray(this.cachedTags) ? this.cachedTags.map(tag => ({ value: tag.id, label: tag.name })) : []
+    }
   },
   methods: {
     cachedTopic(id) {
@@ -36,6 +43,10 @@ export default {
         let ref = parseReference(author.reference)
         return ref.type === type && ref.id === id
       })
+    },
+    cachedAuthorNameByContent(type, id) {
+      let author = this.cachedAuthorByContent(type, id)
+      return author.personaObj ? author.personaObj.name : author.persona
     },
     cachedTag(id) {
       return this.cachedTags.find(tag => tag.id === id)
