@@ -1,8 +1,8 @@
 <template>
 <div class="menu single" :class="classes">
   <ul class="items">
-    <li class="item" :class="{ active: index === activeIndex }" v-for="(item, index) of menu" :key="index" @click="activate(index)">
-      <component :is="item.route ? 'nuxt-link' : 'div'" class="a-text" :to="item.route">{{ item.label.value }}</component>
+    <li class="item" :class="{ active: index === activeIndex }" v-for="(item, index) of menu" :key="index" @click="activate($event, index)">
+      <component :is="item.route ? 'nuxt-link' : 'div'" class="item-text a-text" :to="item.route">{{ item.label.value }}</component>
     </li>
   </ul>
 </div>
@@ -12,9 +12,10 @@
 export default {
   props: ['classes', 'menu', 'activeIndex'],
   methods: {
-    activate(index) {
+    activate(event, index) {
       this.$emit('update:activeIndex', index)
-      this.$emit('itemClicked', index)
+      let el = event.path.find(el => el.className.split(' ').includes('item'))
+      this.$emit('itemClicked', index, el)
     }
   }
 }
