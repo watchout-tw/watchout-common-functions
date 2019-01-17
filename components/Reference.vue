@@ -43,8 +43,13 @@ const allTypes = [
   },
   {
     category: 'watchout',
-    value: 'external',
+    value: 'https',
     label: '外部連結'
+  },
+  {
+    category: 'watchout',
+    value: 'http',
+    label: '不安全的外部連結'
   }
 ]
 
@@ -81,7 +86,9 @@ export default {
         return parseReference(this.reference).id
       },
       set(value) {
-        this.$emit('update:reference', makeReference(parseReference(this.reference).type, value))
+        let test = parseReference(value) // paste reference into id input box to change type & id
+        let newReference = test ? makeReference(test.type, test.id) : makeReference(parseReference(this.reference).type, value)
+        this.$emit('update:reference', newReference)
       }
     }
   },
