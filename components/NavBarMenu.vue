@@ -1,9 +1,9 @@
 <template>
 <div class="nav-bar-menu">
   <div class="roots">
-    <menu-single :menu="internalMenu" :activeIndex.sync="activeTreeIndex" />
+    <menu-single :menu="internalMenu" :activeIndex.sync="activeTreeIndex" @itemClicked="rootSelected"/>
   </div>
-  <div class="children" v-if="activeTreeIndex > -1 && activeTreeIndex < internalMenu.length && internalMenu[activeTreeIndex].children">
+  <div class="children" v-if="activeTreeIndex > -1 && activeTreeIndex < internalMenu.length && internalMenu[activeTreeIndex].children" :style="childrenStyles">
     <div class="close black" @click.stop.prevent="activeTreeIndex = -1"></div>
     <menu-single :menu="internalMenu[activeTreeIndex].children" :classes="['vertical']" />
   </div>
@@ -19,7 +19,11 @@ export default {
   props: ['menu'],
   data() {
     return {
-      activeTreeIndex: -1
+      activeTreeIndex: -1,
+      childrenStyles: {
+        top: 0,
+        left: 0
+      }
     }
   },
   computed: {
@@ -28,6 +32,11 @@ export default {
     }
   },
   methods: {
+    rootSelected(index, el) {
+      let rect = el.getBoundingClientRect()
+      this.childrenStyles.top = (rect.top + rect.height) + 'px'
+      this.childrenStyles.left = rect.left + 'px'
+    }
   },
   components: {
     MenuSingle
@@ -47,7 +56,7 @@ export default {
     display: none;
     margin-top: 0.25rem;
     padding-right: 1.5rem; // close
-    position: relative;
+    position: absolute;
     background: $color-modal-overlay-white;
     z-index: $z-nav;
     @include shadow;

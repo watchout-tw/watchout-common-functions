@@ -86,6 +86,8 @@ nav.nav-bar {
   }
   > .menu-container {
     flex-grow: 1;
+    display: flex;
+    align-items: center;
   }
   > .avatar-container {
     display: flex;
