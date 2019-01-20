@@ -10,7 +10,7 @@
     <div class="content" v-html="content.html"></div>
   </div>
   <div class="card" v-else-if="type === 'markdown'">
-    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(content.markdown)"></div>
+    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
@@ -36,11 +36,32 @@ export default {
       return parseCard(this.card).type
     },
     content() {
-      let content = parseCard(this.card).content
-      if(this.type === 'reference') {
-        content = parseReference(content)
+      return parseCard(this.card).content
+    }
+  },
+  methods: {
+    markdownPreprocessor(markdown) {
+      let regExp = /[\s]*{{(.+?)}}[\s]*/g
+      let codeObjects = []
+      let match = regExp.exec(markdown)
+      while(match) {
+        codeObjects.push({
+          code: match[1].trim(),
+          matchLength: match[0].length,
+          matchAt: match['index']
+        })
+        match = regExp.exec(markdown)
       }
-      return content
+      codeObjects.sort((a, b) => b.matchAt - a.matchAt)
+      codeObjects.forEach(({ code, matchLength, matchAt }) => {
+        let html = ''
+        let ref = parseReference(code)
+        if(ref.type === 'footnote') {
+          html = `<label class="footnote-anchor" data-id="${ref.id}">${ref.id}</label>`
+        }
+        markdown = markdown.substring(0, matchAt) + html + markdown.substring(matchAt + matchLength)
+      })
+      return markdown
     }
   },
   components: {
@@ -59,6 +80,20 @@ export default {
       margin: 2rem auto;
       max-width: 2rem;
       border-bottom: 2px solid $color-very-light-grey;
+    }
+    > .content.variable-font-size {
+      .footnote-anchor {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1rem;
+        width: 1.5em;
+        line-height: 1.5em;
+        text-align: center;
+        border-radius: 50%;
+        margin: 0 0.25em;
+        background-color: rgba($color-watchout, 0.85);
+        cursor: pointer;
+      }
     }
   }
 }
