@@ -1,56 +1,61 @@
 <template>
 <div class="comp-collection margin-top-bottom-single">
-  <h4 class="title section-title with-underline small text-align-center margin-top-bottom-8"><span>{{ collection.title }}</span></h4>
+  <h4 class="title section-title with-underline text-align-center margin-top-bottom-8" v-if="title"><span>{{ title }}</span></h4>
   <div class="items tcl-container no-margin" v-if="items">
-    <a class="item tcl-panel half-width a-block" v-for="item of items" :key="item.id">
-      <div class="pub-dest font-size-small" :class="'bg-' + item.content.publishedTo + '-light'">
-        <div class="logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(item.content.publishedTo) + ')' }"></div>
-        <label>{{ getName(item.content.publishedTo) }}</label>
+    <a class="item tcl-panel half-width a-block" :class="{ 'with-image': !!getItemImage(item) }" :href="item.reference.permalink" :target="['https', 'http'].includes(item.reference.type) ? '_blank' : ''" v-for="item of items" :key="item.id">
+      <div class="image" :style="{ backgroundImage: 'url(' + getItemImage(item) + ')' }">
+        <div v-if="item.reference.type === 'video'" class="button play"></div>
       </div>
-      <div class="image" :style="getItemImageStyles(item)">
-        <div v-if="getItemReference(item).type === 'video'" class="button play"></div>
-      </div>
+      <div class="logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(item.content && item.content.publishedTo ? item.content.publishedTo : 'external') + ')' }"></div>
       <div class="summary">
-        <h4 class="title a-target">{{ item.content.title }}</h4>
+        <h4 class="title a-target">{{ item.title ? item.title : (item.content && item.content.title ? item.content.title : '未知的標題') }}</h4>
       </div>
     </a>
+    <div class="tcl-panel half-width"></div>
+    <div class="tcl-panel half-width"></div>
+    <div class="tcl-panel half-width"></div>
   </div>
 </div>
 </template>
 
 <script>
 import { knowsWatchout } from 'watchout-common-functions/interfaces'
-import { parseReference, makeReference, getContentPermalink } from 'watchout-common-functions/lib/bunko'
+import { parseReference, makeReference } from 'watchout-common-functions/lib/watchout'
 
 export default {
   mixins: [knowsWatchout],
-  props: ['id', 'data'],
+  props: ['id', 'data', 'collection'],
   computed: {
     reference() {
       return makeReference('collection', this.id)
     },
-    collection() {
-      return this.data ? this.data[this.reference] : null
+    internalCollection() {
+      return this.collection ? this.collection : (this.data ? this.data[this.reference] : null)
+    },
+    title() {
+      return this.internalCollection ? this.internalCollection.title : null
     },
     items() {
-      return this.collection ? this.collection.items.map(item => {
+      return this.internalCollection ? this.internalCollection.items.map(item => {
+        let content = this.data ? this.data[item.reference] : null
+        let publishedTo = content ? content.publishedTo : null
         return Object.assign({}, item, {
-          content: this.data[item.reference]
+          reference: parseReference(item.reference, { publishedTo }),
+          content
         })
       }) : null
     }
   },
   methods: {
-    getItemReference(item) {
-      return parseReference(item.reference)
-    },
-    getItemImageStyles(item) {
-      let styles = {}
-      let url = getContentPermalink(item.content.image)
-      if(url) {
-        styles.backgroundImage = `url(${url})`
+    getItemImage(item) {
+      let image = null
+      if(item.content && item.content.hasOwnProperty('image') && typeof item.content.image === 'string') {
+        let reference = parseReference(item.content.image)
+        image = reference ? reference.permalink : null
+      } else if(item.content && Array.isArray(item.content.images)) {
+        image = item.content.images[0]
       }
-      return styles
+      return image
     }
   }
 }
@@ -62,30 +67,37 @@ export default {
 .comp-collection {
   > .items {
     > .item {
+      position: relative;
       background-color: $color-very-very-light-grey;
       @include shadow;
       > .image {
-        @include rect(2/1);
-        background-size: cover;
-        background-position: center center;
-        > .button.play {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
+        display: none;
+      }
+      > .logo {
+        width: 24px;
+        height: 24px;
+        background-size: contain;
       }
       > .summary {
         padding: 0.5rem 0.75rem;
       }
-      > .pub-dest {
-        display: flex;
-        align-items: center;
+      &.with-image {
+        > .image {
+          @include rect(2/1);
+          background-color: $color-very-light-grey;
+          background-size: cover;
+          background-position: center center;
+          > .button.play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
         > .logo {
-          width: 24px;
-          height: 24px;
-          background-size: contain;
-          margin-right: 4px;
+          position: absolute;
+          top: 0;
+          left: 0;
         }
       }
     }
