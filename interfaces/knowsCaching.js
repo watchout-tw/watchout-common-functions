@@ -1,5 +1,5 @@
 import { mapGetters } from 'vuex'
-import { parseReference } from 'watchout-common-functions/lib/bunko'
+import { parseReference } from 'watchout-common-functions/lib/watchout'
 
 export default {
   async fetch({ store, params }) {

@@ -13,7 +13,7 @@
 
 <script>
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
-import { makeReference } from 'watchout-common-functions/lib/bunko'
+import { makeReference } from 'watchout-common-functions/lib/watchout'
 
 export default {
   mixins: [knowsMarkdown],

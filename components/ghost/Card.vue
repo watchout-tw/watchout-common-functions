@@ -23,7 +23,8 @@
 
 <script>
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
-import { parseReference, parseCard } from 'watchout-common-functions/lib/bunko'
+import { parseReference } from 'watchout-common-functions/lib/watchout'
+import { parseCard } from 'watchout-common-functions/lib/bunko'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
 import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 

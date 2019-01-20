@@ -1,19 +1,7 @@
 import defaultImage from 'watchout-common-assets/images/default.gif'
-import config from 'watchout-common-functions/config/config'
 import env from 'watchout-common-assets/environment'
 
-const channelAtPort = {
-  watchout: 9000,
-  park: 9487,
-  ask: 9010,
-  musou: 9020,
-  lab: 9192,
-  uc: 9210
-}
-
-const docURLPrefix = {
-  musou: 'read'
-}
+import { getBaseURL, getCompDocURL, getCompVideoURL } from 'watchout-common-functions/lib/watchout'
 
 export default {
   methods: {
@@ -36,23 +24,9 @@ export default {
     getName(id) {
       return env.channels.hasOwnProperty(id) ? env.channels[id].name : '找不到名字'
     },
-    getBaseURL(channelID, forceProductionURL = false) {
-      let protocol = 'https://'
-      let url = protocol + (channelID === 'watchout' ? 'watchout.tw/' : `${channelID}.watchout.tw/`)
-      let port = channelAtPort[channelID]
-      if(!forceProductionURL) {
-        if(config.env === 'dev') {
-          protocol = 'http://'
-          url = `${protocol}dev.localhost:${port}/`
-        } else if(config.env === 'beta') {
-          url = protocol + (channelID === 'watchout' ? 'beta.watchout.tw/' : `beta.${channelID}.watchout.tw/`)
-        }
-      }
-      return url
-    },
-    getDocURL(publishedTo, id) {
-      return this.getBaseURL(publishedTo) + (docURLPrefix[publishedTo] ? docURLPrefix[publishedTo] : 'docs') + '/' + id
-    },
+    getBaseURL,
+    getCompDocURL,
+    getCompVideoURL,
     getLabRepURL(repID) {
       return this.getBaseURL('lab') + `reps/${repID}`
     },
@@ -85,42 +59,50 @@ export default {
         },
         {
           vmid: 'og-type',
+          name: 'og:type',
           property: 'og:type',
           content: 'website'
         },
         {
           vmid: 'og-title',
+          name: 'og:title',
           property: 'og:title',
           content: pageTitle
         },
         {
           vmid: 'og-description',
+          name: 'og:description',
           property: 'og:description',
           content: pageDescription
         },
         {
           vmid: 'og-image',
+          name: 'og:image',
           property: 'og:image',
           content: image
         },
         {
           vmid: 'twitter-card',
           name: 'twitter:card',
+          property: 'twitter:card',
           content: 'summary_large_image'
         },
         {
           vmid: 'twitter-title',
           name: 'twitter:title',
+          property: 'twitter:title',
           content: pageTitle
         },
         {
           vmid: 'twitter-description',
           name: 'twitter:description',
+          property: 'twitter:description',
           content: pageDescription
         },
         {
           vmid: 'twitter-image',
           name: 'twitter:image',
+          property: 'twitter:image',
           content: image
         }
       ]

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { parseReference, makeReference } from 'watchout-common-functions/lib/bunko'
+import { parseReference, makeReference } from 'watchout-common-functions/lib/watchout'
 import DropDownSelect from 'watchout-common-functions/components/DropDownSelect'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 
