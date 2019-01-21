@@ -38,6 +38,10 @@ export default {
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors.find(author => author.persona === personaID)
     },
+    cachedAuthorNameByPersona(personaID) {
+      let author = this.cachedAuthorByPersona(personaID)
+      return author && author.personaObj ? author.personaObj.name : personaID
+    },
     cachedAuthorByContent(type, id) {
       let cachedAuthor = this.cachedAuthors.find(author => {
         let ref = parseReference(author.reference)
@@ -47,7 +51,8 @@ export default {
     },
     cachedAuthorNameByContent(type, id) {
       let author = this.cachedAuthorByContent(type, id)
-      return author.personaObj ? author.personaObj.name : author.persona
+      console.log(type, id, author)
+      return author && author.personaObj ? author.personaObj.name : author.persona
     },
     cachedTag(id) {
       return this.cachedTags.find(tag => tag.id === id)
