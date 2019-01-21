@@ -13,7 +13,8 @@ module.exports = {
   // add your custom rules here
   rules: {
     'space-before-function-paren': 0, // allow paren-less functions
-    'keyword-spacing': 0 // allow if()
+    'keyword-spacing': 0, // allow if()
+    'no-unneeded-ternary': 0 // allow x ? x : y
   },
   globals: {}
 }
