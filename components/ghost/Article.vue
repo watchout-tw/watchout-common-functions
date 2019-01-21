@@ -3,9 +3,13 @@
   <div class="content">
     <template v-for="(section, index) of mobiledoc.sections">
       <!--<ghost-markup v-if="section[0] === 1" :key="index" :tag-name="section[1]" :markers="section[2]" :atoms="mobiledoc.atoms" :markups="mobiledoc.markups" />-->
-      <ghost-card v-if="section[0] === 10" :key="index" :card="mobiledoc.cards[section[1]]" :data="data" />
+      <ghost-card v-if="section[0] === 10" :card="mobiledoc.cards[section[1]]" :data="data" :key="index" />
     </template>
+  </div>
+  <div class="links">
     <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" />
+  </div>
+  <div class="footnotes">
     <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" />
   </div>
   <div class="active-footnote" :class="{ show: showActiveFootnote }">
@@ -21,48 +25,13 @@ import GhostMarkup from 'watchout-common-functions/components/ghost/Markup'
 import GhostCard from 'watchout-common-functions/components/ghost/Card'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
 
-function findAndParseCard(keyword, cards) {
-  let regExp = new RegExp('^{{[\\s]*' + keyword + '[\\s]*}}[\\s]*') // escape \s into \\s
-  let items = []
-  let cardIndex = cards.findIndex(card => card[0] === 'markdown' && regExp.test(card[1].markdown))
-  if(cardIndex > -1) {
-    let card = cards[cardIndex]
-    items = card[1].markdown.replace(regExp, '').split('\n').map(line => {
-      let [, title, reference] = line.match(/\[(.+)\]\((.+)\)/)
-      return {
-        line,
-        title,
-        reference
-      }
-    })
-  }
-  return {
-    cardIndex,
-    items
-  }
-}
-
-function removeSectionsOfCard(cardType, cardIndex, sections) {
-  return sections.filter(section => !(section[0] === cardType && section[1] === cardIndex))
-}
-
 export default {
   mixins: [knowsMarkdown],
-  props: ['article', 'data'],
+  props: ['article', 'footnotes', 'links', 'references', 'data'],
   data() {
     let mobiledoc = JSON.parse(this.article.mobiledoc)
-
-    // check for footnotes & links
-    let footnotes = findAndParseCard('footnotes', mobiledoc.cards)
-    let links = findAndParseCard('links', mobiledoc.cards)
-
-    mobiledoc.sections = removeSectionsOfCard(10, footnotes.cardIndex, mobiledoc.sections)
-    mobiledoc.sections = removeSectionsOfCard(10, links.cardIndex, mobiledoc.sections)
-
     return {
       mobiledoc,
-      footnotes: footnotes.items,
-      links: links.items,
       showActiveFootnote: false,
       activeFootnoteAnchor: null,
       activeFootnoteID: -1
@@ -70,7 +39,7 @@ export default {
   },
   computed: {
     activeFootnote() {
-      return this.activeFootnoteID > -1 ? this.footnotes[this.activeFootnoteID] : null
+      return this.footnotes && this.activeFootnoteID > -1 ? this.footnotes[this.activeFootnoteID] : null
     }
   },
   mounted() {
