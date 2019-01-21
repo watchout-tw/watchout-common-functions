@@ -24,11 +24,11 @@ export default {
     }
   },
   computed: {
-    reference() {
+    referenceObj() {
       return makeReference('doc', this.id)
     },
     doc() {
-      return this.data ? this.data[this.reference] : null
+      return this.data ? this.data[this.referenceObj.url] : null
     },
     mobiledoc() {
       return JSON.parse(this.doc.content.mobiledoc)

@@ -73,22 +73,25 @@ export default {
     }
   },
   computed: {
+    referenceObj() {
+      return parseReference(this.reference)
+    },
     type: {
       get() {
-        return parseReference(this.reference).type
+        return this.referenceObj ? this.referenceObj.type : null
       },
       set(value) {
-        this.$emit('update:reference', makeReference(value, parseReference(this.reference).id))
+        this.$emit('update:reference', makeReference(value, this.id).url)
       }
     },
     id: {
       get() {
-        return parseReference(this.reference).id
+        return this.referenceObj ? this.referenceObj.id : null
       },
       set(value) {
         let test = parseReference(value) // paste reference into id input box to change type & id
-        let newReference = test ? makeReference(test.type, test.id) : makeReference(parseReference(this.reference).type, value)
-        this.$emit('update:reference', newReference)
+        let newReference = test ? test : makeReference(this.type, value)
+        this.$emit('update:reference', newReference.url)
       }
     }
   },

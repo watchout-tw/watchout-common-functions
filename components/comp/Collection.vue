@@ -2,9 +2,9 @@
 <div class="comp-collection margin-top-bottom-single">
   <h4 class="title section-title with-underline text-align-center margin-top-bottom-8" v-if="title"><span>{{ title }}</span></h4>
   <div class="items tcl-container no-margin" v-if="items">
-    <a class="item tcl-panel half-width a-block" :class="{ 'with-image': !!getItemImage(item) }" :href="item.reference.permalink" :target="['https', 'http'].includes(item.reference.type) ? '_blank' : ''" v-for="item of items" :key="item.id">
+    <a class="item tcl-panel half-width a-block" :class="{ 'with-image': !!getItemImage(item) }" :href="item.referenceObj.permalink" :target="['https', 'http'].includes(item.referenceObj.type) ? '_blank' : ''" v-for="item of items" :key="item.id">
       <div class="image" :style="{ backgroundImage: 'url(' + getItemImage(item) + ')' }">
-        <div v-if="item.reference.type === 'video'" class="button play"></div>
+        <div v-if="item.referenceObj.type === 'video'" class="button play"></div>
       </div>
       <div class="logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(item.content && item.content.publishedTo ? item.content.publishedTo : 'external') + ')' }"></div>
       <div class="summary">
@@ -26,11 +26,11 @@ export default {
   mixins: [knowsWatchout],
   props: ['id', 'data', 'collection'],
   computed: {
-    reference() {
+    referenceObj() {
       return makeReference('collection', this.id)
     },
     internalCollection() {
-      return this.collection ? this.collection : (this.data ? this.data[this.reference] : null)
+      return this.collection ? this.collection : (this.data ? this.data[this.referenceObj.url] : null)
     },
     title() {
       return this.internalCollection ? this.internalCollection.title : null
@@ -40,7 +40,7 @@ export default {
         let content = this.data ? this.data[item.reference] : null
         let publishedTo = content ? content.publishedTo : null
         return Object.assign({}, item, {
-          reference: parseReference(item.reference, { publishedTo }),
+          referenceObj: parseReference(item.reference, { publishedTo }),
           content
         })
       }) : null
