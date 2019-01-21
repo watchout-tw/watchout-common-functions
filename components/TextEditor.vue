@@ -57,6 +57,9 @@ export default {
       border-color: $color-park;
     }
   }
+  &.small {
+    font-size: $font-size-small;
+  }
   > .content {
     > input {
       display: block;
