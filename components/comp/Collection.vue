@@ -36,6 +36,9 @@ export default {
       return this.internalCollection ? this.internalCollection.title : null
     },
     items() {
+      // FIXME: id + data: proper collection / collection: custom collection
+      // reconcile different data source
+      // optimize data fetching and parsing
       return this.internalCollection ? this.internalCollection.items.map(item => {
         let content = this.data ? this.data[item.reference] : null
         let publishedTo = content ? content.publishedTo : null
