@@ -1,7 +1,7 @@
 <template>
 <div class="reference">
   <drop-down-select placeholder="類型" :options="types" v-model="type" class="small compact" />
-  <text-editor placeholder="ID" v-model="id" :classes="['watchout']" :simple="true" />
+  <text-editor placeholder="ID" v-model="id" :classes="['watchout', 'small']" :simple="true" />
 </div>
 </template>
 
