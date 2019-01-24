@@ -3,9 +3,11 @@
   <div class="title variable-font-size margin-top-bottom-single">
     <h1 class="medium" v-html="titleProcessor(doc.title)" />
   </div>
-  <div v-for="type of authorTypes" :key="type.valuePlural" class="authors" v-if="doc[type.valuePlural]">
-    <div class="section-title with-underline small"><span>{{ type.label }}</span></div>
-    <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="author" />
+  <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural]">
+    <div class="author-type section-title with-underline small"><span>{{ type.label }}</span></div>
+    <div class="authors">
+      <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="author" />
+    </div>
   </div>
   <div class="dates font-size-small margin-top-bottom-8">
     <div><span>發佈時間</span><span class="full-width-punctuation">：</span><span>{{ getDateTimeString(doc.publishedAt) }}</span></div>
@@ -34,9 +36,17 @@ export default {
 
 <style lang="scss">
 .doc-header {
-  > .authors {
+  > .authors-container {
     display: flex;
     align-items: center;
+    > .author-type {
+      flex-shrink: 0;
+    }
+    > .authors {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
   }
 }
 </style>
