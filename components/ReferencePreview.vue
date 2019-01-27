@@ -1,9 +1,6 @@
 <template>
 <div class="reference-preview">
-  <div class="infobox" v-if="display === 'infobox'">
-    <comp-infobox :id="docID" :data="data" />
-  </div>
-  <div class="preview image" v-else-if="display === 'image'">
+  <div class="preview image" v-if="display === 'image'">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <div class="more font-size-small text-align-right secondary-text margin-top-bottom-4"><a :href="linkURL" class="a-text" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
@@ -26,7 +23,6 @@
 
 <script>
 import { parseReference } from 'watchout-common-functions/lib/watchout'
-import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 
 export default {
   props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'channel'],
@@ -67,9 +63,6 @@ export default {
     linkURL() {
       return this.reference ? this.reference.permalink : this.link
     }
-  },
-  components: {
-    CompInfobox
   }
 }
 </script>
