@@ -1,6 +1,6 @@
 <template>
-<div class="comp-infobox tcl-container no-margin">
-  <div class="infobox tcl-panel no-margin tcl-left-right-margin">
+<div class="comp-infobox">
+  <div class="infobox">
     <h4>{{ doc.title }}</h4>
     <div class="content font-size-small">
       <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">
@@ -42,6 +42,8 @@ export default {
 
 .comp-infobox {
   > .infobox {
+    max-width: 22rem;
+    margin: 0 auto;
     padding: 0.5rem 0.75rem;
     background-color: $color-very-very-light-grey;
     @include shadow;
