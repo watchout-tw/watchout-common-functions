@@ -44,9 +44,13 @@ export default {
   > .infobox {
     max-width: 22rem;
     margin: 0 auto;
-    padding: 0.5rem 0.75rem;
+    padding: 1rem 1.25rem;
     background-color: $color-very-very-light-grey;
-    @include shadow;
+  }
+  &.light {
+    > .infobox {
+      background-color: white;
+    }
   }
 }
 </style>
