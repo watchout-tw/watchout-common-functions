@@ -3,18 +3,22 @@
   <div class="infobox" v-if="display === 'infobox'">
     <comp-infobox :id="docID" :data="data" />
   </div>
+  <div class="preview image" v-else-if="display === 'image'">
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <div class="more font-size-small text-align-right secondary-text margin-top-bottom-4"><a :href="linkURL" class="a-text" :class="readMoreClasses">{{ readMoreText }}</a></div>
+  </div>
   <div class="preview vertical" v-else-if="display === 'vertical'">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <h3 class="title medium margin-top-bottom-8"><a :href="linkURL" class="a-text">{{ internalTitle }}</a></h3>
+    <h3 class="title medium margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="a-text">{{ internalTitle }}</a></h3>
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-    <div class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div class="more margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="button medium" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview default tcl-container" v-else>
     <a :href="linkURL" class="image tcl-panel tcl-left-right-margin with-top-bottom-margin" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <div class="summary tcl-panel tcl-left-right-margin with-top-bottom-margin">
       <h3 class="title medium"><a :href="linkURL" class="a-text">{{ internalTitle }}</a></h3>
       <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-      <div class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div class="more margin-top-bottom-8"><a :href="linkURL" class="button medium" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
   </div>
 </div>
@@ -25,7 +29,7 @@ import { parseReference } from 'watchout-common-functions/lib/watchout'
 import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 
 export default {
-  props: ['reference', 'data', 'display', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'channel'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'channel'],
   computed: {
     doc() {
       return this.reference ? this.data[this.reference.url] : null
@@ -51,6 +55,9 @@ export default {
       let url = ref ? ref.permalink : this.image
       styles.backgroundImage = `url(${url})`
 
+      if(this.align === 'center') {
+        styles.margin = '0 auto'
+      }
       if(this.imageSize) {
         styles.maxWidth = this.imageSize
       }
