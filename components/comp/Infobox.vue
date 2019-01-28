@@ -5,12 +5,12 @@
       <h3 class="title text-align-center">{{ doc.title }}</h3>
     </template>
     <template v-else>
-      <h4 class="title section-title with-underline text-align-center"><span>{{ doc.title }}</span></h4>
+      <h4 class="title section-title with-underline text-align-center" :class="{ 'multi-line': titleStyle === 'multi-line' }"><span>{{ doc.title }}</span></h4>
     </template>
     <div class="content">
       <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10"><!-- && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">-->
         <template v-if="mobiledoc.cards[section[1]][0] === 'markdown'">
-          <div class="paragraphs no-margin" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
+          <div class="paragraphs no-margin a-text-parent" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
         </template>
         <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
           <img :src="'https://beta.bunko.watchout.tw' + mobiledoc.cards[section[1]][1].src" />
@@ -82,6 +82,10 @@ export default {
 
     > .title {
       margin-bottom: 1rem;
+      &.multi-line {
+        margin-left: 1rem; // FIXME: quick hack
+        margin-right: 1rem;
+      }
     }
     > .content {
       > .card {

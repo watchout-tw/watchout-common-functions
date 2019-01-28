@@ -3,7 +3,7 @@
   <div class="card" :class="content.type" v-if="type === 'reference'">
     <div class="content">
       <comp-collection v-if="content.type === 'collection'" :id="content.id" :data="data" />
-      <comp-infobox v-if="content.type === 'doc' && content.params && content.params.display === 'infobox'" :id="content.id" :data="data" />
+      <comp-infobox v-if="content.type === 'doc' && content.params && content.params.display === 'infobox'" :id="content.id" :data="data" title-style="multi-line" />
     </div>
   </div>
   <div class="card" v-else-if="type === 'html'">
