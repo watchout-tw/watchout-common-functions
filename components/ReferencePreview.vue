@@ -1,19 +1,25 @@
 <template>
 <div class="reference-preview">
-  <div class="preview image" v-if="display === 'image'">
+  <div class="preview text tcl-container" v-if="display === 'text'">
+    <div class="tcl-panel">
+      <h3 v-html="spacingOptimizer(internalTitle)"></h3>
+    </div>
+    <div class="tcl-panel"></div>
+  </div>
+  <div class="preview image" v-else-if="display === 'image'">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <div class="more font-size-small text-align-right secondary-text margin-top-bottom-4"><a :href="linkURL" class="a-text" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <h3 class="title medium margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="a-text">{{ internalTitle }}</a></h3>
+    <h3 class="title margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
     <div class="more margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="button medium" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview default tcl-container" v-else>
     <a :href="linkURL" class="image tcl-panel tcl-left-right-margin with-top-bottom-margin" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <div class="summary tcl-panel tcl-left-right-margin with-top-bottom-margin">
-      <h3 class="title medium"><a :href="linkURL" class="a-text">{{ internalTitle }}</a></h3>
+      <h3 class="title"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
       <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
       <div class="more margin-top-bottom-8"><a :href="linkURL" class="button medium" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -23,8 +29,10 @@
 
 <script>
 import { parseReference } from 'watchout-common-functions/lib/watchout'
+import { knowsBunko } from 'watchout-common-functions/interfaces'
 
 export default {
+  mixins: [knowsBunko],
   props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'channel'],
   computed: {
     doc() {

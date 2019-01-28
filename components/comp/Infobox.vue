@@ -1,10 +1,20 @@
 <template>
 <div class="comp-infobox">
-  <div class="infobox">
-    <h4>{{ doc.title }}</h4>
-    <div class="content font-size-small">
-      <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">
-        <div class="paragraphs last" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
+  <div class="infobox" :class="classes">
+    <template v-if="titleStyle === 'spaced-out'">
+      <h3 class="title text-align-center">{{ doc.title }}</h3>
+    </template>
+    <template v-else>
+      <h4 class="title section-title with-underline text-align-center"><span>{{ doc.title }}</span></h4>
+    </template>
+    <div class="content">
+      <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10"><!-- && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">-->
+        <template v-if="mobiledoc.cards[section[1]][0] === 'markdown'">
+          <div class="paragraphs no-margin" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
+        </template>
+        <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
+          <img :src="'https://beta.bunko.watchout.tw' + mobiledoc.cards[section[1]][1].src" />
+        </template>
       </div>
     </div>
   </div>
@@ -17,10 +27,10 @@ import { makeReference } from 'watchout-common-functions/lib/watchout'
 
 export default {
   mixins: [knowsMarkdown],
-  props: ['id', 'data'],
+  props: ['id', 'data', 'display', 'titleStyle'],
   data() {
     return {
-      maxNumSection: 3
+      maxNumSection: 2
     }
   },
   computed: {
@@ -32,6 +42,21 @@ export default {
     },
     mobiledoc() {
       return JSON.parse(this.doc.content.mobiledoc)
+    },
+    classes() {
+      let classes = []
+      // display
+      if(this.display.match(/^flyer/)) {
+        classes.push('flyer')
+        if(this.display.includes('free-form')) {
+          classes.push('free-form')
+        }
+      }
+      // title style
+      if(this.titleStyle === 'spaced-out') {
+        classes.push('title-spaced-out')
+      }
+      return classes
     }
   }
 }
@@ -46,10 +71,31 @@ export default {
     margin: 0 auto;
     padding: 1rem 1.25rem;
     background-color: $color-very-very-light-grey;
-  }
-  &.light {
-    > .infobox {
+    &.flyer {
+      max-width: 20rem;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem auto;
       background-color: white;
+      @include shadow-expanded-soft;
+      &.title-spaced-out > .title {
+        margin-left: 0.375rem;
+        font-size: 1.75rem;
+        letter-spacing: 0.375em;
+      }
+    }
+    &.free-form {
+      max-width: none;
+    }
+    > .title {
+      margin-bottom: 1rem;
+    }
+    > .content {
+      > .card {
+        > img {
+          max-width: 220px;
+          margin: 1rem auto;
+        }
+      }
     }
   }
 }
