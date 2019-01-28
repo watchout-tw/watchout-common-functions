@@ -46,7 +46,7 @@ export default {
     classes() {
       let classes = []
       // display
-      if(this.display.match(/^flyer/)) {
+      if(this.display && this.display.match(/^flyer/)) {
         classes.push('flyer')
         if(this.display.includes('free-form')) {
           classes.push('free-form')
