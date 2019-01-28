@@ -48,6 +48,9 @@ export default {
     getMusouProjectURL(moduleID, projectID) {
       return this.getBaseURL('musou') + moduleID + '/' + projectID
     },
+    getWatchoutDocListURL() {
+      return this.getBaseURL('watchout') + 'docs'
+    },
     getWatchoutProjectURL(projectID) {
       return this.getBaseURL('watchout') + `projects/${projectID}`
     },
