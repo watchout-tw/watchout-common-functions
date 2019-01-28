@@ -27,7 +27,7 @@ import { makeReference } from 'watchout-common-functions/lib/watchout'
 
 export default {
   mixins: [knowsMarkdown],
-  props: ['id', 'data', 'display', 'titleStyle'],
+  props: ['id', 'data', 'display', 'horizontalSpace', 'titleStyle', 'headingStyle'],
   data() {
     return {
       maxNumSection: 2
@@ -52,9 +52,17 @@ export default {
           classes.push('free-form')
         }
       }
+      // horizontal spacing
+      if(this.horizontalSpace === 'full-width') {
+        classes.push('full-width')
+      }
       // title style
       if(this.titleStyle === 'spaced-out') {
         classes.push('title-spaced-out')
+      }
+      // heading style
+      if(this.headingStyle === 'emphasized') {
+        classes.push('heading-emphasized')
       }
       return classes
     }
@@ -71,21 +79,7 @@ export default {
     margin: 0 auto;
     padding: 1rem 1.25rem;
     background-color: $color-very-very-light-grey;
-    &.flyer {
-      max-width: 20rem;
-      padding: 1.5rem 1.75rem;
-      margin: 1.5rem auto;
-      background-color: white;
-      @include shadow-expanded-soft;
-      &.title-spaced-out > .title {
-        margin-left: 0.375rem;
-        font-size: 1.75rem;
-        letter-spacing: 0.375em;
-      }
-    }
-    &.free-form {
-      max-width: none;
-    }
+
     > .title {
       margin-bottom: 1rem;
     }
@@ -94,6 +88,36 @@ export default {
         > img {
           max-width: 220px;
           margin: 1rem auto;
+        }
+      }
+    }
+    &.flyer {
+      max-width: 20rem;
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem auto;
+      background-color: white;
+      @include shadow-expanded-soft;
+    }
+    &.full-width {
+      max-width: none;
+    }
+    &.title-spaced-out {
+      > .title {
+        margin-left: 0.375rem;
+        font-size: 1.75rem;
+        letter-spacing: 0.375em;
+      }
+    }
+    &.heading-emphasized {
+      > .content {
+        > .card {
+          > .paragraphs {
+            > h2 {
+              margin: 0.5em 0 0.25em;
+              text-align: center;
+              font-size: 2em;
+            }
+          }
         }
       }
     }
