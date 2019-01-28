@@ -14,7 +14,7 @@
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
-    <div v-if="content.caption" class="caption">{{ content.caption }}</div>
+    <div v-if="content.caption" class="caption secondary-text tcl-left-right-margin margin-top-bottom-8">{{ content.caption }}</div>
   </div>
   <div class="card" v-else-if="type === 'hr'">
     <div class="content divider"></div>
