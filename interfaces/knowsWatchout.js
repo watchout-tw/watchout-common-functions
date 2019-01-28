@@ -56,7 +56,7 @@ export default {
     },
     generateMeta(channelID, pageTitle, pageDescription, image = defaultImage) {
       let baseURL = this.getBaseURL(channelID)
-      image = baseURL + (image.substring(0, 1) === '/' ? image.substring(1) : image)
+      image = image.includes('http') ? image : baseURL + (image.substring(0, 1) === '/' ? image.substring(1) : image)
       return [
         {
           hid: 'description',
