@@ -3,7 +3,7 @@
   <div class="title variable-font-size margin-top-bottom-single">
     <h1 class="medium" v-html="spacingOptimizer(doc.title)" />
   </div>
-  <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural]">
+  <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural] && doc[type.valuePlural].length > 0">
     <div class="author-type section-title with-underline small"><span>{{ type.label }}</span></div>
     <div class="authors">
       <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="author" />
