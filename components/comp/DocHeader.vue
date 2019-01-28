@@ -1,5 +1,5 @@
 <template>
-<div class="doc-header responsive-typesetting-container margin-top-bottom-single">
+<div class="doc-header responsive-typesetting-container margin-top-double margin-bottom-single">
   <div class="title variable-font-size margin-top-bottom-single">
     <h1 class="medium" v-html="spacingOptimizer(doc.title)" />
   </div>
