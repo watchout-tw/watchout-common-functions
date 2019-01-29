@@ -4,8 +4,11 @@
     <template v-if="titleStyle === 'spaced-out'">
       <h3 class="title text-align-center">{{ doc.title }}</h3>
     </template>
-    <template v-else>
+    <template v-else-if="display !== 'minimal'">
       <h4 class="title section-title with-underline text-align-center" :class="{ 'multi-line': titleStyle === 'multi-line' }"><span>{{ doc.title }}</span></h4>
+    </template>
+    <template v-else>
+      <h4 class="title text-align-center">{{ doc.title }}</h4>
     </template>
     <div class="content">
       <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10"><!-- && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">-->
@@ -46,11 +49,8 @@ export default {
     classes() {
       let classes = []
       // display
-      if(this.display && this.display.match(/^flyer/)) {
-        classes.push('flyer')
-        if(this.display.includes('free-form')) {
-          classes.push('free-form')
-        }
+      if(this.display) {
+        classes.push(this.display)
       }
       // horizontal spacing
       if(this.horizontalSpace === 'full-width') {
@@ -78,7 +78,9 @@ export default {
     max-width: 22rem;
     margin: 0 auto;
     padding: 1rem 1.25rem;
-    background-color: $color-very-very-light-grey;
+    &:not(.minimal) {
+      background-color: $color-very-very-light-grey;
+    }
 
     > .title {
       margin-bottom: 1rem;
