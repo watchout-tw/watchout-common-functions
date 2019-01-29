@@ -1,7 +1,7 @@
 <template>
 <div class="comp-infobox">
   <div class="infobox" :class="classes">
-    <template v-if="titleStyle === 'spaced-out'">
+    <template v-if="titleStyle === 'spread-out'">
       <h3 class="title text-align-center">{{ doc.title }}</h3>
     </template>
     <template v-else-if="display !== 'minimal'">
@@ -57,8 +57,8 @@ export default {
         classes.push('full-width')
       }
       // title style
-      if(this.titleStyle === 'spaced-out') {
-        classes.push('title-spaced-out')
+      if(this.titleStyle === 'spread-out') {
+        classes.push('title-spread-out')
       }
       // heading style
       if(this.headingStyle === 'emphasized') {
@@ -107,7 +107,7 @@ export default {
     &.full-width {
       max-width: none;
     }
-    &.title-spaced-out {
+    &.title-spread-out {
       > .title {
         margin-left: 0.375rem;
         font-size: 1.75rem;
