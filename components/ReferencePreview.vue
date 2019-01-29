@@ -10,11 +10,16 @@
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <div v-if="isActive" class="more font-size-small text-align-right secondary-text margin-top-bottom-4"><a :href="linkURL" class="a-text" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
-  <div class="preview vertical" v-else-if="display === 'vertical'">
+  <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <h3 class="title margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
+    <h3 class="title text-color-musou margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></h3>
+    <img class="hand" :src="hand" />
+  </div>
+  <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-    <div v-if="isActive" class="more margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview default tcl-container" v-else>
     <a :href="linkURL" class="image tcl-panel tcl-left-right-margin with-top-bottom-margin" :aspect-ratio="imageRatio" :style="imageStyles"></a>
@@ -30,10 +35,16 @@
 <script>
 import { parseReference } from 'watchout-common-functions/lib/watchout'
 import { knowsBunko } from 'watchout-common-functions/interfaces'
+import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
   mixins: [knowsBunko],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'readMoreStyle', 'channel', 'status'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'description', 'readMore', 'readMoreStyle', 'channel', 'status'],
+  data() {
+    return {
+      hand
+    }
+  },
   computed: {
     doc() {
       return this.reference ? this.data[this.reference.url] : null
@@ -52,9 +63,7 @@ export default {
     },
     readMoreClasses() {
       let classes = this.channel ? [this.channel] : ['watchout']
-      if(this.readMoreStyle === 'large') {
-        classes.push('large')
-      } else {
+      if(this.readMoreStyle !== 'large') {
         classes.push('medium')
       }
       return classes
@@ -64,14 +73,15 @@ export default {
       let ref = this.doc ? parseReference(this.doc.image) : null
       let url = ref ? ref.permalink : this.image
       styles.backgroundImage = `url(${url})`
-
-      if(this.align === 'center') {
-        styles.margin = '0 auto'
-      }
-      if(this.imageSize) {
-        styles.maxWidth = this.imageSize
-      }
+      styles.maxWidth = this.imageSize
       return styles
+    },
+    previewClasses() {
+      let classes = this.channel ? [this.channel] : ['watchout']
+      if(this.align === 'center') {
+        classes.push('align-center')
+      }
+      return classes
     },
     isActive() {
       return this.status !== 'disabled'
@@ -92,6 +102,7 @@ export default {
     opacity: 0.5;
   }
   > .preview {
+    position: relative;
     > .image {
       @include rect(2/1);
       &[aspect-ratio = 'square'] {
@@ -106,6 +117,29 @@ export default {
       background-size: cover;
       background-position: center center;
       @include shadow;
+    }
+  }
+  > .preview.align-center {
+    > .image {
+      margin: 0 auto;
+    }
+    > .title {
+      text-align: center;
+    }
+  }
+  > .preview.forward {
+    max-width: 20rem;
+    margin: 0 auto;
+    > .image {
+      transform: skewY(-6.8deg);
+    }
+    > .title {
+      margin-left: 10rem;
+    }
+    > .hand {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
     }
   }
 }
