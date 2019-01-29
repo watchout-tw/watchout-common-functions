@@ -54,8 +54,11 @@ export default {
     getWatchoutProjectURL(projectID) {
       return this.getBaseURL('watchout') + `projects/${projectID}`
     },
-    generateMeta(channelID, pageTitle, pageDescription, image = defaultImage) {
+    generateMeta(channelID, pageTitle, pageDescription, image) {
       let baseURL = this.getBaseURL(channelID)
+      if(!image) {
+        image = defaultImage
+      }
       image = image.includes('http') ? image : baseURL + (image.substring(0, 1) === '/' ? image.substring(1) : image)
       return [
         {
