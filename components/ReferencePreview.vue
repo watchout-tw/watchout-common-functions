@@ -14,14 +14,14 @@
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <h3 class="title margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-    <div v-if="isActive" class="more margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="button medium" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div v-if="isActive" class="more margin-top-bottom-8" :class="{ 'text-align-center': align === 'center' }"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview default tcl-container" v-else>
     <a :href="linkURL" class="image tcl-panel tcl-left-right-margin with-top-bottom-margin" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <div class="summary tcl-panel tcl-left-right-margin with-top-bottom-margin">
       <h3 class="title"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
       <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-      <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button medium" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
   </div>
 </div>
@@ -33,7 +33,7 @@ import { knowsBunko } from 'watchout-common-functions/interfaces'
 
 export default {
   mixins: [knowsBunko],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'channel', 'status'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'image', 'link', 'title', 'description', 'readMore', 'readMoreStyle', 'channel', 'status'],
   computed: {
     doc() {
       return this.reference ? this.data[this.reference.url] : null
@@ -51,7 +51,13 @@ export default {
       return this.readMore ? this.readMore : '閱讀更多'
     },
     readMoreClasses() {
-      return this.channel ? [this.channel] : ['watchout']
+      let classes = this.channel ? [this.channel] : ['watchout']
+      if(this.readMoreStyle === 'large') {
+        classes.push('large')
+      } else {
+        classes.push('medium')
+      }
+      return classes
     },
     imageStyles() {
       let styles = {}
