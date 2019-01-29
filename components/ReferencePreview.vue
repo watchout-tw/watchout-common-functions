@@ -134,7 +134,7 @@ export default {
       transform: skewY(-6.8deg);
     }
     > .title {
-      margin-left: 10rem;
+      margin-left: 50%;
     }
     > .hand {
       position: absolute;
