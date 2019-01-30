@@ -13,7 +13,7 @@
   <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
     <h3 class="title text-color-musou margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></h3>
-    <img class="hand" :src="hand" />
+    <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
@@ -96,6 +96,15 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 
+@keyframes hand-movement {
+  0% {
+    transform: none;
+  }
+  100% {
+    transform: translate(400%, 200%);
+  }
+}
+
 .reference-preview {
   &.disabled {
     filter: grayscale(100%);
@@ -136,10 +145,11 @@ export default {
     > .title {
       margin-left: 50%;
     }
-    > .hand {
+    > .hand-container {
       position: absolute;
       top: 2rem;
       left: 2rem;
+      animation: 'hand-movement' 1s infinite;
     }
   }
 }
