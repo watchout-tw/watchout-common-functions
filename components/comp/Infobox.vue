@@ -95,6 +95,12 @@ export default {
           max-width: 16rem;
           margin: 1rem auto;
         }
+        > .paragraphs {
+          > h2, > h3, > h4{
+            margin-top: 0.5em;
+            margin-bottom: 0.25em;
+          }
+        }
       }
     }
     &.flyer {
@@ -119,9 +125,8 @@ export default {
         > .card {
           > .paragraphs {
             > h2 {
-              margin: 0.5em 0 0.25em;
-              text-align: center;
               font-size: 2em;
+              text-align: center;
             }
           }
         }
