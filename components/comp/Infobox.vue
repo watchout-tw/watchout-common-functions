@@ -13,7 +13,7 @@
     <div class="content">
       <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10"><!-- && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">-->
         <template v-if="mobiledoc.cards[section[1]][0] === 'markdown'">
-          <div class="paragraphs no-margin a-text-parent" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
+          <div class="paragraphs no-margin a-text-parent heading-size-medium" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
         </template>
         <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
           <img :src="'https://beta.bunko.watchout.tw' + mobiledoc.cards[section[1]][1].src" />
