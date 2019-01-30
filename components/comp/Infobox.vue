@@ -92,7 +92,7 @@ export default {
     > .content {
       > .card {
         > img {
-          max-width: 220px;
+          max-width: 16rem;
           margin: 1rem auto;
         }
       }
