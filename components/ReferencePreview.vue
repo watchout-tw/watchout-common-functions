@@ -21,25 +21,26 @@
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
     <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
-  <div class="preview default tcl-container" v-else>
-    <a :href="linkURL" class="image tcl-panel tcl-left-right-margin with-top-bottom-margin" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <div class="summary tcl-panel tcl-left-right-margin with-top-bottom-margin">
+  <div class="preview default" :class="containerClasses" v-else>
+    <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <div class="summary" :class="panelClasses">
       <h3 class="title"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
       <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
       <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
   </div>
+  <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
 </div>
 </template>
 
 <script>
 import { parseReference } from 'watchout-common-functions/lib/watchout'
-import { knowsBunko } from 'watchout-common-functions/interfaces'
+import { knowsBunko, knowsWatchout } from 'watchout-common-functions/interfaces'
 import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
-  mixins: [knowsBunko],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'description', 'readMore', 'readMoreStyle', 'channel', 'status'],
+  mixins: [knowsBunko, knowsWatchout],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'description', 'readMore', 'readMoreStyle', 'showPubDest', 'status'],
   data() {
     return {
       hand
@@ -58,11 +59,17 @@ export default {
     internalDescription() {
       return this.doc ? this.doc.description : this.description
     },
+    containerClasses() {
+      return this.display === 'tcl' ? ['tcl-container'] : ['container']
+    },
+    panelClasses() {
+      return this.display === 'tcl' ? ['tcl-panel', 'tcl-left-right-margin', 'with-top-bottom-margin'] : ['panel']
+    },
     readMoreText() {
       return this.readMore ? this.readMore : '閱讀更多'
     },
     readMoreClasses() {
-      let classes = this.channel ? [this.channel] : ['watchout']
+      let classes = this.showPubDest && this.doc && this.doc.publishedTo ? [this.doc.publishedTo] : ['watchout']
       if(this.readMoreStyle !== 'large') {
         classes.push('medium')
       }
@@ -77,7 +84,7 @@ export default {
       return styles
     },
     previewClasses() {
-      let classes = this.channel ? [this.channel] : ['watchout']
+      let classes = this.showPubDest && this.doc && this.doc.publishedTo ? [this.doc.publishedTo] : ['watchout']
       if(this.align === 'center') {
         classes.push('align-center')
       }
@@ -123,9 +130,21 @@ export default {
       &[aspect-ratio = '3:2'] {
         @include rect(3/2);
       }
+      background-color: $color-very-light-grey;
       background-size: cover;
       background-position: center center;
       @include shadow;
+    }
+    &.container {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      > .panel {
+        width: 50%;
+        &:not(:last-child) {
+          margin-right: 1rem;
+        }
+      }
     }
   }
   > .preview.align-center {
@@ -151,6 +170,14 @@ export default {
       left: 2rem;
       animation: 'hand-movement' 1s infinite;
     }
+  }
+  > .pub-dest-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
   }
 }
 </style>
