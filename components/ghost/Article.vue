@@ -6,10 +6,10 @@
       <ghost-card v-if="section[0] === 10" :card="mobiledoc.cards[section[1]]" :data="data" :key="index" />
     </template>
   </div>
-  <div class="links" v-if="links.length > 0">
+  <div class="links" v-if="links && links.length > 0">
     <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" />
   </div>
-  <div class="footnotes" v-if="footnotes.length > 0">
+  <div class="footnotes" v-if="footnotes && footnotes.length > 0">
     <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" />
   </div>
   <div class="active-footnote" :class="{ show: showActiveFootnote }">

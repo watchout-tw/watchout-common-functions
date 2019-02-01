@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="dates font-size-small margin-top-bottom-8">
-    <div><span>發佈時間</span><span class="full-width-punctuation">：</span><span>{{ getDateTimeString(doc.publishedAt) }}</span></div>
+    <div v-if="doc.publishedAt"><span>發佈時間</span><span class="full-width-punctuation">：</span><span>{{ getDateTimeString(doc.publishedAt) }}</span></div>
     <div v-if="doc.updatedAt"><span>最後更新</span><span class="full-width-punctuation">：</span><span>{{ getDateTimeString(doc.updatedAt) }}</span></div>
   </div>
 </div>
@@ -25,7 +25,7 @@ export default {
   props: ['doc', 'cachedAuthors'],
   methods: {
     cachedAuthorByPersona(personaID) {
-      return this.cachedAuthors.find(author => author.persona === personaID)
+      return this.cachedAuthors ? this.cachedAuthors.find(author => author.persona === personaID) : null
     }
   },
   components: {
