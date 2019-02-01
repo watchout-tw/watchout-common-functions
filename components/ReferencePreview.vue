@@ -11,25 +11,30 @@
     <div v-if="isActive" class="more font-size-small text-align-right secondary-text margin-top-bottom-4"><a :href="linkURL" class="a-text" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
-    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
+      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+    </a>
     <h3 class="title text-color-musou margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
-    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
+      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+    </a>
     <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
     <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview default" :class="containerClasses" v-else>
-    <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
+      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+    </a>
     <div class="summary" :class="panelClasses">
       <h3 class="title"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
       <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
       <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
   </div>
-  <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
 </div>
 </template>
 
@@ -118,8 +123,8 @@ export default {
     opacity: 0.5;
   }
   > .preview {
-    position: relative;
     > .image {
+      position: relative;
       @include rect(2/1);
       &[aspect-ratio = 'square'] {
         @include rect(1/1);
@@ -134,6 +139,14 @@ export default {
       background-size: cover;
       background-position: center center;
       @include shadow;
+      > .pub-dest-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        background-size: contain;
+      }
     }
     &.container {
       width: 100%;
@@ -170,14 +183,6 @@ export default {
       left: 2rem;
       animation: 'hand-movement' 1s infinite;
     }
-  }
-  > .pub-dest-logo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 24px;
-    height: 24px;
-    background-size: contain;
   }
 }
 </style>
