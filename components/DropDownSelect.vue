@@ -1,7 +1,7 @@
 <template>
 <div class="drop-down-select input">
   <div class="triangle"></div>
-  <div class="placeholder" v-if="!value">{{ placeholder }}</div>
+  <div class="placeholder" v-if="!value && !internalValue">{{ placeholder }}</div>
   <select ref="inputElement" v-model="internalValue" @input="$emit('input', $event.target.value)">
     <option disabled selected></option>
     <option v-for="option of internalOptions" :value="option.value">{{ option.label }}</option>
