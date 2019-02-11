@@ -43,6 +43,11 @@ const allTypes = [
   },
   {
     category: 'watchout',
+    value: 'event',
+    label: '事件'
+  },
+  {
+    category: 'watchout',
     value: 'https',
     label: '外部連結'
   },
