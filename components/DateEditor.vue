@@ -12,11 +12,13 @@ import DropDownSelect from 'watchout-common-functions/components/DropDownSelect'
 
 const TYPES = {
   OBJ: 'object',
-  ISO: 'iso',
-  MYSQL: 'mysql',
   FS: 'firestore',
+  MYSQL: 'mysql',
+  ISO: 'iso',
   STR: 'string'
 }
+
+const DEFAULT_DATE = '2016/5/15'
 
 export default {
   props: ['value'],
@@ -33,41 +35,35 @@ export default {
   },
   computed: {
     type() {
-      let type = null
-      if(this.value && this.value instanceof Date) {
-        type = TYPES.OBJ
-      } else if(this.value && util.isIsoTS(this.value)) {
-        type = TYPES.ISO
+      let type = TYPES.OBJ
+      if(this.value && util.isFsTS(this.value)) {
+        type = TYPES.FS
       } else if(this.value && util.isMysqlTS(this.value)) {
         type = TYPES.MYSQL
-      } else if(this.value && util.isFsTS(this.value)) {
-        type = TYPES.FS
-      } else if(this.value && !isNaN(new Date(this.value))) {
+      } else if(this.value && util.isIsoTS(this.value)) {
+        type = TYPES.ISO
+      } else if(this.value && typeof this.value === 'string' && !isNaN(new Date(this.value))) {
         type = TYPES.STR
       }
       return type
     },
     dateObj: {
       get() {
-        let obj = null
-        if(this.type === TYPES.OBJ) {
-          obj = this.value
-        } else if(this.type === TYPES.ISO) {
-          obj = util.isoTSToDateObj(this.value)
+        let obj = this.value
+        if(this.type === TYPES.FS) {
+          obj = util.fsTSToDateObj(this.value)
         } else if(this.type === TYPES.MYSQL) {
           obj = util.mysqlTSToDateObj(this.value)
-        } else if(this.type === TYPES.FS) {
-          obj = util.fsTSToDateObj(this.value)
+        } else if(this.type === TYPES.ISO) {
+          obj = util.isoTSToDateObj(this.value)
         } else if(this.type === TYPES.STR) {
           obj = new Date(this.value)
         }
         return obj
       },
       set(newDateObj) {
-        let newValue = null
-        if(this.type === TYPES.OBJ) {
-          newValue = newDateObj
-        } else if(this.type === TYPES.ISO) {
+        let newValue = newDateObj
+        if(this.type === TYPES.ISO) {
           newValue = util.dateObjToIsoTS(newDateObj)
         } else if(this.type === TYPES.MYSQL) {
           newValue = util.dateObjToMysqlTS(newDateObj)
@@ -84,11 +80,9 @@ export default {
         return this.dateObj ? this.dateObj.getFullYear() : null
       },
       set(newValue) {
-        if(this.dateObj) {
-          let newDate = new Date(this.dateObj.getTime())
-          newDate.setYear(newValue)
-          this.dateObj = newDate
-        }
+        let newDate = new Date((this.dateObj ? this.dateObj : new Date(DEFAULT_DATE)).getTime())
+        newDate.setYear(newValue)
+        this.dateObj = newDate
       }
     },
     month: {
@@ -96,11 +90,9 @@ export default {
         return this.dateObj ? this.dateObj.getMonth() + 1 : null
       },
       set(newValue) {
-        if(this.dateObj) {
-          let newDate = new Date(this.dateObj.getTime())
-          newDate.setMonth(newValue - 1)
-          this.dateObj = newDate
-        }
+        let newDate = new Date((this.dateObj ? this.dateObj : new Date(DEFAULT_DATE)).getTime())
+        newDate.setMonth(newValue - 1)
+        this.dateObj = newDate
       }
     },
     day: {
@@ -108,11 +100,9 @@ export default {
         return this.dateObj ? this.dateObj.getDate() : null
       },
       set(newValue) {
-        if(this.dateObj) {
-          let newDate = new Date(this.dateObj.getTime())
-          newDate.setDate(newValue)
-          this.dateObj = newDate
-        }
+        let newDate = new Date((this.dateObj ? this.dateObj : new Date(DEFAULT_DATE)).getTime())
+        newDate.setDate(newValue)
+        this.dateObj = newDate
       }
     }
   },
