@@ -68,7 +68,7 @@ export default {
         } else if(this.type === TYPES.MYSQL) {
           newValue = util.dateObjToMysqlTS(newDateObj)
         } else if(this.type === TYPES.FS) {
-          newValue = util.dateObjToFsTS(newDateObj)
+          newValue = newDateObj // FIXME: make sure this is a Date obj
         } else if(this.type === TYPES.STR) {
           newValue = util.formatter.datetime(newDateObj) // FIXME: placeholder solution for now
         }
