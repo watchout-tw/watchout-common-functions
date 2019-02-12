@@ -1,7 +1,7 @@
 import defaultImage from 'watchout-common-assets/images/default.gif'
 import env from 'watchout-common-assets/environment'
 
-import { getBaseURL, getCompDocURL, getCompVideoURL } from 'watchout-common-functions/lib/watchout'
+import { getBaseURL, getCompDocURL, getCompVideoURL, getWatchoutProjectURL } from 'watchout-common-functions/lib/watchout'
 
 export default {
   methods: {
@@ -51,9 +51,7 @@ export default {
     getWatchoutDocListURL() {
       return this.getBaseURL('watchout') + 'docs'
     },
-    getWatchoutProjectURL(projectID) {
-      return this.getBaseURL('watchout') + `projects/${projectID}`
-    },
+    getWatchoutProjectURL,
     generateMeta(channelID, pageTitle, pageDescription, image) {
       let baseURL = this.getBaseURL(channelID)
       if(!image) {
