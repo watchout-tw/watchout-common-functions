@@ -51,7 +51,6 @@ export default {
     },
     cachedAuthorNameByContent(type, id) {
       let author = this.cachedAuthorByContent(type, id)
-      console.log(type, id, author)
       return author && author.personaObj ? author.personaObj.name : author.persona
     },
     cachedTag(id) {
