@@ -16,7 +16,7 @@ const maxSanitizationOptions = Object.assign({}, minSanitizationOptions, {
     'strike',
     'code',
     'pre',
-    'blockquoe',
+    'blockquote',
     'p',
     'ul',
     'ol',
