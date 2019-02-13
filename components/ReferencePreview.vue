@@ -7,14 +7,14 @@
     <div class="tcl-panel"></div>
   </div>
   <div class="preview image" v-else-if="display === 'image'">
-    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <div v-if="isActive" class="more font-size-small text-align-right secondary-text margin-top-bottom-4"><a :href="linkURL" class="a-text" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <a :href="linkURL" class="image margin-bottom-8" :aspect-ratio="imageRatio" :style="imageStyles"></a>
+    <div v-if="isActive" class="more text-align-right"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
     </a>
-    <h3 class="title text-color-musou margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></h3>
+    <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
@@ -23,7 +23,7 @@
     </a>
     <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
     <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-    <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div v-if="isActive" class="more"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview default" :class="containerClasses" v-else>
     <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
@@ -32,7 +32,7 @@
     <div class="summary" :class="panelClasses">
       <h3 class="title"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
       <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-      <div v-if="isActive" class="more margin-top-bottom-8"><a :href="linkURL" class="button" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div v-if="isActive" class="more"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
   </div>
 </div>
@@ -74,10 +74,13 @@ export default {
       return this.readMore ? this.readMore : '閱讀更多'
     },
     readMoreClasses() {
-      let classes = this.showPubDest && this.doc && this.doc.publishedTo ? [this.doc.publishedTo] : ['watchout']
-      if(this.readMoreStyle !== 'large') {
-        classes.push('medium')
+      let classes = []
+      if(this.readMoreStyle === 'button') {
+        classes.push(...['button', 'medium', 'margin-top-bottom-4'])
+      } else {
+        classes.push(...['a-text', 'font-size-small', 'secondary-text'])
       }
+      classes.push(this.showPubDest && this.doc && this.doc.publishedTo ? this.doc.publishedTo : 'watchout')
       return classes
     },
     imageStyles() {
