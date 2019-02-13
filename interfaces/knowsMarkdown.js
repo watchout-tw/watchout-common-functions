@@ -6,6 +6,9 @@ const minSanitizationOptions = {
   transformTags: {
     'a': sanitizer.simpleTransform('a', { target: '_blank' })
   }
+  // FIXME: spacing optimization of <h2> & <h3> should be done here
+  // NOTE: replacing text with transformTags is buggy
+  // https://github.com/punkave/sanitize-html/issues/136
 }
 const maxSanitizationOptions = Object.assign({}, minSanitizationOptions, {
   allowedTags: [
