@@ -22,19 +22,19 @@
       <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
     </a>
     <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
-    <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-    <div v-if="isActive" class="more"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
+    <div v-if="isActive" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
-  <div class="preview default" :class="containerClasses" v-else>
+  <!-- default --><div class="preview default" :class="containerClasses" v-else>
     <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
     </a>
     <div class="summary" :class="panelClasses">
-      <h3 class="title"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
-      <div class="description margin-top-bottom-8">{{ internalDescription }}</div>
-      <div v-if="isActive" class="more"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <h3 class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
+      <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
+      <div v-if="isActive" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
-  </div>
+  </div><!-- end default -->
 </div>
 </template>
 
@@ -59,10 +59,10 @@ export default {
       return this.doc ? this.doc.id : null
     },
     internalTitle() {
-      return this.doc ? this.doc.title : this.title
+      return this.title ? this.title : (this.doc ? this.doc.title : '標題未定')
     },
     internalDescription() {
-      return this.doc ? this.doc.description : this.description
+      return this.description === null ? null : (this.doc ? this.doc.description : this.description)
     },
     containerClasses() {
       return this.display === 'tcl' ? ['tcl-container'] : ['container']
@@ -76,7 +76,7 @@ export default {
     readMoreClasses() {
       let classes = []
       if(this.readMoreStyle === 'button') {
-        classes.push(...['button', 'medium', 'margin-top-bottom-4'])
+        classes.push(...['button', 'medium'])
       } else {
         classes.push(...['a-text', 'font-size-small', 'secondary-text'])
       }
@@ -88,7 +88,7 @@ export default {
       let ref = this.doc ? parseReference(this.doc.image) : null
       let url = ref ? ref.permalink : this.image
       styles.backgroundImage = `url(${url})`
-      styles.maxWidth = this.imageSize
+      styles.maxWidth = this.imageSize ? this.imageSize : null
       return styles
     },
     previewClasses() {
@@ -155,10 +155,17 @@ export default {
       width: 100%;
       display: flex;
       align-items: flex-start;
-      > .panel {
-        width: 50%;
-        &:not(:last-child) {
-          margin-right: 1rem;
+      > .panel:first-child {
+        width: 35%;
+        @include tcl-sm {
+          width: 50%;
+        }
+        margin-right: 1rem;
+      }
+      > .panel:last-child {
+        width: 65%;
+        @include tcl-sm {
+          width: 50%;
         }
       }
     }
