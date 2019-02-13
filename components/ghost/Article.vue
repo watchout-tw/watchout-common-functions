@@ -1,5 +1,5 @@
 <template>
-<div class="ghost-article">
+<div class="ghost-article" ref="article">
   <div class="content">
     <template v-for="(section, index) of mobiledoc.sections">
       <!--<ghost-markup v-if="section[0] === 1" :key="index" :tag-name="section[1]" :markers="section[2]" :atoms="mobiledoc.atoms" :markups="mobiledoc.markups" />-->
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { spacingOptimizer } from 'watchout-common-functions/lib/bunko'
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
 import GhostMarkup from 'watchout-common-functions/components/ghost/Markup'
 import GhostCard from 'watchout-common-functions/components/ghost/Card'
@@ -52,6 +53,11 @@ export default {
         this.activeFootnoteID = (id - 1)
         this.showActiveFootnote = true
       })
+    })
+    // FIXME: spacing optimzation should be done in interfaces/knowsMarkdown.markdown()
+    let headings = [...this.$refs.article.getElementsByTagName('h2'), ...this.$refs.article.getElementsByTagName('h3')]
+    headings.forEach(heading => {
+      heading.innerHTML = spacingOptimizer(heading.innerHTML)
     })
   },
   components: {
