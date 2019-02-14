@@ -6,15 +6,15 @@
   "author": "Department of Technology at Watchout <dev@watchout.tw>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.17.1",
-    "firebase": "^5.5.9",
+    "axios": "^0.18.0",
+    "firebase": "^5.8.2",
     "lodash.debounce": "^4.0.8",
-    "marked": "^0.3.16",
-    "project-name-generator": "^2.1.4",
-    "sanitize-html": "^1.18.2"
+    "marked": "^0.6.0",
+    "project-name-generator": "^2.1.6",
+    "sanitize-html": "^1.20.0"
   },
   "devDependencies": {
-    "socket.io": "^2.1.0",
-    "socket.io-client": "^2.1.0"
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
   }
 }

@@ -7,9 +7,7 @@ let projects = [
 ]
 
 export default {
-  db: {
-    timestampsInSnapshots: true
-  },
+  db: {},
   projects: Object.assign({}, ...projects.map(project => ({
     [project.name]: {
       apiKey: project.apiKey,
