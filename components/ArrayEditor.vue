@@ -18,7 +18,7 @@
         <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
       </template>
       <button class="input button tiny" @click="addValue">新增</button>
-      <button class="input button tiny" @click="clearValues">清空</button>
+      <button class="input button tiny" @click="clearValues">⤬</button>
     </div>
   </div>
 </div>
