@@ -1,4 +1,4 @@
-import defaultImage from 'watchout-common-assets/images/default.gif'
+import defaultImage from 'watchout-common-assets/images/default-cover-images/watchout-2-1.jpg'
 import env from 'watchout-common-assets/environment'
 
 import { getBaseURL, getCompDocURL, getCompVideoURL, getWatchoutProjectURL } from 'watchout-common-functions/lib/watchout'
