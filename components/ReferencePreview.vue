@@ -154,20 +154,23 @@ export default {
     &.container {
       width: 100%;
       display: flex;
-      align-items: flex-start;
-      > .panel:first-child {
-        width: 35%;
-        @include tcl-sm {
-          width: 50%;
-        }
-        margin-right: 1rem;
-      }
+      flex-direction: column;
       > .panel:last-child {
-        width: 65%;
-        @include tcl-sm {
-          width: 50%;
+        margin-top: 0.75rem;
+      }
+      @include tcl-sm {
+        flex-direction: row;
+        align-items: flex-start;
+        > .panel:first-child {
+          width: 35%;
+          margin-right: 1rem;
+        }
+        > .panel:last-child {
+          width: 65%;
+          margin-top: 0;
         }
       }
+
     }
   }
   > .preview.align-center {
