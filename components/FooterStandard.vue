@@ -36,6 +36,7 @@
 
 <script>
 import { env } from 'watchout-common-assets'
+import { getBaseURL } from 'watchout-common-functions/lib/watchout'
 
 const getPlatformIcon = (platform) => require('watchout-common-assets/images/platforms/' + platform + '/black.png')
 
@@ -70,6 +71,10 @@ const linkGroups = [
     title: '沃草產品',
     links: [
       {
+        title: '中央公園',
+        url: env.channels.park.links.home
+      },
+      {
         title: '國會無雙',
         url: env.channels.musou.links.home
       },
@@ -78,16 +83,12 @@ const linkGroups = [
         url: env.channels.ask.links.home
       },
       {
-        title: '中央公園',
-        url: env.channels.park.links.home
+        title: '公民學院',
+        url: env.channels.uc.links.home
       },
       {
         title: '議題實驗室',
         url: env.channels.lab.links.home
-      },
-      {
-        title: '公民學院',
-        url: env.channels.uc.links.home
       }
     ]
   },
@@ -96,22 +97,22 @@ const linkGroups = [
     links: [
       {
         title: 'English',
-        url: 'overseas',
-        relative: true
+        url: getBaseURL('watchout') + '?lang=en',
+        relative: false
       },
       {
-        title: '歷年影響力報告',
+        title: '影響力報告',
         url: 'impact',
-        relative: true
-      },
-      {
-        title: '透明報告',
-        url: 'transparency/2014',
         relative: true
       },
       {
         title: '編輯獨立宣言',
         url: 'editorial-independence',
+        relative: true
+      },
+      {
+        title: '透明報告',
+        url: 'transparency/2014',
         relative: true
       },
       {
