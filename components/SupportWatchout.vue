@@ -2,11 +2,11 @@
 <div class="support-watchout">
   <a :href="link" target="_blank" class="container" :class="containerClasses">
     <div class="appeal">
-      <div class="line" v-for="line of text">{{ line }}</div>
+      <div class="line" v-for="(line, index) of text" v-html="spacingOptimizer(line)" :key="`line-${index}`"></div>
     </div>
     <div class="action">
       <img class="image" :src="actionImage"/>
-      <div class="text">{{ action.text }}</div>
+      <div class="text" v-html="spacingOptimizer(action.text)"></div>
     </div>
     <div class="close white" @click.stop.prevent="toggleShowSupport(false)"></div>
   </a>
@@ -15,7 +15,8 @@
 
 <script>
 import { env } from 'watchout-common-assets'
-import { knowsWindowManagement } from '../interfaces' // FIXME: no relative paths
+import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { spacingOptimizer } from 'watchout-common-functions/lib/bunko'
 
 const supportPackages = {
   ask: {
@@ -69,6 +70,9 @@ export default {
     actionImage() {
       return require('watchout-common-assets/images/support/' + this.action.image + '.png')
     }
+  },
+  methods: {
+    spacingOptimizer
   }
 }
 </script>
