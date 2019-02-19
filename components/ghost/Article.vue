@@ -13,7 +13,7 @@
     <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" />
   </div>
   <div class="active-footnote" :class="{ show: showActiveFootnote }">
-    <div class="content">{{ activeFootnote }}</div>
+    <div class="content paragraphs no-margin a-text-parent" v-if="activeFootnote" v-html="markdown(activeFootnote.markdown)"></div>
     <div class="close" @click="showActiveFootnote = false"></div>
   </div>
 </div>
@@ -82,9 +82,10 @@ export default {
     max-width: 24rem;
     transition-property: bottom, transform;
     transition-duration: 0.25s;
-    font-size: $font-size-small;
     padding: 1em;
-    background-color: rgba($color-watchout, 0.95);
+    padding-top: 2em;
+    font-size: $font-size-small;
+    background-color: rgba($color-watchout-light-solid, 0.95);
     @include shadow;
     &.show {
       top: auto;
