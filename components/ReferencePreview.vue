@@ -12,14 +12,14 @@
   </div>
   <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
-      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+      <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></component>
     <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
-      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+      <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
     <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
@@ -27,7 +27,7 @@
   </div>
   <div class="preview horizontal" v-else-if="display === 'horizontal'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
-      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+      <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary">
       <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
@@ -37,7 +37,7 @@
   </div>
   <div class="preview default" :class="containerClasses" v-else><!-- default is flexible -->
     <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
-      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+      <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary" :class="panelClasses">
       <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
@@ -83,6 +83,9 @@ export default {
     titleTag() {
       return `h${parseInt(this.h) ? parseInt(this.h) : 3}`
     },
+    pubDestLogo() {
+      return this.getSmallProjectLogo(this.doc && this.doc.publishedTo ? this.doc.publishedTo : 'external')
+    },
     showReadMore() {
       return this.readMoreStyle !== null
     },
@@ -118,7 +121,7 @@ export default {
       return this.status !== 'disabled'
     },
     linkURL() {
-      return this.isActive ? (this.reference ? this.reference.permalink : this.link) : null
+      return this.isActive ? (this.link ? this.link : (this.reference && this.reference.permalink ? this.reference.permalink : null)) : null
     }
   }
 }

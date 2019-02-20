@@ -6,7 +6,7 @@
       <div class="item list-item tcl-panel tcl-left-right-margin with-top-bottom-margin" v-for="(item, index) of items" :key="`item-${index}`">
         <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown(item.markdown)"></div>
         <div class="links margin-top-bottom-single">
-          <reference-preview class="link" :reference="link.referenceObj" :data="data" display="horizontal" :image="getItemLinkImage(link)" :title="link.title" :h="4" :read-more-style="null" v-for="(link, index) of item.links" :key="`links-${index}`" />
+          <reference-preview class="link" :reference="link.referenceObj" :data="data" display="horizontal" :image="getItemLinkImage(link)" :title="link.title" :h="4" :read-more-style="null" :show-pub-dest="true" v-for="(link, index) of item.links" :key="`links-${index}`" />
         </div>
       </div>
       <div class="tcl-panel"></div>
@@ -15,7 +15,7 @@
   <template v-else>
     <div class="items grid tcl-container no-margin" v-if="items">
       <div class="item grid-item tcl-panel half-width" v-for="(item, index) of items" :key="`item-${index}`">
-        <reference-preview class="" :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" />
+        <reference-preview :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" :show-pub-dest="true" />
       </div>
       <div class="tcl-panel half-width"></div>
       <div class="tcl-panel half-width"></div>
