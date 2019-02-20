@@ -1,5 +1,9 @@
 <template>
 <div class="after-article">
+  <div class="share margin-top-double margin-bottom-quad">
+    <div class="section-title with-underline text-align-center margin-top-bottom-single"><span>認同請分享</span></div>
+    <share-to-platforms :url="shareURL" />
+  </div>
   <div class="links" v-if="links && links.length > 0">
   <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" />
 </div>
@@ -15,11 +19,12 @@
 
 <script>
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
+import ShareToPlatforms from 'watchout-common-functions/components/ShareToPlatforms'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
 
 export default {
   mixins: [knowsMarkdown],
-  props: ['links', 'footnotes', 'references', 'data'],
+  props: ['shareURL', 'links', 'footnotes', 'references', 'data'],
   data() {
     return {
       showActiveFootnote: false,
@@ -44,6 +49,7 @@ export default {
     })
   },
   components: {
+    ShareToPlatforms,
     CompCollection
   }
 }
