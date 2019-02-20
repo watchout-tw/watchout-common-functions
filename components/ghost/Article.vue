@@ -10,7 +10,7 @@
     <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" />
   </div>
   <div class="footnotes" v-if="footnotes && footnotes.length > 0">
-    <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" />
+    <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" display="list" />
   </div>
   <div class="active-footnote" :class="{ show: showActiveFootnote }">
     <div class="content paragraphs no-margin a-text-parent" v-if="activeFootnote" v-html="markdown(activeFootnote.markdown)"></div>
@@ -48,7 +48,6 @@ export default {
     Array.prototype.forEach.call(footnoteAnchors, (el) => {
       let id = parseInt(el.dataset.id)
       el.addEventListener('click', event => {
-        console.log(event.target)
         this.activeFootnoteAnchor = event.target
         this.activeFootnoteID = (id - 1)
         this.showActiveFootnote = true

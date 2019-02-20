@@ -1,30 +1,38 @@
 <template>
 <div class="comp-collection margin-top-bottom-single">
   <h4 class="title section-title with-underline text-align-center margin-top-bottom-8" v-if="title"><span>{{ title }}</span></h4>
-  <div class="items tcl-container no-margin" v-if="items">
-    <a class="item tcl-panel half-width a-block" :class="{ 'with-image': !!getItemImage(item) }" :href="item.referenceObj.permalink" :target="['https', 'http'].includes(item.referenceObj.type) ? '_blank' : ''" v-for="item of items" :key="item.id">
-      <div class="image" :style="{ backgroundImage: 'url(' + getItemImage(item) + ')' }">
-        <div v-if="item.referenceObj.type === 'video'" class="button play"></div>
+  <template v-if="display === 'list'">
+    <div class="items list tcl-container no-margin" v-if="items">
+      <div class="item list-item tcl-panel tcl-left-right-margin with-top-bottom-margin" v-for="(item, index) of items" :key="`item-${index}`">
+        <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown(item.markdown)"></div>
+        <div class="links margin-top-bottom-single">
+          <reference-preview class="link" :reference="link.referenceObj" :data="data" display="horizontal" :image="getItemLinkImage(link)" :title="link.title" :h="4" :read-more-style="null" v-for="(link, index) of item.links" :key="`links-${index}`" />
+        </div>
       </div>
-      <div class="logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(item.content && item.content.publishedTo ? item.content.publishedTo : 'external') + ')' }"></div>
-      <div class="summary">
-        <h4 class="title a-target">{{ item.title ? item.title : (item.content && item.content.title ? item.content.title : '未知的標題') }}</h4>
+      <div class="tcl-panel"></div>
+    </div>
+  </template>
+  <template v-else>
+    <div class="items grid tcl-container no-margin" v-if="items">
+      <div class="item grid-item tcl-panel half-width" v-for="(item, index) of items" :key="`item-${index}`">
+        <reference-preview class="" :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" />
       </div>
-    </a>
-    <div class="tcl-panel half-width"></div>
-    <div class="tcl-panel half-width"></div>
-    <div class="tcl-panel half-width"></div>
-  </div>
+      <div class="tcl-panel half-width"></div>
+      <div class="tcl-panel half-width"></div>
+      <div class="tcl-panel half-width"></div>
+    </div>
+  </template>
 </div>
 </template>
 
 <script>
-import { knowsWatchout } from 'watchout-common-functions/interfaces'
+import { knowsMarkdown, knowsWatchout } from 'watchout-common-functions/interfaces'
 import { parseReference, makeReference } from 'watchout-common-functions/lib/watchout'
+import ReferencePreview from 'watchout-common-functions/components/ReferencePreview'
 
 export default {
-  mixins: [knowsWatchout],
-  props: ['id', 'data', 'collection'],
+  mixins: [knowsMarkdown, knowsWatchout],
+  props: ['id', 'data', 'collection', 'display'],
   computed: {
     referenceObj() {
       return makeReference('collection', this.id)
@@ -55,11 +63,22 @@ export default {
       if(item.content && item.content.hasOwnProperty('image') && typeof item.content.image === 'string') {
         let reference = parseReference(item.content.image)
         image = reference ? reference.permalink : null
-      } else if(item.content && Array.isArray(item.content.images)) {
+      } else if(item.content && Array.isArray(item.content.images) && item.content.images.length > 0) {
         image = item.content.images[0]
       }
       return image
+    },
+    getItemLinkImage(link) {
+      let image = null
+      let data = this.data[link.referenceObj.url]
+      if(data && Array.isArray(data.images) && data.images.length > 0) {
+        image = data.images[0]
+      }
+      return image
     }
+  },
+  components: {
+    ReferencePreview
   }
 }
 </script>
@@ -68,42 +87,17 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 
 .comp-collection {
-  > .items {
-    > .item {
-      position: relative;
-      background-color: $color-very-very-light-grey;
-      @include shadow;
-      > .image {
-        display: none;
-      }
-      > .logo {
-        width: 24px;
-        height: 24px;
-        background-size: contain;
-      }
-      > .summary {
-        padding: 0.5rem 0.75rem;
-      }
-      &.with-image {
-        > .image {
-          @include rect(2/1);
-          background-color: $color-very-light-grey;
-          background-size: cover;
-          background-position: center center;
-          > .button.play {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-          }
-        }
-        > .logo {
-          position: absolute;
-          top: 0;
-          left: 0;
+  > .list {
+    > .list-item {
+      > .links {
+        > .link:not(:last-child) {
+          margin-bottom: 0.875rem;
         }
       }
     }
+  }
+  > .grid {
+    > .grid-item {}
   }
 }
 </style>

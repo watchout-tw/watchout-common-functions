@@ -2,39 +2,49 @@
 <div class="reference-preview" :class="{ disabled: !isActive }">
   <div class="preview text tcl-container" v-if="display === 'text'">
     <div class="tcl-panel">
-      <h3 v-html="spacingOptimizer(internalTitle)"></h3>
+      <component :is="titleTag" v-html="spacingOptimizer(internalTitle)"></component>
     </div>
     <div class="tcl-panel"></div>
   </div>
   <div class="preview image" v-else-if="display === 'image'">
     <a :href="linkURL" class="image margin-bottom-8" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <div v-if="isActive" class="more text-align-right"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div v-if="isActive && showReadMore" class="more text-align-right"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
   <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
     </a>
-    <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></h3>
+    <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></component>
     <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
     </a>
-    <h3 class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
+    <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
     <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
-    <div v-if="isActive" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
   </div>
-  <!-- default --><div class="preview default" :class="containerClasses" v-else>
+  <div class="preview horizontal" v-else-if="display === 'horizontal'" :class="previewClasses">
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
+      <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
+    </a>
+    <div class="summary">
+      <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
+      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    </div>
+  </div>
+  <div class="preview default" :class="containerClasses" v-else><!-- default is flexible -->
     <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest && doc && doc.publishedTo" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + getSmallProjectLogo(doc.publishedTo) + ')' }"></div>
     </a>
     <div class="summary" :class="panelClasses">
-      <h3 class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></h3>
+      <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
-      <div v-if="isActive" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
-  </div><!-- end default -->
+  </div>
 </div>
 </template>
 
@@ -45,7 +55,7 @@ import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
   mixins: [knowsBunko, knowsWatchout],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'description', 'readMore', 'readMoreStyle', 'showPubDest', 'status'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'description', 'readMore', 'readMoreStyle', 'showPubDest', 'status'],
   data() {
     return {
       hand
@@ -69,6 +79,12 @@ export default {
     },
     panelClasses() {
       return this.display === 'tcl' ? ['tcl-panel', 'tcl-left-right-margin', 'with-top-bottom-margin'] : ['panel']
+    },
+    titleTag() {
+      return `h${parseInt(this.h) ? parseInt(this.h) : 3}`
+    },
+    showReadMore() {
+      return this.readMoreStyle !== null
     },
     readMoreText() {
       return this.readMore ? this.readMore : '閱讀更多'
@@ -170,7 +186,6 @@ export default {
           margin-top: 0;
         }
       }
-
     }
   }
   > .preview.align-center {
@@ -195,6 +210,17 @@ export default {
       top: 2rem;
       left: 2rem;
       animation: 'hand-movement' 1s infinite;
+    }
+  }
+  > .preview.horizontal {
+    display: flex;
+    align-items: flex-start;
+    > .image {
+      width: 35%;
+      margin-right: 0.75rem;
+    }
+    > .summary {
+      width: 65%;
     }
   }
 }
