@@ -7,5 +7,6 @@ export default {
   ghostClientSecret: 'ghost-client-secret',
   springboardURL: 'https://springboard.watchout.tw',
   mapboxAccessToken: 'mapbox-access-token',
+  imageUploadURL: 'image-upload-url',
   env: 'dev' // dev OR beta OR production
 }
