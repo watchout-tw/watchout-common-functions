@@ -104,8 +104,12 @@ export default {
     },
     imageStyles() {
       let styles = {}
-      let ref = this.doc ? parseReference(this.doc.image) : null
-      let url = ref ? ref.permalink : this.image
+      let url = this.image ? this.image : null
+      if(!url && this.doc && this.doc.image) {
+        // try make ref from doc.image
+        let docImageRef = parseReference(this.doc.image)
+        url = docImageRef ? docImageRef.permalink : this.doc.image
+      }
       styles.backgroundImage = `url(${url})`
       styles.maxWidth = this.imageSize ? this.imageSize : null
       return styles
