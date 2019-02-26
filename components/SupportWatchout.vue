@@ -1,16 +1,13 @@
 <template>
-<div class="support-watchout">
-  <a :href="link" target="_blank" class="container" :class="containerClasses">
-    <div class="appeal">
-      <div class="line" v-for="(line, index) of text" v-html="spacingOptimizer(line)" :key="`line-${index}`"></div>
-    </div>
-    <div class="action">
-      <img class="image" :src="actionImage"/>
-      <div class="text" v-html="spacingOptimizer(action.text)"></div>
-    </div>
-    <div class="close white" @click.stop.prevent="toggleShowSupport(false)"></div>
-  </a>
-</div>
+<a class="support-watchout a-block" :href="action.link" target="_blank" :class="containerClasses">
+  <div class="slogan">
+    <h5 class="line-height-tight" v-for="(line, index) of slogan" v-html="spacingOptimizer(line)" :key="`line-${index}`"></h5>
+  </div>
+  <div class="action">
+    <h4 class="line-height-tight" v-html="spacingOptimizer(action.label)"></h4>
+  </div>
+  <div class="close white" @click.stop.prevent="toggleShowSupport(false)"></div>
+</a>
 </template>
 
 <script>
@@ -21,38 +18,38 @@ import { spacingOptimizer } from 'watchout-common-functions/lib/bunko'
 const supportPackages = {
   ask: {
     channel: 'ask',
-    link: env.links.support.ask.direct,
-    text: [
-      '沃草年度巨獻：《給問擂台》',
-      '六都市長給問嗎，真的很缺錢。'
+    slogan: [
+      '立委、市長、候選人',
+      '全都來《給問擂台》面對 😡'
     ],
+    image: 'pitcher',
     action: {
-      image: 'pitcher',
-      text: '灌溉好專案'
+      link: env.links.support.ask.direct,
+      label: '支持沃草'
     }
   },
   musou: {
     channel: 'musou',
-    link: env.links.support.watchout.custom,
-    text: [
-      '請支持我們做更多有意義的專題',
-      '因為很缺錢，真的很缺。'
+    slogan: [
+      '我們想做更多有意義的專題',
+      '但真的缺錢 😢'
     ],
+    image: 'farmer_hat',
     action: {
-      image: 'farmer_hat',
-      text: '支持沃草，成為草民'
+      link: env.links.support.watchout.custom,
+      label: '支持沃草'
     }
   },
   lab: {
     channel: 'lab',
-    link: env.links.support.watchout.direct,
-    text: [
-      '更多法案拆解、議事紀錄分析',
-      '需要你的幫助。'
+    slogan: [
+      '法案拆解、議事分析好難',
+      '需要你的加油打氣 😢'
     ],
+    image: 'pitcher',
     action: {
-      image: 'pitcher',
-      text: '支持沃草，灌溉議題'
+      link: env.links.support.watchout.direct,
+      label: '支持沃草'
     }
   }
 }
@@ -82,85 +79,22 @@ export default {
 
 .support-watchout {
   position: fixed;
-  bottom: 0;
   width: 100%;
-  max-width: 16 * $rem;
+  max-width: 12.75rem;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: $z-fixed;
-  @include bp-sm-up {
-    max-width: $bp-sm - 2 * $rem;
-  }
-
-  > .container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-around;
-    @include shadow;
+  @include shadow;
+  padding: 0.5rem 0.75rem 0.625rem;
+  > .action {
     position: relative;
-    width: 100%;
-    max-width: none;
-    margin: 0 auto;
-    padding: 0.5rem 1rem;
-
-    @include bp-sm-up {
-      flex-direction: row;
-      padding: 0.75rem 1rem;
-    }
-
-    > .appeal {
-      padding: 0.25rem;
-      text-align: center;
-      font-size: 0.875rem;
-      line-height: 1;
-      font-weight: bold;
-      color: rgba(black, 0.95);
-      > .line {
-        margin: 0;
-        padding: 0;
-        line-height: 1;
-        &:not(:last-child) {
-          margin-bottom: 0.25rem;
-        }
-      }
-      @include bp-sm-up {
-        text-align: left;
-        font-size: 1.125rem;
-        > .line {
-          &:not(:last-child) {
-            margin-bottom: 0.375rem;
-          }
-        }
-      }
-    }
-    > .action {
-      position: relative;
-      padding: 0.25rem;
-      text-align: center;
-      > .image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 42px;
-        margin-left: -0.5rem;
-      }
-      > .text {
-        display: inline-block;
-        border: none;
-        border-radius: 1.5rem;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        line-height: 1;
-        background: rgba(white, 0.65);
-        color: black;
-      }
-    }
-
-    &:hover > .action > .text {
-      background: rgba(white, 0.95);
-    }
+    line-height: 1;
+    margin-top: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    background-color: rgba(white, 0.5);
   }
 }
 </style>
