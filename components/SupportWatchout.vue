@@ -96,5 +96,10 @@ export default {
     text-align: center;
     background-color: rgba(white, 0.5);
   }
+  &:hover {
+    > .action {
+      background-color: rgba(white, 0.95);
+    }
+  }
 }
 </style>
