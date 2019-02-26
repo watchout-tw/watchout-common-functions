@@ -1,7 +1,7 @@
 import defaultImage from 'watchout-common-assets/images/default-cover-images/watchout-2-1.jpg'
 import env from 'watchout-common-assets/environment'
 
-import { getBaseURL, getCompDocURL, getCompVideoURL, getWatchoutProjectURL } from 'watchout-common-functions/lib/watchout'
+import { getBaseURL, getCompDocURL, getCompVideoURL, getMusouProjectURL, getWatchoutProjectURL } from 'watchout-common-functions/lib/watchout'
 
 export default {
   methods: {
@@ -45,9 +45,7 @@ export default {
     getParkSettingsURL() {
       return this.getBaseURL('park') + 'settings'
     },
-    getMusouProjectURL(moduleID, projectID) {
-      return this.getBaseURL('musou') + moduleID + '/' + projectID
-    },
+    getMusouProjectURL,
     getWatchoutDocListURL() {
       return this.getBaseURL('watchout') + 'docs'
     },
