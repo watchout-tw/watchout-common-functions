@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     markdownPreprocessor(markdown) {
-      let regExp = /[\s]*{{(.+?)}}[\s]*/g
+      let regExp = /[ ]*{{(.+?)}}[ ]*/g
       let codeObjects = []
       let match = regExp.exec(markdown)
       while(match) {
@@ -89,14 +89,16 @@ export default {
       .footnote-anchor {
         display: inline-block;
         vertical-align: middle;
-        font-size: 1rem;
-        width: 1.5em;
-        line-height: 1.5em;
+        font-size: 0.875rem;
+        width: 1.875em;
+        line-height: 1.875em;
         text-align: center;
         border-radius: 50%;
         margin: 0 0.25em;
+        transform: translateY(-0.125rem);
         background-color: rgba($color-watchout, 0.85);
         cursor: pointer;
+        @include shadow-reduced;
       }
     }
   }
