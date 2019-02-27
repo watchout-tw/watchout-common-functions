@@ -15,7 +15,7 @@
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
-    <div v-if="content.caption" class="caption paragraphs no-margin a-text-parent secondary-text tcl-left-right-margin margin-top-bottom-8" v-html="markdown(content.caption)"></div>
+    <div v-if="content.caption" class="caption paragraphs no-margin a-text-parent secondary-text tcl-left-right-margin margin-top-bottom-8" v-html="markdown(content.caption, true)"></div>
   </div>
   <div class="card" v-else-if="type === 'hr'">
     <div class="content divider"></div>
