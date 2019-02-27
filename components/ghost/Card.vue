@@ -10,6 +10,9 @@
   <div class="card" v-else-if="type === 'html'">
     <div class="content" v-html="content.html"></div>
   </div>
+  <div class="card" v-else-if="type === 'note'">
+    <div class="content note paragraphs heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
+  </div>
   <div class="card" v-else-if="type === 'markdown'">
     <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
@@ -80,6 +83,13 @@ export default {
 
 .ghost-card {
   > .card {
+    > .note {
+      max-width: 32rem;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: $color-light-grey;
+      font-size: $font-size-variable-default;
+    }
     > .divider {
       margin: 2rem auto;
       max-width: 2rem;
