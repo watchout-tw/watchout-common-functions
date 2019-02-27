@@ -10,6 +10,10 @@ const minSanitizationOptions = {
   // NOTE: replacing text with transformTags is buggy
   // https://github.com/punkave/sanitize-html/issues/136
 }
+const sansHTMLSanitizationOptions = {
+  allowedTags: [],
+  allowedAttributes: {}
+}
 const maxSanitizationOptions = Object.assign({}, minSanitizationOptions, {
   allowedTags: [
     'b',
@@ -30,18 +34,24 @@ const maxSanitizationOptions = Object.assign({}, minSanitizationOptions, {
 
 export default {
   methods: {
-    markdown(str) {
+    markdown(str, removeHTMLFirst = false) {
       let result = ''
       if(typeof str === 'string') {
         str = str.trim()
+        if(removeHTMLFirst) {
+          str = sanitizer(str, sansHTMLSanitizationOptions)
+        }
         result = sanitizer(marked(str), minSanitizationOptions)
       }
       return result
     },
-    minimalMarkdown(str) {
+    minimalMarkdown(str, removeHTMLFirst = false) {
       let result = ''
       if(typeof str === 'string') {
         str = str.trim()
+        if(removeHTMLFirst) {
+          str = sanitizer(str, sansHTMLSanitizationOptions)
+        }
         result = sanitizer(marked(str), maxSanitizationOptions)
       }
       return result
