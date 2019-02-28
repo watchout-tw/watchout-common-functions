@@ -7,7 +7,7 @@
           <span>{{ getLabel(values[index]) }}</span>
           <div class="close small" @click="removeValue(index)"></div>
         </div>
-        <div class="item placeholder not-available" v-if="values.length < 1">沒有{{ placeholder ? placeholder : '' }}</div>
+        <div class="item placeholder not-available" v-if="!(values && values.length > 0)">沒有{{ placeholder ? placeholder : '' }}</div>
       </div>
     </div>
     <div class="col form-field-many-inputs no-wrap">
