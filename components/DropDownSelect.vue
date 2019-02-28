@@ -45,13 +45,12 @@ export default {
 .drop-down-select {
   position: relative;
   border-bottom: 1px solid $color-light-border-grey;
-  padding-right: 1rem;
   z-index: 0;
   > select {
     appearance: none;
     width: 100%;
     border: none;
-    padding: 0.25rem 0.375rem;
+    padding: 0.25rem 1rem 0.25rem 0.375rem;
     line-height: $line-height-compact;
     background: none;
   }
@@ -59,6 +58,7 @@ export default {
     position: absolute;
     top: 0.25rem;
     right: 0;
+    z-index: -1;
 
     &:before {
       content: '';
