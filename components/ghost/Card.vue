@@ -89,6 +89,11 @@ export default {
       padding: 1rem;
       background-color: $color-light-grey;
       font-size: $font-size-variable-default;
+      > h2, > h3, > h4 {
+        &:first-child {
+          margin-top: 0;
+        }
+      }
     }
     > .divider {
       margin: 2rem auto;
