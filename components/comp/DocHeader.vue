@@ -1,15 +1,16 @@
 <template>
-<div class="doc-header responsive-typesetting-container margin-top-double margin-bottom-single">
-  <div class="title variable-font-size margin-top-bottom-single">
-    <h1 class="medium" v-html="spacingOptimizer(doc.title)" />
+<div class="doc-header">
+  <div class="title margin-top-bottom-8" :class="{ 'variable-font-size': this.variableFontSize }">
+    <h1 :class="titleClasses" v-html="spacingOptimizer(doc.title)" />
   </div>
+  <div class="description paragraphs margin-8" v-if="description" v-html="markdown(doc.description)"></div>
   <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural] && doc[type.valuePlural].length > 0">
     <div class="author-type section-title with-underline small"><span>{{ type.label }}</span></div>
     <div class="authors">
       <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="author" />
     </div>
   </div>
-  <div class="dates font-size-small margin-top-bottom-8">
+  <div class="dates secondary-text font-size-small margin-top-bottom-8">
     <div v-if="doc.publishedAt"><span>發佈時間</span><span class="full-width-punct thin-punct">：</span><span>{{ getDateTimeString(doc.publishedAt) }}</span></div>
     <div v-if="doc.updatedAt"><span>最後更新</span><span class="full-width-punct thin-punct">：</span><span>{{ getDateTimeString(doc.updatedAt) }}</span></div>
   </div>
@@ -17,12 +18,24 @@
 </template>
 
 <script>
-import { knowsBunko, knowsFormatting, knowsWatchout } from 'watchout-common-functions/interfaces'
+import { knowsBunko, knowsFormatting, knowsMarkdown, knowsWatchout } from 'watchout-common-functions/interfaces'
 import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
-  mixins: [knowsBunko, knowsFormatting, knowsWatchout],
-  props: ['doc', 'cachedAuthors'],
+  mixins: [knowsBunko, knowsFormatting, knowsMarkdown, knowsWatchout],
+  props: ['doc', 'variableFontSize', 'titleSize', 'description', 'cachedAuthors'],
+  computed: {
+    titleClasses() {
+      let classes = []
+      if(this.titleSize) {
+        classes.push(this.titleSize)
+      }
+      if(classes.length < 1) {
+        classes.push('medium')
+      }
+      return classes
+    }
+  },
   methods: {
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors ? this.cachedAuthors.find(author => author.persona === personaID) : null
