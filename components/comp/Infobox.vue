@@ -2,15 +2,15 @@
 <div class="comp-infobox">
   <div class="infobox" :class="classes">
     <template v-if="titleStyle === 'spread-out'">
-      <h3 class="title text-align-center">{{ doc.title }}</h3>
+      <h3 class="title text-align-center" v-html="spacingOptimizer(title)"></h3>
     </template>
     <template v-else-if="display !== 'minimal'">
-      <h4 class="title section-title with-underline text-align-center" :class="{ 'multi-line': titleStyle === 'multi-line' }"><span>{{ doc.title }}</span></h4>
+      <h4 class="title section-title with-underline text-align-center" :class="{ 'multi-line': titleStyle === 'multi-line' }"><span v-html="spacingOptimizer(title)"></span></h4>
     </template>
     <template v-else>
-      <h4 class="title text-align-center">{{ doc.title }}</h4>
+      <h4 class="title text-align-center" v-html="spacingOptimizer(title)"></h4>
     </template>
-    <div class="content">
+    <div class="content" v-if="mobiledoc">
       <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10"><!-- && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">-->
         <template v-if="mobiledoc.cards[section[1]][0] === 'markdown'">
           <div class="paragraphs no-margin a-text-parent heading-size-medium" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import { knowsMarkdown } from 'watchout-common-functions/interfaces'
+import { knowsBunko, knowsMarkdown } from 'watchout-common-functions/interfaces'
 import { makeReference } from 'watchout-common-functions/lib/watchout'
 
 export default {
-  mixins: [knowsMarkdown],
+  mixins: [knowsBunko, knowsMarkdown],
   props: ['id', 'data', 'display', 'horizontalSpace', 'titleStyle', 'headingStyle'],
   data() {
     return {
@@ -43,8 +43,11 @@ export default {
     doc() {
       return this.data ? this.data[this.referenceObj.url] : null
     },
+    title() {
+      return this.doc ? this.doc.title : null
+    },
     mobiledoc() {
-      return JSON.parse(this.doc.content.mobiledoc)
+      return this.doc && this.doc.content ? JSON.parse(this.doc.content.mobiledoc) : null
     },
     classes() {
       let classes = []
