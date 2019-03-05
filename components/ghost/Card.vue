@@ -11,10 +11,10 @@
     <div class="content" v-html="content.html"></div>
   </div>
   <div class="card" v-else-if="type === 'note'">
-    <div class="content comp-note paragraphs heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content comp-note paragraphs single heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card" v-else-if="type === 'excerpt'">
-    <div class="content comp-excerpt paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content comp-excerpt paragraphs single responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card" v-else-if="type === 'markdown'">
     <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
@@ -103,27 +103,20 @@ export default {
       max-width: 2rem;
       border-bottom: 2px solid $color-very-light-grey;
     }
-    > .content.variable-font-size {
-      > h2, > h3, > h4 {
-        &:first-child {
-          margin-top: 0;
-        }
-      }
-      .footnote-anchor {
-        display: inline-block;
-        vertical-align: middle;
-        font-size: 0.875rem;
-        width: 1.875em;
-        line-height: 1.875em;
-        text-align: center;
-        border-radius: 50%;
-        margin: 0 0.25em;
-        transform: translateY(-0.125rem);
-        background-color: rgba($color-watchout, 0.85);
-        cursor: pointer;
-        @include shadow-reduced;
-      }
-    }
+  }
+  .footnote-anchor {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.875rem;
+    width: 1.875em;
+    line-height: 1.875em;
+    text-align: center;
+    border-radius: 50%;
+    margin: 0 0.25em;
+    transform: translateY(-0.125rem);
+    background-color: rgba($color-watchout, 0.85);
+    cursor: pointer;
+    @include shadow-reduced;
   }
 }
 </style>
