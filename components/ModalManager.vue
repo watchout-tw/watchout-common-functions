@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { knowsWindowManagement } from '../interfaces' // FIXME: no relative paths
-import * as modals from './modal'
+import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { modals } from 'watchout-common-functions/components/modal'
 export default {
   mixins: [knowsWindowManagement],
   props: ['parties'],

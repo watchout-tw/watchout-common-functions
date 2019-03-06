@@ -7,7 +7,6 @@ let projects = [
 ]
 
 export default {
-  db: {},
   projects: Object.assign({}, ...projects.map(project => ({
     [project.name]: {
       apiKey: project.apiKey,

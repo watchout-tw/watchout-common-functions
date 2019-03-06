@@ -8,7 +8,7 @@ import SiteMap from './SiteMap'
 import SwissKnife from './SwissKnife'
 import Transporter from './Transporter'
 
-export {
+export const modals = {
   Auth,
   Emailer,
   PersonaSwitcher,
