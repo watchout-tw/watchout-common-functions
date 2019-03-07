@@ -25,8 +25,8 @@ export default {
       return this.hasIdentity
     },
     duration() {
-      let startDateString = this.persona.start_date ? mysqlTSToDateObj(this.persona.start_date).getFullYear() : null
-      let endDateString = this.persona.end_date ? mysqlTSToDateObj(this.persona.end_date).getFullYear() : null
+      let startDateString = this.persona && this.persona.start_date ? mysqlTSToDateObj(this.persona.start_date).getFullYear() : null
+      let endDateString = this.persona && this.persona.end_date ? mysqlTSToDateObj(this.persona.end_date).getFullYear() : null
       return startDateString ? startDateString + (endDateString && endDateString !== startDateString ? '-' + endDateString : '') : null
     },
     title() {
