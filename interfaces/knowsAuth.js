@@ -30,7 +30,7 @@ export default {
       roles: 'auth/roles'
     }),
     activePersona() {
-      return this.personaID !== null ? this.personas.find(persona => persona.id === this.personaID) : null
+      return Array.isArray(this.personas) && this.personaID !== null ? this.personas.find(persona => persona.id === this.personaID) : null
     },
     activePersonaIsWithInfo() {
       return this.roles.findIndex(role => role.channel === '*' && role.name === 'with_info') > -1
