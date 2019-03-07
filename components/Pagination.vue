@@ -22,8 +22,14 @@ import SubmitButton from './button/Submit'
 
 export default {
   props: {
-    totalItems: Number,
-    currentPage: Number,
+    totalItems: {
+      type: Number,
+      default: 0
+    },
+    currentPage: {
+      type: Number,
+      default: 0
+    },
     pageSize: {
       type: Number,
       default: 20
@@ -32,9 +38,12 @@ export default {
       type: Boolean,
       default: true
     },
-    currentButtonStatus: Object
+    currentButtonStatus: {
+      type: Object,
+      default: () => ({})
+    }
   },
-  data () {
+  data() {
     return {
       buttonClicked: '',
       allButtonStatuses: {
@@ -46,14 +55,14 @@ export default {
     }
   },
   watch: {
-    'currentButtonStatus.state' (next, prev) {
-      if (this.buttonClicked === '') {
+    'currentButtonStatus.state'(next, prev) {
+      if(this.buttonClicked === '') {
         return
       }
       this.allButtonStatuses[this.buttonClicked].state = next
-      if (next === STATES.SUCCESS) {
+      if(next === STATES.SUCCESS) {
         this.allButtonStatuses[this.buttonClicked].message = this.allButtonStatuses[this.buttonClicked].success
-      } else if (next === STATES.FAILED) {
+      } else if(next === STATES.FAILED) {
         this.allButtonStatuses[this.buttonClicked].message = this.allButtonStatuses[this.buttonClicked].failed
       }
     }

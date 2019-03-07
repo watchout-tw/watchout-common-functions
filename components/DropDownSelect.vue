@@ -4,7 +4,7 @@
   <div class="placeholder" v-if="!value && !internalValue">{{ placeholder }}</div>
   <select ref="inputElement" v-model="internalValue" @input="$emit('input', $event.target.value)">
     <option disabled selected></option>
-    <option v-for="option of internalOptions" :value="option.value">{{ option.label }}</option>
+    <option v-for="(option, index) of internalOptions" :value="option.value" :key="index">{{ option.label }}</option>
   </select>
 </div>
 </template>

@@ -47,7 +47,7 @@ import DropDownSelect from './DropDownSelect'
 import SubmitButton from './button/Submit.vue'
 
 function integerRange(from, to) {
-  var range = []
+  let range = []
   for(let i = from; i <= to; i++) {
     range.push(i)
   }
@@ -106,18 +106,12 @@ export default {
     },
     allDistricts() {
       let city = administrativeDivision.districts().find(city => city.city_name === this.voter_city)
-      if(city) {
-        return city.districts
-      }
+      return city ? city.districts : null
     },
     allNeighborhoods() {
       let city = administrativeDivision.neighborhoods().find(city => city.city_name === this.voter_city)
-      if(city) {
-        let district = city.districts.find(district => district.district_name === this.voter_district)
-        if(district) {
-          return district.neighborhoods
-        }
-      }
+      let district = city ? city.districts.find(district => district.district_name === this.voter_district) : null
+      return district ? district.neighborhoods : null
     }
   },
   methods: {
@@ -136,7 +130,7 @@ export default {
         }
         payload[col] = this[col]
       })
-      var result = this.validate(validation.privateInfo, payload)
+      let result = this.validate(validation.privateInfo, payload)
       if(result.error) {
         this.state = STATES.FAILED
         this.message = result.message

@@ -9,7 +9,7 @@
     <text-editor placeholder="Email" type="email" v-model="email" :classes="['park']" :simple="true" key="joinEmail" />
   </div>
   <div class="form-field">
-    <text-editor placeholder="密碼" type="password" v-model="password" :classes="['park']" :simple="true" key="joinPassword"/>
+    <text-editor placeholder="密碼" type="password" v-model="password" :classes="['park']" :simple="true" key="joinPassword" />
   </div>
   <div class="form-field">
     <label class="form-input-check-label"><input type="checkbox" class="park" v-model="iAgree"><span>我同意<a class="a-text" href="https://documents.watchout.tw/watchout-commons/terms-of-service/" target="_blank">使用條款</a></span></label>

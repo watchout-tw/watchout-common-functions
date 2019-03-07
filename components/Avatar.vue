@@ -95,9 +95,9 @@ export default {
     },
     avatarImageStyles() {
       let r = 1 // normal
-      if (this.size === 'small') {
+      if(this.size === 'small') {
         r = 0.5
-      } else if (this.size === 'large') {
+      } else if(this.size === 'large') {
         r = 2
       }
       let size = this.internalAvatar.size * r

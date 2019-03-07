@@ -10,7 +10,7 @@ export default {
     addClass(el, className) {
       if(el.classList) {
         el.classList.add(className)
-      } else if (!this.hasClass(el, className)) {
+      } else if(!this.hasClass(el, className)) {
         el.className += ' ' + className
       }
     },
@@ -18,7 +18,7 @@ export default {
       if(el.classList) {
         el.classList.remove(className)
       } else if(this.hasClass(el, className)) {
-        var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+        let reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
         el.className = el.className.replace(reg, ' ')
       }
     }

@@ -39,7 +39,7 @@ export default {
   methods: {
     login() {
       if(this.state === STATES.DEFAULT && this.account && this.password) {
-        var data = util.isEmail(this.account) ? { email: this.account } : { handle: this.account }
+        let data = util.isEmail(this.account) ? { email: this.account } : { handle: this.account }
         data.password = this.password
         this.state = STATES.LOADING
 

@@ -1,7 +1,7 @@
 <template>
 <div class="modal-manager">
   <transition name="modal" appear v-for="modal of modals" :key="modal.id">
-    <div class="modal-overlay"  @click.self="removeModal(modal.id)">
+    <div class="modal-overlay" @click.self="removeModal(modal.id)">
       <component :is="modal.id" :data="modal" :parties="parties"></component>
     </div>
   </transition>

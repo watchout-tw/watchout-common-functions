@@ -11,9 +11,8 @@
 
 <script>
 import { spacingOptimizer } from 'watchout-common-functions/lib/bunko'
-import GhostMarkup from 'watchout-common-functions/components/ghost/Markup'
+// import GhostMarkup from 'watchout-common-functions/components/ghost/Markup'
 import GhostCard from 'watchout-common-functions/components/ghost/Card'
-import CompCollection from 'watchout-common-functions/components/comp/Collection'
 
 export default {
   props: ['article', 'links', 'footnotes', 'references', 'data'],
@@ -31,9 +30,8 @@ export default {
     })
   },
   components: {
-    GhostMarkup,
-    GhostCard,
-    CompCollection
+    // GhostMarkup,
+    GhostCard
   }
 }
 </script>

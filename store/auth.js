@@ -16,7 +16,7 @@ export const actions = {
 
 export const mutations = {
   toggle(state, value) {
-    const test = (value) => value !== null && typeof value === 'object'
+    const test = value => value !== null && typeof value === 'object'
     state.isCitizen = test(value)
     state.citizenID = test(value) ? value.citizen_id : null
     state.handle = test(value) ? value.handle : null

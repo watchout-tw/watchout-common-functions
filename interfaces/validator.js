@@ -15,7 +15,7 @@ function success() {
 export default {
   methods: {
     validate(config, obj) {
-      for(var key in config) {
+      for(let key in config) {
         if(config[key].allowNull) {
           continue
         }

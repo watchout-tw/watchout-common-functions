@@ -62,7 +62,10 @@ const defaultCategory = 'watchout'
 
 export default {
   props: {
-    reference: String,
+    reference: {
+      type: String,
+      default: null
+    },
     category: {
       type: String,
       default: 'watchout'

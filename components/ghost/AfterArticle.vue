@@ -39,7 +39,7 @@ export default {
   },
   mounted() {
     let footnoteAnchors = document.getElementsByClassName('footnote-anchor')
-    Array.prototype.forEach.call(footnoteAnchors, (el) => {
+    Array.prototype.forEach.call(footnoteAnchors, el => {
       let id = parseInt(el.dataset.id)
       el.addEventListener('click', event => {
         this.activeFootnoteAnchor = event.target

@@ -6,8 +6,8 @@ export default {
       el.play()
     },
     fadeOutAudio(el, callback) {
-      var volume = el.volume
-      var timer = setInterval(function() {
+      let volume = el.volume
+      let timer = setInterval(function() {
         volume = (parseFloat(volume) - 0.1).toFixed(1)
         if(volume >= 0) {
           el.volume = volume

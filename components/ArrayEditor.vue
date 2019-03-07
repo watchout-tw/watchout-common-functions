@@ -3,8 +3,8 @@
   <div class="row editor">
     <div class="col items-container">
       <div class="items">
-        <div class="item" v-for="(value, index) of values" :key="index">
-          <span>{{ getLabel(values[index]) }}</span>
+        <div class="item" v-for="(valueItem, index) of values" :key="index">
+          <span>{{ getLabel(valueItem) }}</span>
           <div class="close small" @click="removeValue(index)"></div>
         </div>
         <div class="item placeholder not-available" v-if="!(values && values.length > 0)">沒有{{ placeholder ? placeholder : '' }}</div>

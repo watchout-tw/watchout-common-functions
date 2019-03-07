@@ -101,14 +101,11 @@ export default {
               roles
             })
           }
-        } else {
-          if(tokenInLocalStorage) {
-            // citizen has logged OUT elsewhere
-            this.logout()
-          } else {
-            // user is anonymous
-          }
+        } else if(tokenInLocalStorage) {
+          // citizen has logged OUT elsewhere
+          this.logout()
         }
+        // else user is anonymous
       }
     },
     setAuth(data) {

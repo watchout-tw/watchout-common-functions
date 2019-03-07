@@ -2,13 +2,13 @@
 <div class="passwords">
   <form @submit.prevent="updatePassword">
     <div class="form-field" v-if="requireCurrentPassword">
-      <text-editor placeholder="確認現行密碼" type="password" v-model="currentPassword" :classes="['park']" :simple="true" key="currentPassword"/>
+      <text-editor placeholder="確認現行密碼" type="password" v-model="currentPassword" :classes="['park']" :simple="true" key="currentPassword" />
     </div>
     <div class="form-field">
-      <text-editor placeholder="新密碼" type="password" v-model="newPassword" :classes="['park']" :simple="true" key=""/>
+      <text-editor placeholder="新密碼" type="password" v-model="newPassword" :classes="['park']" :simple="true" key="" />
     </div>
     <div class="form-field">
-      <text-editor placeholder="確認新密碼" type="password" v-model="newPasswordConfirmation" :classes="['park']" :simple="true" key="Confirmation"/>
+      <text-editor placeholder="確認新密碼" type="password" v-model="newPasswordConfirmation" :classes="['park']" :simple="true" key="Confirmation" />
     </div>
     <div class="form-field with-double-top-margin">
       <submit-button type="submit" :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" @failed="onSubmitFailed" />

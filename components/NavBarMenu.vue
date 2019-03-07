@@ -1,7 +1,7 @@
 <template>
 <div class="nav-bar-menu">
   <div class="roots">
-    <menu-single :menu="internalMenu" :activeIndex.sync="activeTreeIndex" @itemClicked="rootSelected"/>
+    <menu-single :menu="internalMenu" :activeIndex.sync="activeTreeIndex" @itemClicked="rootSelected" />
   </div>
   <div class="children" v-if="activeTreeIndex > -1 && activeTreeIndex < internalMenu.length && internalMenu[activeTreeIndex].children" :style="childrenStyles">
     <div class="close black" @click.stop.prevent="activeTreeIndex = -1"></div>

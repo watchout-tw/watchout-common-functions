@@ -3,7 +3,7 @@
   <div v-if="!state || state === STATES.DEFAULT" class="label">{{ label }}</div>
   <div v-else class="symbol-container" :style="symbolStyles">
     <div v-if="state === STATES.LOADING" class="symbol loading"></div>
-    <div v-else-if="state === STATES.SUCCESS" class="symbol checkmark" ></div>
+    <div v-else-if="state === STATES.SUCCESS" class="symbol checkmark"></div>
     <div v-else-if="[STATES.FAILED, STATES.INCOMPLETE].includes(state)" class="symbol cross"></div>
   </div>
   <div v-if="message" class="message-container" :style="messageStyles"><span ref="message">{{ message }}</span></div>

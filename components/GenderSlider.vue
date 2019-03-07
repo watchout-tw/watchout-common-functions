@@ -3,7 +3,7 @@
   <div class="track-container">
     <div class="track"></div>
     <div class="hints secondary-text font-size-tiny">
-      <div class="hint" v-for="hint of hints" :style="getPosition(hint.value)">
+      <div class="hint" v-for="(hint, index) of hints" :style="getPosition(hint.value)" :key="index">
         <div class="dot"></div>
         <div class="label">{{ hint.label }}</div>
       </div>

@@ -1,13 +1,13 @@
 <template>
 <div class="doc-header">
-  <div class="title margin-top-bottom-8" :class="{ 'variable-font-size': this.variableFontSize }">
+  <div class="title margin-top-bottom-8" :class="{ 'variable-font-size': variableFontSize }">
     <h1 :class="titleClasses" v-html="spacingOptimizer(doc.title)" />
   </div>
   <div class="description paragraphs margin-8" v-if="description" v-html="markdown(doc.description)"></div>
   <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural] && doc[type.valuePlural].length > 0">
     <div class="author-type section-title with-underline small"><span>{{ type.label }}</span></div>
     <div class="authors">
-      <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="author" />
+      <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="index" />
     </div>
   </div>
   <div class="dates secondary-text font-size-small margin-top-bottom-8">

@@ -5,15 +5,15 @@
   <div class="earth soil-dark"></div>
   <div class="earth bedrock">
     <div class="social">
-      <div v-for="group of cptSocialGroups" class="group d-flex flex-row justify-content-around">
-        <a v-for="item of group.items" :href="item.link" class="link a-block" target="_blank" :key="item.link">
+      <div v-for="(group, index) of cptSocialGroups" class="group d-flex flex-row justify-content-around" :key="index">
+        <a v-for="(item, itemIndex) of group.items" :href="item.link" class="link a-block" target="_blank" :key="itemIndex">
           <img class="image" :src="item.image" />
           <label class="text a-target">{{ item.text }}</label>
         </a>
       </div>
     </div>
     <div class="link-groups d-flex flex-row justify-content-center">
-      <div v-for="group of linkGroups" class="group">
+      <div v-for="(group, index) of linkGroups" class="group" :key="index">
         <div class="title">
           <h5 class="font-weight-normal">{{ group.title }}</h5>
         </div>
@@ -38,7 +38,7 @@
 import { env } from 'watchout-common-assets'
 import { getBaseURL } from 'watchout-common-functions/lib/watchout'
 
-const getPlatformIcon = (platform) => require('watchout-common-assets/images/platforms/' + platform + '/black.png')
+const getPlatformIcon = platform => require('watchout-common-assets/images/platforms/' + platform + '/black.png')
 
 const social = [
   {
@@ -203,13 +203,13 @@ export default {
   },
   computed: {
     cptSocialGroups: function() {
-      var arr = this.social
-      var result = []
-      var platforms = {}
-      for (var i = 0; i < arr.length; i++) {
-        var cur = arr[i]
-        if (!(cur.platform in platforms)) {
-          platforms[cur.platform] = {platform: cur.platform, items: []}
+      let arr = this.social
+      let result = []
+      let platforms = {}
+      for(let i = 0; i < arr.length; i++) {
+        let cur = arr[i]
+        if(!(cur.platform in platforms)) {
+          platforms[cur.platform] = { platform: cur.platform, items: [] }
           result.push(platforms[cur.platform])
         }
         platforms[cur.platform].items.push(cur)

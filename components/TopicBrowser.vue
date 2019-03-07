@@ -1,18 +1,18 @@
 <template>
 <div class="topic-browser">
-  <div class="filtered-keywords" v-if="internalShowMatchedKeywords">
+  <div class="filtered-keywords" v-if="internalShowKeywords">
     <div class="keywords">
-      <span class="keyword secondary-text font-size-small" v-for="keyword in matchedKeywords">{{ keyword }}</span>
+      <span class="keyword secondary-text font-size-small" v-for="keyword in internalTK.keywords" :key="keyword">{{ keyword }}</span>
     </div>
   </div>
   <div class="topics" v-if="showTopics !== false">
-    <button type="button" class="topic input button small toggle" v-for="topic of internalTopics" :key="topic.id" :class="buttonClasses(topic)" @click="isMutable ? toggle(topic.id) : false">{{ topicText(topic) }}</button>
+    <button type="button" class="topic input button small toggle" v-for="topic of internalTK.topics" :key="topic.id" :class="buttonClasses(topic)" @click="isMutable ? toggle(topic.id) : false">{{ topicText(topic) }}</button>
   </div>
   <a class="toggle-ignore-filter-text font-size-small a-text" v-if="showTopics !== false && filterText && filterText != ''" @click.prevent="toggleIgnoreFilterText">{{ ignoreFilterText ? '啟用關鍵字過濾' : '顯示所有議題' }}</a>
   <div class="selected-topic-keywords" v-if="internalShowSelectedTopicKeywords">
-    <div class="section-title with-underline small margin-top-bottom-4" ><span>熱門關鍵字</span></div>
+    <div class="section-title with-underline small margin-top-bottom-4"><span>熱門關鍵字</span></div>
     <div class="keywords" v-if="internalShowSelectedTopicKeywords">
-      <span class="keyword secondary-text font-size-small" v-for="keyword in selectedTopicKeywords">{{ keyword }}</span>
+      <span class="keyword secondary-text font-size-small" v-for="keyword in selectedTopicKeywords" :key="keyword">{{ keyword }}</span>
     </div>
   </div>
 </div>
@@ -24,23 +24,28 @@ export default {
   data() {
     return {
       ignoreFilterText: false,
-      matchedKeywords: [],
       selectedTopicKeywords: []
     }
   },
   computed: {
-    internalTopics() {
-      let types = this.types && Array.isArray(this.types) && this.types.length > 0 ? this.types : ['watchout']
+    filterIsOn() {
+      return !this.ignoreFilterText && this.filterText !== undefined && this.filterText !== null && this.filterText !== ''
+    },
+    internalTypes() {
+      return this.types && Array.isArray(this.types) && this.types.length > 0 ? this.types : ['watchout']
+    },
+    internalTK() {
       // filter topic with types
-      let topics = this.topics.filter(topic => types.includes(topic.type))
-      if(!this.ignoreFilterText && this.filterText !== undefined && this.filterText !== null && this.filterText !== '') {
+      let keywords = []
+      let topics = this.topics.filter(topic => this.internalTypes.includes(topic.type))
+      if(this.filterIsOn) {
         // filter topic with keywords
-        this.matchedKeywords = []
+        keywords = []
         topics = topics.filter(topic => {
           if(topic.data.keywords && Array.isArray(topic.data.keywords)) {
             return topic.data.keywords.filter(word => {
               if(word.includes(this.filterText)) {
-                this.matchedKeywords.push(word)
+                keywords.push(word)
                 return true
               } else {
                 return false
@@ -51,7 +56,10 @@ export default {
           }
         })
       }
-      return topics
+      return {
+        topics,
+        keywords
+      }
     },
     isMutable() {
       return !(this.mutable === false)
@@ -59,8 +67,8 @@ export default {
     customTopicClasses() {
       return this.buttonClasses(this.customTopicSelected)
     },
-    internalShowMatchedKeywords() {
-      return this.matchedKeywords.length > 0 && this.showKeywords !== false
+    internalShowKeywords() {
+      return this.internalTK.keywords.length > 0 && this.showKeywords !== false
     },
     internalShowSelectedTopicKeywords() {
       return this.selectedTopicKeywords.length > 0 && this.showSelectedTopicKeywords !== false
@@ -71,7 +79,7 @@ export default {
       return this.selectedTopics && Array.isArray(this.selectedTopics) ? this.selectedTopics.includes(topicID) : false
     },
     buttonClasses(topic) {
-      var classes = []
+      let classes = []
       classes.push(this.topics[0].hasOwnProperty('battlefield') ? 'ask' : 'park') // FIXME: quick hack
       classes.push(this.isMutable ? 'mutable' : 'immutable')
       classes.push(this.topicIsSelected(topic.id) ? 'active' : 'inactive')
@@ -91,7 +99,7 @@ export default {
         this.selectedTopics.push(topicID)
       }
       this.selectedTopicKeywords = [].concat(...this.selectedTopics.map(topicID => {
-        let topic = this.internalTopics.filter(topic => topic.id === topicID)[0]
+        let topic = this.internalTK.topics.filter(topic => topic.id === topicID)[0]
         return (topic && topic.data && topic.data.keywords) ? topic.data.keywords : []
       }))
     },

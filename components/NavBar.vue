@@ -2,10 +2,10 @@
 <nav class="nav-bar" :class="navClasses">
   <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles" @click="addModal('transporter')"></div>
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
-    <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)"/>
+    <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)" />
   </nuxt-link>
   <div class="nav-item menu-container">
-    <nav-bar-menu :menu="menu" v-if="menu"/>
+    <nav-bar-menu :menu="menu" v-if="menu" />
   </div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })"><no-ssr>
@@ -23,7 +23,7 @@ import Avatar from 'watchout-common-functions/components/Avatar'
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   props: ['channel', 'menu', 'parties'],
-  data () {
+  data() {
     return {
       anon: { id: 'anon', type: 'system' }
     }
@@ -43,7 +43,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.checkAuth()
   },
   components: {

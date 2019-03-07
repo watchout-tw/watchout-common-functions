@@ -11,13 +11,13 @@
     <div class="content" v-html="content.html"></div>
   </div>
   <div class="card" v-else-if="type === 'note'">
-    <div class="content comp-note paragraphs single heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content comp-note paragraphs single heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card" v-else-if="type === 'excerpt'">
-    <div class="content comp-excerpt paragraphs single responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content comp-excerpt paragraphs single responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card" v-else-if="type === 'markdown'">
-    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent"  v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
@@ -57,7 +57,7 @@ export default {
         codeObjects.push({
           code: match[1].trim(),
           matchLength: match[0].length,
-          matchAt: match['index']
+          matchAt: match.index
         })
         match = regExp.exec(markdown)
       }

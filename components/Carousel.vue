@@ -96,7 +96,7 @@ export default {
       }
     },
     pageStyles(page) {
-      var styles = {}
+      let styles = {}
       if(page.type === 'image') {
         styles.backgroundImage = `url(${this.responsive && this.windowSize.width >= this.bp ? page.urls.wide : page.urls.default})`
       }
