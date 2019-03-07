@@ -32,6 +32,7 @@ module.exports = {
     'vue/attributes-order': 0,
     'vue/html-closing-bracket-spacing': 'error',
     'vue/html-indent': 0,
+    'vue/html-quotes': 'error',
     'vue/html-self-closing': 0,
     'vue/max-attributes-per-line': 0,
     'vue/multiline-html-element-content-newline': 0,
@@ -43,5 +44,6 @@ module.exports = {
     'vue/order-in-components': 0,
     'vue/require-prop-types': 0,
     'vue/singleline-html-element-content-newline': 0,
+    'vue/v-bind-style': 'error'
   }
 }

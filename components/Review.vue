@@ -1,6 +1,6 @@
 <template>
   <div class="review">
-    <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible"  @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
+    <like-buttons :config="likeButtonsConfig" :state="reviewState" @review-terrible="onReviewTerrible" @review-bad="onReviewBad" @review-okay="onReviewOkay" @review-good="onReviewGood" @review-great="onReviewGreat" />
     <div class="review-summary text-align-right font-size-small secondary-text">
       <template v-if="count <= 0">還沒有人評分</template>
       <template v-else>平均<span class="latin-within-han">{{ score ? (score).toPrecision(2) : 0 }}</span>分；<span class="latin-within-han first">{{ count }}</span>人已評分</template>

@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="actions">
-    <submit-button :classes="['medium', 'park']" label='這些圖我都不愛' :state.sync='reloadButton.state' :message.sync='reloadButton.message' @click.native='reload'></submit-button>
+    <submit-button :classes="['medium', 'park']" label="這些圖我都不愛" :state.sync="reloadButton.state" :message.sync="reloadButton.message" @click.native="reload"></submit-button>
   </div>
 </div>
 </template>
@@ -51,10 +51,10 @@ export default {
   },
   methods: {
     getRandomIndices(size, range) {
-      var indices = []
+      let indices = []
       while(indices.length < size) {
-        var index = Math.floor(Math.random() * range)
-        if (indices.indexOf(index) > -1) continue
+        let index = Math.floor(Math.random() * range)
+        if(indices.indexOf(index) > -1) continue
         indices.push(index)
       }
       return indices
@@ -81,7 +81,7 @@ export default {
       if(!Array.isArray(options)) {
         options = [options]
       }
-      for(var option of options) {
+      for(let option of options) {
         if(this.isSelected(option)) {
           const index = this.selectedOptions.findIndex(selectedOption => selectedOption === option)
           this.selectedOptions.splice(index, 1)

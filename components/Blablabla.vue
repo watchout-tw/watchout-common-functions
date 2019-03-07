@@ -6,7 +6,7 @@
       <div class="content">
         <span class="speaker">{{ message.alias }}</span><span class="text">{{ message.content }}</span>
       </div>
-      <like-buttons :config="likeButtonsConfig" :state="getMessageState(message)" @like="onLike(message)"  @dislike="onDislike(message)">
+      <like-buttons :config="likeButtonsConfig" :state="getMessageState(message)" @like="onLike(message)" @dislike="onDislike(message)">
         <template slot="like-count">{{ message.detail && message.detail.like ? message.detail.like.length : 0 }}</template>
         <template slot="dislike-count">{{ message.detail && message.detail.dislike ? message.detail.dislike.length : 0 }}</template>
       </like-buttons>
@@ -123,25 +123,25 @@ export default {
       this.socket.on('connect', () => {
         log('connect')
       })
-      this.socket.on('connect_error', (error) => {
+      this.socket.on('connect_error', error => {
         log('connect_error', error)
       })
-      this.socket.on('connect_timeout', (timeout) => {
+      this.socket.on('connect_timeout', timeout => {
         log('connect_timeout', timeout)
       })
-      this.socket.on('error', (error) => {
+      this.socket.on('error', error => {
         log('error', error)
       })
-      this.socket.on('disconnect', (reason) => {
+      this.socket.on('disconnect', reason => {
         log('disconnect', reason)
       })
-      this.socket.on('reconnecting', (attemptNumber) => {
+      this.socket.on('reconnecting', attemptNumber => {
         log('reconnecting', attemptNumber)
       })
-      this.socket.on('reconnect', (attemptNumber) => {
+      this.socket.on('reconnect', attemptNumber => {
         log('reconnect', attemptNumber)
       })
-      this.socket.on('reconnect_error', (error) => {
+      this.socket.on('reconnect_error', error => {
         log('reconnect_error', error)
       })
       this.socket.on('reconnect_failed', () => {
@@ -150,32 +150,32 @@ export default {
       this.socket.on('ping', () => {
         log('ping')
       })
-      this.socket.on('pong', (latency) => {
+      this.socket.on('pong', latency => {
         log('pong', latency)
       })
 
       // blablabla specific events
-      this.socket.on('addRoom', (data) => {
+      this.socket.on('addRoom', data => {
         log('addRoom', data)
         this.hasAddedRoom = true
       })
-      this.socket.on('leaveRoom', (data) => {
+      this.socket.on('leaveRoom', data => {
         log('leaveRoom', data)
         this.hasAddedRoom = false
       })
-      this.socket.on('chat', (data) => {
+      this.socket.on('chat', data => {
         log('chat', data)
         self.messages.push(data)
       })
-      this.socket.on('banned', (data) => {
+      this.socket.on('banned', data => {
         log('banned', data)
         // TODO: notify if banned
       })
-      this.socket.on('comment', (data) => {
+      this.socket.on('comment', data => {
         log('comment', data)
         self.setMessageDetail(data)
       })
-      this.socket.on('cancelComment', (data) => {
+      this.socket.on('cancelComment', data => {
         log('cancelComment', data)
         self.setMessageDetail(data)
       })

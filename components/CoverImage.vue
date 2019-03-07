@@ -55,7 +55,7 @@ export default {
     flex-direction: column;
     align-items: center;
     line-height: 1;
-    > .label {      
+    > .label {
       padding: 0.25rem;
       background: white;
       font-size: 1.25rem;

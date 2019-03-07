@@ -29,7 +29,7 @@
     </div>
     <div v-if="!answer.references || answer.references.length < 1" class="not-available">沒有參考資料</div>
     <ul v-else class="bulleted-list references">
-      <li class="reference" v-for="reference of answer.references">
+      <li class="reference" v-for="(reference, index) of answer.references" :key="index">
         <div class="title">
           <template v-if="reference.url">
             <a class="a-text" :href="reference.url" target="_blank">{{ reference.title }}</a>
@@ -53,10 +53,10 @@ import debounce from 'lodash.debounce'
 import * as core from '../../lib/core'
 import * as util from '../../lib/util'
 import { knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement } from '../../interfaces'
-import Authorship from './Authorship'
 import CoverImage from '../CoverImage'
 import Review from '../Review'
 import ShareButton from '../button/Share'
+import Authorship from './Authorship'
 
 export default {
   mixins: [knowsAuth, knowsError, knowsMarkdown, knowsWatchout, knowsWindowManagement],
@@ -77,7 +77,7 @@ export default {
       return this.preview
     },
     containerClasses() {
-      var classes = []
+      let classes = []
       if(this.isCompact) {
         classes.push('compact')
         classes.push('tcl-panel')

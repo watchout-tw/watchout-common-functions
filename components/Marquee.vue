@@ -1,7 +1,7 @@
 <template>
 <div class="marquee" :class="classes">
   <div class="content d-flex" :style="contentStyles">
-    <div v-for="ancm of ancms" class="ancm" :class="ancm.type">
+    <div v-for="(ancm, index) of ancms" class="ancm" :class="ancm.type" :key="index">
       <span class="type">{{ types[ancm.type] }}</span>
       <span>{{ ancm.description }}</span>
       <a :href="ancm.actionLink" class="action a-text">{{ ancm.actionLabel }}</a>
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     setAnimationDuration() {
-      var width = this.$el.getBoundingClientRect().width
+      let width = this.$el.getBoundingClientRect().width
       this.animationDuration = Math.round(width / 320.0) * 12
     }
   },

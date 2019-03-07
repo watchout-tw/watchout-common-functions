@@ -20,7 +20,8 @@
         <span>連署</span>
         <span class="latin-within-han">{{ pushCount }}</span>
         <span>､尚須</span>
-        <span class="latin-within-han">{{ pushThreshold - pushCount < 0 ? 0 : pushThreshold - pushCount }}</span>
+        <span class="latin-within-han" v-if="pushThreshold - pushCount < 0">0</span>
+        <span class="latin-within-han" v-else>{{ pushThreshold - pushCount }}</span>
       </div>
       <div class="description font-size-tiny" v-else>
         <span>連署</span>
@@ -32,7 +33,7 @@
     <div class="progress push-duration" v-if="pushCount < pushThreshold && pushable">
       <div class="description font-size-tiny">
         <template v-if="pushRemainingTime.duration > 0">
-          <span class="latin-within-han first" >{{ pushRemainingTime.duration }}</span>
+          <span class="latin-within-han first">{{ pushRemainingTime.duration }}</span>
           <span>{{ pushRemainingTime.unit }}後截止</span>
         </template>
         <span v-else>連署已截止</span>
@@ -51,7 +52,7 @@
     </div>
     <div v-if="question.references.length < 1" class="not-available">沒有參考資料</div>
     <ul class="bulleted-list references">
-      <li class="reference" v-for="reference of question.references">
+      <li class="reference" v-for="(reference, index) of question.references" :key="index">
         <div class="title">
           <template v-if="reference.url">
             <a class="a-text" :href="reference.url" target="_blank">{{ reference.title }}</a>
@@ -67,7 +68,7 @@
       <span>指定回答者</span>
     </div>
     <div class="personas">
-      <div class="persona" v-for="player of game.players">
+      <div class="persona" v-for="(player, index) of game.players" :key="index">
         <input type="checkbox" class="assigned ask" :checked="personaIsAssigned(player.persona.id)" disabled />
         <avatar :show="['avatar', 'name']" :persona="player.persona" :link="true" :classes="['horizontal', 'shadow']" :parties="parties" />
       </div>
@@ -147,7 +148,7 @@ export default {
       return this.question.data.threshold ? this.question.data.threshold : 0
     },
     containerClasses() {
-      var classes = []
+      let classes = []
       if(this.isCompact) {
         classes = ['tcl-panel', 'compact']
       } else if(this.isFull) {
@@ -183,12 +184,11 @@ export default {
       return util.getPushButtonText(this.question)
     },
     topicTitle() {
+      let topic = null
       if(this.topics && this.question) {
-        let topic = this.topics.find(topic => topic.id === this.question.topic)
-        if(topic) {
-          return topic.title
-        }
+        topic = this.topics.find(topic => topic.id === this.question.topic)
       }
+      return topic ? topic.title : '未定'
     },
     shareURL() {
       return this.game && this.question ? this.getAskQuestionURL(this.game.slug, this.question.id) : null

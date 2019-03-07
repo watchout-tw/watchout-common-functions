@@ -7,7 +7,8 @@
     :parties="parties"
     :classes="['horizontal', 'shadow', 'inline']"
     :secondaryText="score"
-    :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']" />
+    :secondaryClasses="['score', 'bg-ask', 'font-size-small', 'text-color-white']"
+  />
   <div class="date font-size-small">{{ getDateString(date) }}</div>
 </div>
 </template>
