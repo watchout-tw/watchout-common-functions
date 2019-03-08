@@ -19,11 +19,13 @@ module.exports = {
           'if': { 'after': false },
           'for': { 'after': false },
           'while': { 'after': false },
+          'switch': { 'after': false },
           'catch': { 'after': false }
         }
       }
     ],
     'no-console': 0,
+    'no-extend-native': ['error', { 'exceptions': ['Array'] }],
     'no-unneeded-ternary': ['error', { 'defaultAssignment': true }],
     'prefer-const': 0,
     'require-await': 0,
