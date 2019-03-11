@@ -7,9 +7,6 @@
       <comp-video v-if="['video', 'youtube'].includes(content.type)" :reference="content" />
     </div>
   </div>
-  <div class="card" v-else-if="type === 'html'">
-    <div class="content" v-html="content.html"></div>
-  </div>
   <div class="card" v-else-if="type === 'note'">
     <div class="content comp-note paragraphs single heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
@@ -20,7 +17,7 @@
     <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
-    <img :src="'https://beta.bunko.watchout.tw' + content.src" :alt="content.caption" />
+    <img :src="content.reference.permalink" :alt="content.caption" />
     <div v-if="content.caption" class="caption paragraphs no-margin a-text-parent secondary-text tcl-left-right-margin margin-top-bottom-8" v-html="markdown(content.caption, true)"></div>
   </div>
   <div class="card" v-else-if="type === 'hr'">
@@ -31,8 +28,7 @@
 
 <script>
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
-import { parseReference } from 'watchout-common-functions/lib/watchout'
-import { parseCard } from 'watchout-common-functions/lib/bunko'
+import { markdownPreprocessor } from 'watchout-common-functions/lib/bunko'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
 import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 import CompVideo from 'watchout-common-functions/components/comp/Video'
@@ -42,36 +38,14 @@ export default {
   props: ['card', 'data'],
   computed: {
     type() {
-      return parseCard(this.card).type
+      return this.card.type
     },
     content() {
-      return parseCard(this.card).content
+      return this.card.content
     }
   },
   methods: {
-    markdownPreprocessor(markdown) {
-      let regExp = /[ ]*{{(.+?)}}[ ]*/g
-      let codeObjects = []
-      let match = regExp.exec(markdown)
-      while(match) {
-        codeObjects.push({
-          code: match[1].trim(),
-          matchLength: match[0].length,
-          matchAt: match.index
-        })
-        match = regExp.exec(markdown)
-      }
-      codeObjects.sort((a, b) => b.matchAt - a.matchAt)
-      codeObjects.forEach(({ code, matchLength, matchAt }) => {
-        let html = ''
-        let ref = parseReference(code)
-        if(ref.type === 'footnote') {
-          html = `<label class="footnote-anchor" data-id="${ref.id}">${ref.id}</label>`
-        }
-        markdown = markdown.substring(0, matchAt) + html + markdown.substring(matchAt + matchLength)
-      })
-      return markdown
-    }
+    markdownPreprocessor
   },
   components: {
     CompCollection,

@@ -16,7 +16,7 @@
           <div class="paragraphs no-margin a-text-parent heading-size-medium" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
         </template>
         <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
-          <img :src="'https://beta.bunko.watchout.tw' + mobiledoc.cards[section[1]][1].src" />
+          <img :src="ghostBaseURL + mobiledoc.cards[section[1]][1].src" />
         </template>
       </div>
     </div>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import config from 'watchout-common-functions/config/config'
 import { knowsBunko, knowsMarkdown } from 'watchout-common-functions/interfaces'
 import { makeReference } from 'watchout-common-functions/lib/watchout'
 
@@ -33,7 +34,8 @@ export default {
   props: ['id', 'data', 'display', 'horizontalSpace', 'titleStyle', 'headingStyle'],
   data() {
     return {
-      maxNumSection: 2
+      maxNumSection: 2,
+      ghostBaseURL: config.ghostBaseURL
     }
   },
   computed: {
