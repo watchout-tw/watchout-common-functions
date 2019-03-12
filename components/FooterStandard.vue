@@ -42,6 +42,12 @@ const getPlatformIcon = platform => require('watchout-common-assets/images/platf
 
 const social = [
   {
+    platform: 'jsonfeed',
+    text: 'JSON Feed',
+    image: getPlatformIcon('jsonfeed'),
+    link: 'https://watchout.tw/feed.json'
+  },
+  {
     platform: 'twitter',
     text: 'Twitter',
     image: getPlatformIcon('twitter'),
