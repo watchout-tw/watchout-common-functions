@@ -8,13 +8,13 @@
     </div>
   </div>
   <div class="card" v-else-if="type === 'note'">
-    <div class="content comp-note paragraphs single heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content comp-note paragraphs single heading-size-medium a-text-parent" v-html="markdown(preprocessedMarkdown)"></div>
   </div>
   <div class="card" v-else-if="type === 'excerpt'">
-    <div class="content comp-excerpt paragraphs single responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content comp-excerpt paragraphs single responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(preprocessedMarkdown)"></div>
   </div>
   <div class="card" v-else-if="type === 'markdown'">
-    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(markdownPreprocessor(content))"></div>
+    <div class="content paragraphs responsive-typesetting-container variable-font-size heading-size-medium a-text-parent" v-html="markdown(preprocessedMarkdown)"></div>
   </div>
   <div class="card image-container" v-else-if="type === 'image'">
     <img :src="content.reference.permalink" :alt="content.caption" />
@@ -28,7 +28,6 @@
 
 <script>
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
-import { markdownPreprocessor } from 'watchout-common-functions/lib/bunko'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
 import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 import CompVideo from 'watchout-common-functions/components/comp/Video'
@@ -42,10 +41,10 @@ export default {
     },
     content() {
       return this.card.content
+    },
+    preprocessedMarkdown() {
+      return this.card.markdown
     }
-  },
-  methods: {
-    markdownPreprocessor
   },
   components: {
     CompCollection,
