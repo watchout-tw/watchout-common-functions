@@ -7,6 +7,9 @@
   <div class="links" v-if="links && links.length > 0">
   <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" />
 </div>
+<div class="sources" v-if="sources && sources.length > 0">
+  <comp-collection :collection="{ title: '參考文獻', items: sources }" :data="data" display="list" />
+</div>
 <div class="footnotes" v-if="footnotes && footnotes.length > 0">
   <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" display="list" />
 </div>
@@ -24,7 +27,7 @@ import CompCollection from 'watchout-common-functions/components/comp/Collection
 
 export default {
   mixins: [knowsMarkdown],
-  props: ['shareURL', 'links', 'footnotes', 'references', 'data'],
+  props: ['shareURL', 'links', 'sources', 'footnotes', 'references', 'data'],
   data() {
     return {
       showActiveFootnote: false,

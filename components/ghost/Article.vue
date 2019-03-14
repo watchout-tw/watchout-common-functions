@@ -13,7 +13,7 @@ import { spacingOptimizer } from 'watchout-common-functions/lib/bunko'
 import GhostCard from 'watchout-common-functions/components/ghost/Card'
 
 export default {
-  props: ['sections', 'cards', 'links', 'footnotes', 'references', 'data'],
+  props: ['sections', 'cards', 'references', 'data'],
   mounted() {
     // FIXME: spacing optimzation should be done in interfaces/knowsMarkdown.markdown()
     let headings = [...this.$refs.article.getElementsByTagName('h2'), ...this.$refs.article.getElementsByTagName('h3')]
