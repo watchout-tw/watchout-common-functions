@@ -7,6 +7,10 @@ let projects = [
 ]
 
 export default {
+  devUser: {
+    email: 'email',
+    password: 'password'
+  },
   projects: Object.assign({}, ...projects.map(project => ({
     [project.name]: {
       apiKey: project.apiKey,
