@@ -44,7 +44,7 @@ import * as administrativeDivision from '../lib/administrative_division'
 import TextEditor from './TextEditor'
 import GenderSlider from './GenderSlider'
 import DropDownSelect from './DropDownSelect'
-import SubmitButton from './button/Submit.vue'
+import SubmitButton from './button/Submit'
 
 function integerRange(from, to) {
   let range = []
