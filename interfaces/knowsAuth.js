@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import * as ls from '../lib/ls'
 import * as core from '../lib/core'
+import * as ROLES from '../lib/roles'
 
 function encodeRoles(roles) {
   return JSON.stringify(roles)
@@ -161,34 +162,22 @@ export default {
         this.$router.push('/')
       }
     },
+    isAuthor() {
+      return this.hasRole(ROLES.AUTHOR)
+    },
     isEditor() {
-      let flag = false
-      if(this.isLocal() && Array.isArray(this.roles)) {
-        flag = this.roles.filter(role => role.name === 'editor').length > 0
-      }
-      return flag
+      return this.hasRole(ROLES.EDITOR)
     },
     isGod() {
-      let flag = false
-      if(this.isLocal() && Array.isArray(this.roles)) {
-        flag = this.roles.filter(role => role.name === 'god').length > 0
-      }
-      return flag
+      return this.hasRole(ROLES.GOD)
     },
-    hasRole(channel, name) {
+    hasRole(name, channel = '*') {
       let hasRole = false
-      if(this.isLocal() && Array.isArray(this.roles)) {
-        let filteredRoles
-        if(channel && name) {
-          filteredRoles = this.roles.filter(role => role.channel === channel && role.name === name)
-        } else if(channel) {
-          filteredRoles = this.roles.filter(role => role.channel === channel)
-        } else if(name) {
-          filteredRoles = this.roles.filter(role => role.name === name)
-        }
+      if(this.isLocal() && Array.isArray(this.roles) && name && channel) {
+        let filteredRoles = this.roles.filter(role => role.channel === channel && role.name === name)
         hasRole = filteredRoles.length > 0
       }
-      return hasRole || this.isEditor() || this.isGod()
+      return hasRole
     }
   }
 }
