@@ -2,6 +2,7 @@
 <div class="text-editor input" :class="computedClasses">
   <div class="tools"></div>
   <div class="content">
+    <div class="prefix secondary-text" v-if="simple && prefix">{{ prefix }}</div>
     <input v-if="simple" :type="type" :value="value" :maxlength="maxlength" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false" />
     <textarea v-else rows="4" :maxlength="maxlength" :value="value" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false"></textarea>
   </div>
@@ -10,7 +11,7 @@
 
 <script>
 export default {
-  props: ['placeholder', 'type', 'value', 'disabled', 'classes', 'simple', 'maxlength'],
+  props: ['placeholder', 'type', 'value', 'disabled', 'classes', 'simple', 'maxlength', 'prefix'],
   data() {
     return {
       isFocused: false
@@ -61,6 +62,11 @@ export default {
     font-size: $font-size-small;
   }
   > .content {
+    display: flex;
+    align-items: baseline;
+    > .prefix {
+      flex-grow: 0;
+    }
     > input {
       display: block;
       width: 100%;
@@ -68,6 +74,9 @@ export default {
       background: none;
       padding: 0.25rem 0.375rem;
       line-height: $line-height-compact;
+    }
+    > .prefix + input {
+      padding-left: 0;
     }
     > textarea {
       display: block;
