@@ -7,6 +7,7 @@
 
 <script>
 import { knowsAuth } from 'watchout-common-functions/interfaces'
+import * as ROLES from 'watchout-common-functions/lib/roles'
 
 export default {
   mixins: [knowsAuth],
@@ -14,7 +15,7 @@ export default {
     roleText() {
       let text = '路人'
       if(this.isLocal() && Array.isArray(this.roles)) {
-        if(this.hasRole('with_info')) {
+        if(this.hasRole(ROLES.WITH_INFO)) {
           text = '大草民'
         } else {
           text = '草民'

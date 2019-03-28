@@ -171,13 +171,33 @@ export default {
     isGod() {
       return this.hasRole(ROLES.GOD)
     },
-    hasRole(name, channel = '*') {
+    hasRole(role) {
+      const GLOBAL = '*'
+      const SEPARATOR = '.'
+
       let hasRole = false
-      if(this.isLocal() && Array.isArray(this.roles) && name && channel) {
+      if(this.isLocal() && Array.isArray(this.roles) && role) {
+        if(role.indexOf(SEPARATOR) < 0) {
+          role = `${GLOBAL}${SEPARATOR}${role}`
+        }
+        let [channel, name] = role.split(SEPARATOR)
         let filteredRoles = this.roles.filter(role => role.channel === channel && role.name === name)
         hasRole = filteredRoles.length > 0
       }
       return hasRole
+    },
+    matchRoles(...roles) {
+      let counter = 0
+      roles.forEach(role => {
+        counter += this.hasRole(role) ? 1 : 0
+      })
+      return counter
+    },
+    hasAllRoles(...roles) {
+      return roles.length === this.matchRoles(...roles)
+    },
+    hasAnyRole(...roles) {
+      return this.matchRoles(...roles) > 0
     }
   }
 }
