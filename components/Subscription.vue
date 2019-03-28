@@ -23,11 +23,13 @@
 
 <script>
 import * as STATES from '../lib/states'
+import { isEmail } from '../lib/util'
 import DropDownSelect from './DropDownSelect'
 import TextEditor from './TextEditor'
 import SubmitButton from './button/Submit'
 
-let amountOptions = [
+const CUSTOM = 'custom'
+const amountOptions = [
   {
     value: 100,
     label: '100'
@@ -41,11 +43,11 @@ let amountOptions = [
     label: '500'
   },
   {
-    value: 'custom',
+    value: CUSTOM,
     label: '自訂'
   }
 ]
-let recurrenceOptions = [
+const recurrenceOptions = [
   {
     value: 'monthly',
     label: '每月定期'
@@ -74,9 +76,30 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.submit.state = STATES.LOADING
-      console.log('submit')
-      this.submit.state = STATES.SUCCESS
+      let amount = this.selectedAmount === CUSTOM ? parseInt(this.customAmount) : this.selectedAmount
+      let ok = false
+      let message = null
+      if(Number.isInteger(amount) && amount > 0) {
+        if(this.selectedRecurrence) {
+          if(isEmail(this.email)) {
+            ok = true
+          } else {
+            message = '請填入有效 Email'
+          }
+        } else {
+          message = '請選擇定期或單次支持'
+        }
+      } else {
+        message = '請填入有效金額'
+      }
+      if(ok) {
+        this.submit.state = STATES.LOADING
+        console.log('submit')
+        this.submit.state = STATES.SUCCESS
+      } else {
+        this.submit.state = STATES.FAILED
+        this.submit.message = message
+      }
     },
     onSubmitSuccess() {
       console.log('success')
