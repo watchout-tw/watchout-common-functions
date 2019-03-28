@@ -1,9 +1,9 @@
 <template>
-<div class="text-editor input" :class="computedClasses">
+<div class="text-editor input" :class="internalClasses">
   <div class="tools"></div>
   <div class="content">
     <div class="prefix secondary-text" v-if="simple && prefix">{{ prefix }}</div>
-    <input v-if="simple" :type="type" :value="value" :maxlength="maxlength" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false" />
+    <input v-if="simple" :type="internalType" :value="value" :maxlength="maxlength" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false" size="4" /><!-- size is a hack here -->
     <textarea v-else rows="4" :maxlength="maxlength" :value="value" ref="inputElement" :placeholder="placeholder" :disabled="disabled" @input="$emit('input', $event.target.value)" @focus="isFocused = true" @blur="isFocused = false"></textarea>
   </div>
 </div>
@@ -18,15 +18,20 @@ export default {
     }
   },
   computed: {
-    computedClasses() {
-      let moreClasses = []
+    internalType() {
+      return this.type ? this.type : 'text'
+    },
+    internalClasses() {
+      let classes = Array.isArray(this.classes) ? this.classes.slice() : []
       if(this.simple) {
-        moreClasses.push('simple')
+        classes.push('simple')
       }
       if(this.isFocused) {
-        moreClasses.push('focused')
+        classes.push('focused')
       }
-      return Array.isArray(this.classes) ? this.classes.concat(...moreClasses) : moreClasses
+      classes = [...new Set(classes)]
+      classes.sort()
+      return classes
     }
   }
 }
@@ -70,10 +75,14 @@ export default {
     > input {
       display: block;
       width: 100%;
+      min-width: auto;
       border: none;
       background: none;
       padding: 0.25rem 0.375rem;
       line-height: $line-height-compact;
+      &:hover {
+        line-height: $line-height-compact;
+      }
     }
     > .prefix + input {
       padding-left: 0;
@@ -83,8 +92,11 @@ export default {
       width: 100%;
       border: none;
       padding: 0.25rem 0.375rem;
-      line-height: $line-height-compact;
       background: none;
+      line-height: $line-height-compact;
+      &:hover {
+        line-height: $line-height-compact;
+      }
     }
   }
 }

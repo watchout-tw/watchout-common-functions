@@ -6,7 +6,7 @@
   <div class="form-field">
     <text-editor placeholder="密碼" type="password" v-model="password" :classes="['park']" :simple="true" key="loginPassword" />
   </div>
-  <div class="form-field with-double-top-margin">
+  <div class="form-field margin-top-8">
     <submit-button type="submit" :classes="['park']" label="登入" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
   </div>
 </form>

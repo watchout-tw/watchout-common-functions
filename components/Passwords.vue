@@ -10,7 +10,7 @@
     <div class="form-field">
       <text-editor placeholder="確認新密碼" type="password" v-model="newPasswordConfirmation" :classes="['park']" :simple="true" key="Confirmation" />
     </div>
-    <div class="form-field with-double-top-margin">
+    <div class="form-field margin-top-8">
       <submit-button type="submit" :classes="['park']" label="變更密碼" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
     </div>
   </form>

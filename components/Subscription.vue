@@ -1,20 +1,19 @@
 <template>
 <div class="subscription">
+  <div class="section-title with-underline text-align-center margin-bottom-8"><span>支持沃草</span></div>
   <form @submit.prevent="onSubmit">
     <div class="form-field-many-inputs no-wrap">
-      <drop-down-select :options="amountOptions" placeholder="金額" v-model="selectedAmount" />
-      <text-editor v-if="selectedAmount === 'custom'" placeholder="自訂金額" v-model="customAmount" :classes="['park']" :simple="true" />
+      <drop-down-select :options="recurrenceOptions" placeholder="定期" v-model="selectedRecurrence" :class="{ compact: isCustomAmount }" />
+      <drop-down-select :options="amountOptions" placeholder="金額" v-model="selectedAmount" :class="{ compact: isCustomAmount }" />
+      <text-editor v-if="isCustomAmount" placeholder="1000?" v-model="customAmount" :classes="['park']" :simple="true" prefix="$" />
     </div>
     <div class="form-field">
-      <drop-down-select :options="recurrenceOptions" placeholder="定期" v-model="selectedRecurrence" />
+      <text-editor placeholder="我的 Email" v-model="email" :classes="['park']" :simple="true" type="email" />
     </div>
     <div class="form-field">
-      <text-editor placeholder="Email" v-model="email" :classes="['park']" :simple="true" />
+      <text-editor placeholder="我的暱稱" v-model="name" :classes="['park']" :simple="true" />
     </div>
-    <div class="form-field">
-      <text-editor placeholder="暱稱" v-model="name" :classes="['park']" :simple="true" />
-    </div>
-    <div class="form-field">
+    <div class="form-field margin-top-8">
       <submit-button type="submit" :classes="['park']" label="送出" :state.sync="submit.state" :message.sync="submit.message" @success="onSubmitSuccess" />
     </div>
   </form>
@@ -32,15 +31,15 @@ const CUSTOM = 'custom'
 const amountOptions = [
   {
     value: 100,
-    label: '100'
+    label: '$100'
   },
   {
     value: 250,
-    label: '250'
+    label: '$250'
   },
   {
     value: 500,
-    label: '500'
+    label: '$500'
   },
   {
     value: CUSTOM,
@@ -50,7 +49,7 @@ const amountOptions = [
 const recurrenceOptions = [
   {
     value: 'monthly',
-    label: '每月定期'
+    label: '每月支持'
   },
   {
     value: 'once',
@@ -74,9 +73,14 @@ export default {
       }
     }
   },
+  computed: {
+    isCustomAmount() {
+      return this.selectedAmount === CUSTOM
+    }
+  },
   methods: {
     onSubmit() {
-      let amount = this.selectedAmount === CUSTOM ? parseInt(this.customAmount) : this.selectedAmount
+      let amount = this.isCustomAmount ? parseInt(this.customAmount) : this.selectedAmount
       let ok = false
       let message = null
       if(Number.isInteger(amount) && amount > 0) {
