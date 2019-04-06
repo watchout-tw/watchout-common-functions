@@ -12,7 +12,7 @@
     </div>
     <div class="col form-field-many-inputs no-wrap">
       <template v-if="type === 'select'">
-        <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small" />
+        <drop-down-select :placeholder="'選擇' + placeholder" :options="options" v-model="newValue" class="small shrink" />
       </template>
       <template v-else>
         <text-editor :placeholder="'輸入' + placeholder" v-model="newValue" class="watchout" :simple="true" key="newValue" />
