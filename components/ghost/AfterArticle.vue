@@ -14,7 +14,10 @@
   <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" display="list" />
 </div>
 <div class="active-footnote" :class="{ show: showActiveFootnote }">
-  <div class="content paragraphs no-margin a-text-parent" v-if="activeFootnote" v-html="markdown(activeFootnote.markdown)"></div>
+  <div class="content" v-if="activeFootnote && activeFootnote.type === 'reference'">
+    <comp-infobox :id="activeFootnote.referenceObj.id" :data="data" display="minimal" />
+  </div>
+  <div class="content paragraphs no-margin a-text-parent" v-else-if="activeFootnote" v-html="markdown(activeFootnote.markdown)"></div>
   <div class="close" @click="showActiveFootnote = false"></div>
 </div>
 </div>
@@ -24,6 +27,7 @@
 import { knowsMarkdown } from 'watchout-common-functions/interfaces'
 import ShareToPlatforms from 'watchout-common-functions/components/ShareToPlatforms'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
+import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 
 export default {
   mixins: [knowsMarkdown],
@@ -53,7 +57,8 @@ export default {
   },
   components: {
     ShareToPlatforms,
-    CompCollection
+    CompCollection,
+    CompInfobox
   }
 }
 </script>

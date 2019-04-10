@@ -4,7 +4,13 @@
   <template v-if="display === 'list'">
     <div class="items list tcl-container no-margin" v-if="items">
       <div class="item list-item tcl-panel tcl-left-right-margin with-top-bottom-margin" v-for="(item, index) of items" :key="`item-${index}`">
-        <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown(item.markdown)"></div>
+        <template v-if="item.type === 'reference'">
+          <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown((index + 1) + '.')"></div>
+          <comp-infobox :id="item.referenceObj.id" :data="data" display="minimal" />
+        </template>
+        <template v-else>
+          <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown(item.markdown)"></div>
+        </template>
         <div class="links margin-top-bottom-single">
           <reference-preview class="link" :reference="link.referenceObj" :data="data" display="horizontal" :image="getItemLinkImage(link)" :title="link.title" :h="4" :read-more-style="null" :show-pub-dest="true" v-for="(link, linkIndex) of item.links" :key="`links-${linkIndex}`" />
         </div>
@@ -29,6 +35,7 @@
 import { knowsMarkdown, knowsWatchout } from 'watchout-common-functions/interfaces'
 import { parseReference, makeReference } from 'watchout-common-functions/lib/watchout'
 import ReferencePreview from 'watchout-common-functions/components/ReferencePreview'
+import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 
 export default {
   mixins: [knowsMarkdown, knowsWatchout],
@@ -78,7 +85,8 @@ export default {
     }
   },
   components: {
-    ReferencePreview
+    ReferencePreview,
+    CompInfobox
   }
 }
 </script>
