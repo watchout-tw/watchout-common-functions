@@ -4,7 +4,7 @@
   <template v-if="display === 'list'">
     <div class="items list tcl-container no-margin" v-if="items">
       <div class="item list-item tcl-panel tcl-left-right-margin with-top-bottom-margin" v-for="(item, index) of items" :key="`item-${index}`">
-        <template v-if="item.type === 'reference'">
+        <template v-if="item && item.type === 'reference'">
           <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown((index + 1) + '.')"></div>
           <comp-infobox :id="item.referenceObj.id" :data="data" display="minimal" />
         </template>
