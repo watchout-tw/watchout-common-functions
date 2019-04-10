@@ -82,8 +82,8 @@ export default {
   > .infobox {
     max-width: 22rem;
     margin: 0 auto;
-    padding: 1rem 1.25rem;
     &:not(.minimal) {
+      padding: 1rem 1.25rem;
       background-color: $color-very-very-light-grey;
     }
 
@@ -97,7 +97,7 @@ export default {
     > .content {
       > .card {
         > img {
-          max-width: 16rem;
+          max-width: 100%;
           margin: 1rem auto;
         }
         > .paragraphs {
