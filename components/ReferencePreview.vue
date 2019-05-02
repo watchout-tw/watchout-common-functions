@@ -21,9 +21,18 @@
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
-    <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
-    <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
-    <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <div class="summary">
+      <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
+        <template v-for="(contributor, contributorIndex) of contributors">
+          <avatar :persona="cachedAuthorByPersona(contributor).personaObj" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
+          <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
+        </template>
+      </div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4">{{ getDateTimeString(pubAt) }}</div>
+      <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
+      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    </div>
   </div>
   <div class="preview horizontal" v-else-if="display === 'horizontal'" :class="previewClasses">
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
@@ -31,6 +40,13 @@
     </a>
     <div class="summary">
       <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
+        <template v-for="(contributor, contributorIndex) of contributors">
+          <avatar :persona="cachedAuthorByPersona(contributor).personaObj" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
+          <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
+        </template>
+      </div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -41,6 +57,13 @@
     </a>
     <div class="summary" :class="panelClasses">
       <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
+        <template v-for="(contributor, contributorIndex) of contributors">
+          <avatar :persona="cachedAuthorByPersona(contributor).personaObj" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
+          <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
+        </template>
+      </div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -49,15 +72,18 @@
 </template>
 
 <script>
+import { PUNCT } from 'watchout-common-functions/lib/bunko'
 import { parseReference } from 'watchout-common-functions/lib/watchout'
-import { knowsBunko, knowsWatchout } from 'watchout-common-functions/interfaces'
+import { knowsBunko, knowsFormatting, knowsWatchout } from 'watchout-common-functions/interfaces'
+import Avatar from 'watchout-common-functions/components/Avatar'
 import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
-  mixins: [knowsBunko, knowsWatchout],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'description', 'readMore', 'readMoreStyle', 'showPubDest', 'status'],
+  mixins: [knowsBunko, knowsFormatting, knowsWatchout],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'description', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors'],
   data() {
     return {
+      PUNCT,
       hand
     }
   },
@@ -82,6 +108,22 @@ export default {
     },
     titleTag() {
       return `h${parseInt(this.h) ? parseInt(this.h) : 3}`
+    },
+    contributors() {
+      let personas = []
+      if(this.doc) {
+        this.authorTypes.forEach(type => {
+          let key = type.valuePlural
+          if(this.doc[key]) {
+            personas = personas.concat(this.doc[key])
+          }
+        })
+        personas = [...new Set(personas)]
+      }
+      return personas
+    },
+    pubAt() {
+      return this.doc ? this.doc.publishedAt : null
     },
     pubDestLogo() {
       return this.getSmallProjectLogo(this.doc && this.doc.publishedTo ? this.doc.publishedTo : 'external')
@@ -127,6 +169,14 @@ export default {
     linkURL() {
       return this.isActive ? (this.link ? this.link : (this.reference && this.reference.permalink ? this.reference.permalink : null)) : null
     }
+  },
+  methods: {
+    cachedAuthorByPersona(personaID) {
+      return this.cachedAuthors ? this.cachedAuthors.find(author => author.persona === personaID) : null
+    }
+  },
+  components: {
+    Avatar
   }
 }
 </script>
@@ -172,6 +222,12 @@ export default {
         width: 24px;
         height: 24px;
         background-size: contain;
+      }
+    }
+    > .summary {
+      > .contributors {
+        display: flex;
+        flex-wrap: wrap;
       }
     }
     &.container {
