@@ -145,6 +145,9 @@ export default {
 @import '~watchout-common-assets/styles/resources';
 .avatar {
   margin: 0.25rem;
+  &.list-item {
+    margin: 0;
+  }
   > .avatar-image-container {
     position: relative;
     display: flex;
@@ -200,18 +203,17 @@ export default {
     flex-direction: row;
     align-items: center;
     &.small {
-      > .name {
+      > .avatar-image-container + .name {
         padding: 0 0.25em;
+      }
+      > .name {
         font-size: $font-size-small;
       }
     }
     &:not(.small) {
-      > .name {
+      > .avatar-image-container + .name {
         padding: 0 0.5em;
       }
-    }
-    > .name:first-child {
-      padding-left: 0.125em;
     }
   }
   &.vertical {
