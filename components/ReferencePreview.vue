@@ -29,7 +29,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -46,7 +46,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -63,7 +63,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
