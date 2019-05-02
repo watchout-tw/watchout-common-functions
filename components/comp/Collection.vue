@@ -21,7 +21,7 @@
   <template v-else>
     <div class="items grid tcl-container no-margin" v-if="items">
       <div class="item grid-item tcl-panel half-width" v-for="(item, index) of items" :key="`item-${index}`">
-        <reference-preview :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" :show-pub-dest="true" />
+        <reference-preview :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" :show-pub-dest="true" :cachedAuthors="cachedAuthors" />
       </div>
       <div class="tcl-panel half-width"></div>
       <div class="tcl-panel half-width"></div>

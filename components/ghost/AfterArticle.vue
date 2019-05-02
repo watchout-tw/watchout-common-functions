@@ -5,10 +5,10 @@
     <share-to-platforms :url="shareURL" />
   </div>
   <div class="links" v-if="links && links.length > 0">
-  <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" />
+  <comp-collection :collection="{ title: '相關連結', items: links }" :data="data" :cachedAuthors="cachedAuthors" />
 </div>
 <div class="sources" v-if="sources && sources.length > 0">
-  <comp-collection :collection="{ title: '參考文獻', items: sources }" :data="data" display="list" />
+  <comp-collection :collection="{ title: '參考文獻', items: sources }" :data="data" display="list" :cachedAuthors="cachedAuthors" />
 </div>
 <div class="footnotes" v-if="footnotes && footnotes.length > 0">
   <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" display="list" :cachedAuthors="cachedAuthors" />
