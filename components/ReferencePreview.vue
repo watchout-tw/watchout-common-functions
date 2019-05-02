@@ -25,7 +25,7 @@
       <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
       <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
-          <avatar :persona="cachedAuthorByPersona(contributor).personaObj" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
+          <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
@@ -42,7 +42,7 @@
       <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
       <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
-          <avatar :persona="cachedAuthorByPersona(contributor).personaObj" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
+          <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
@@ -59,7 +59,7 @@
       <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
       <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
-          <avatar :persona="cachedAuthorByPersona(contributor).personaObj" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
+          <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
@@ -171,8 +171,9 @@ export default {
     }
   },
   methods: {
-    cachedAuthorByPersona(personaID) {
-      return this.cachedAuthors ? this.cachedAuthors.find(author => author.persona === personaID) : null
+    cachedAuthorPersona(personaID) {
+      let author = this.cachedAuthors ? this.cachedAuthors.find(author => author.persona === personaID) : null
+      return author ? author.personaObj : null
     }
   },
   components: {
