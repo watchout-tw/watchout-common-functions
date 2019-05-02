@@ -11,7 +11,7 @@
   <comp-collection :collection="{ title: '參考文獻', items: sources }" :data="data" display="list" />
 </div>
 <div class="footnotes" v-if="footnotes && footnotes.length > 0">
-  <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" display="list" />
+  <comp-collection :collection="{ title: '註解', items: footnotes }" :data="data" display="list" :cachedAuthors="cachedAuthors" />
 </div>
 <div class="active-footnote" :class="{ show: showActiveFootnote }">
   <div class="content" v-if="activeFootnote && activeFootnote.type === 'reference'">
@@ -31,7 +31,7 @@ import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 
 export default {
   mixins: [knowsMarkdown],
-  props: ['shareURL', 'links', 'sources', 'footnotes', 'references', 'data'],
+  props: ['shareURL', 'links', 'sources', 'footnotes', 'references', 'data', 'cachedAuthors'],
   data() {
     return {
       showActiveFootnote: false,

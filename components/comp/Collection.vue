@@ -12,7 +12,7 @@
           <div class="markdown paragraphs no-margin a-text-parent" v-html="markdown(item.markdown)"></div>
         </template>
         <div class="links margin-top-bottom-single">
-          <reference-preview class="link" :reference="link.referenceObj" :data="data" display="horizontal" :image="getItemLinkImage(link)" :title="link.title" :h="4" :read-more-style="null" :show-pub-dest="true" v-for="(link, linkIndex) of item.links" :key="`links-${linkIndex}`" />
+          <reference-preview class="link" :reference="link.referenceObj" :data="data" display="horizontal" :image="getItemLinkImage(link)" :title="link.title" :h="4" :read-more-style="null" :show-pub-dest="true" v-for="(link, linkIndex) of item.links" :key="`links-${linkIndex}`" :cachedAuthors="cachedAuthors" />
         </div>
       </div>
       <div class="tcl-panel"></div>
@@ -39,7 +39,7 @@ import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 
 export default {
   mixins: [knowsMarkdown, knowsWatchout],
-  props: ['id', 'data', 'collection', 'display'],
+  props: ['id', 'data', 'collection', 'display', 'cachedAuthors'],
   computed: {
     referenceObj() {
       return makeReference('collection', this.id)
