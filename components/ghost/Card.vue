@@ -5,6 +5,7 @@
       <comp-collection v-if="content.type === 'collection'" :id="content.id" :data="data" />
       <comp-infobox v-if="content.type === 'doc' && content.params && content.params.display === 'infobox'" :id="content.id" :data="data" title-style="multi-line" />
       <comp-video v-if="['video', 'youtube'].includes(content.type)" :reference="content" />
+      <comp-facebook v-if="content.type === 'facebook'" :reference="content" />
     </div>
   </div>
   <div class="card" v-else-if="type === 'note'">
@@ -31,6 +32,7 @@ import { knowsMarkdown } from 'watchout-common-functions/interfaces'
 import CompCollection from 'watchout-common-functions/components/comp/Collection'
 import CompInfobox from 'watchout-common-functions/components/comp/Infobox'
 import CompVideo from 'watchout-common-functions/components/comp/Video'
+import CompFacebook from 'watchout-common-functions/components/comp/Facebook'
 
 export default {
   mixins: [knowsMarkdown],
@@ -49,7 +51,8 @@ export default {
   components: {
     CompCollection,
     CompInfobox,
-    CompVideo
+    CompVideo,
+    CompFacebook
   }
 }
 </script>
