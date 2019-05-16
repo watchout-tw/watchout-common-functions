@@ -29,7 +29,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="pubAt">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -46,7 +46,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="pubAt">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -63,7 +63,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="pubAt">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
     </div>
@@ -73,7 +73,7 @@
 
 <script>
 import { PUNCT } from 'watchout-common-functions/lib/bunko'
-import { parseReference } from 'watchout-common-functions/lib/watchout'
+import { WATCHOUT_REF_TYPES, parseReference } from 'watchout-common-functions/lib/watchout'
 import { knowsBunko, knowsFormatting, knowsWatchout } from 'watchout-common-functions/interfaces'
 import Avatar from 'watchout-common-functions/components/Avatar'
 import hand from 'watchout-common-assets/images/hand.svg'
@@ -121,6 +121,9 @@ export default {
         personas = [...new Set(personas)]
       }
       return personas
+    },
+    showPubAt() {
+      return this.reference ? WATCHOUT_REF_TYPES.includes(this.reference.type) : false
     },
     pubAt() {
       return this.doc ? this.doc.publishedAt : null
