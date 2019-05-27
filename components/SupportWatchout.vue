@@ -1,6 +1,7 @@
 <template>
 <a class="support-watchout a-block" :href="link" target="_blank" :class="containerClasses">
-  <h4 class="label line-height-tight" v-html="spacingOptimizer(label)"></h4>
+  <h4 class="label" v-html="spacingOptimizer(label)"></h4>
+  <div class="secondary-label" v-html="spacingOptimizer(secondaryLabel)"></div>
   <div class="close left" @click.stop.prevent="toggleShowSupport(false)"></div>
 </a>
 </template>
@@ -14,16 +15,19 @@ const supportPackages = {
   ask: {
     channel: 'ask',
     link: env.links.support.ask.direct,
+    secondaryLabel: '給我們錢做更多專題',
     label: '支持沃草'
   },
   musou: {
     channel: 'musou',
     link: env.links.support.watchout.custom,
+    secondaryLabel: '給我們錢做更多專題',
     label: '支持沃草'
   },
   lab: {
     channel: 'lab',
     link: env.links.support.watchout.direct,
+    secondaryLabel: '給我們錢做更多專題',
     label: '支持沃草'
   }
 }
@@ -57,19 +61,26 @@ export default {
   transform: translateX(-50%);
   @include shadow;
   > .label {
-    position: relative;
-    padding: 0.75rem 0;
+    margin: 0.5rem 0 0.25rem;
     text-align: center;
     font-size: 1.125rem;
     line-height: 1;
   }
+  > .secondary-label {
+    margin: 0.25rem 0;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.375;
+  }
   & {
-    > .label {
+    > .label,
+    > .secondary-label {
       color: black;
     }
   }
   &:hover, &:active {
-    > .label {
+    > .label,
+    > .secondary-label {
       color: white;
     }
   }
