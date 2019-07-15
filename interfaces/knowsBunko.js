@@ -1,8 +1,11 @@
-import { publishDestinations, getPubDest, authorTypes, spacingOptimizer } from 'watchout-common-functions/lib/bunko'
+import { env } from 'watchout-common-assets'
+import { statuses, publishDestinations, getPubDest, authorTypes, spacingOptimizer } from 'watchout-common-functions/lib/bunko'
 
 export default {
   data() {
     return {
+      bunkoBaseURL: env.links.bunko.beta,
+      statuses,
       publishDestinations,
       authorTypes
     }
