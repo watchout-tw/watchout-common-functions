@@ -66,6 +66,9 @@ export default {
   &.small {
     font-size: $font-size-small;
   }
+  &.tiny {
+    font-size: $font-size-tiny;
+  }
   > .content {
     display: flex;
     align-items: baseline;
@@ -96,6 +99,14 @@ export default {
       line-height: $line-height-compact;
       &:hover {
         line-height: $line-height-compact;
+      }
+    }
+  }
+  &.font-monospace {
+    > .content {
+      > input,
+      > textarea {
+        @include font-monospace;
       }
     }
   }
