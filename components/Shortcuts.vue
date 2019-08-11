@@ -24,12 +24,8 @@ const data = {
   },
   shortcuts: [
     {
-      reference: 'https://documents.watchout.tw/impact-reports/Watchout-Impact-Report-2017.pdf',
-      image: 'shortcuts/impact-report-2017.png'
-    },
-    {
-      reference: 'https://documents.watchout.tw/impact-reports/Watchout-Impact-Report-2016.pdf',
-      image: 'shortcuts/impact-report-2016.png'
+      reference: 'https://watchout.tw/impact',
+      image: 'shortcuts/impact.png'
     },
     {
       reference: 'channel://musou',
@@ -46,6 +42,10 @@ const data = {
     {
       reference: 'channel://lab',
       image: 'shortcuts/lab.png'
+    },
+    {
+      reference: 'https://watchout.tw/news',
+      image: 'shortcuts/news.png'
     }
   ]
 }
