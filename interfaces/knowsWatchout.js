@@ -50,6 +50,9 @@ export default {
       return this.getBaseURL('watchout') + 'docs'
     },
     getWatchoutProjectURL,
+    getWatchoutNewsletterURL(id) {
+      return this.getBaseURL('watchout') + 'news/' + id
+    },
     generateMeta(channelID, pageTitle, pageDescription, image) {
       let baseURL = this.getBaseURL(channelID)
       if(!image) {
