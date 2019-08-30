@@ -81,6 +81,10 @@ export default {
   }
 
   &.cuboids {
+    $button-depth: 8px;
+    > .buttons {
+      padding-bottom: $button-depth;
+    }
     > .buttons > .button.social {
       width: 3rem;
       height: 3rem;
@@ -88,7 +92,6 @@ export default {
       background-color: white;
       box-shadow: none;
 
-      $button-depth: 8px;
       &.twitter {
         background-color: $color-twitter-light;
         @include cuboid($button-depth, $color-twitter-darker, $color-twitter, true);
