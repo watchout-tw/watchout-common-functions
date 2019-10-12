@@ -2,7 +2,7 @@
 <div class="reference-preview" :class="{ disabled: !isActive }">
   <div class="preview text tcl-container" v-if="display === 'text'">
     <div class="tcl-panel">
-      <component :is="titleTag" v-html="spacingOptimizer(internalTitle)"></component>
+      <component :is="titleTag" :class="titleClasses" v-html="spacingOptimizer(internalTitle)"></component>
     </div>
     <div class="tcl-panel"></div>
   </div>
@@ -14,7 +14,7 @@
     <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
-    <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></component>
+    <component :is="titleTag" class="title margin-top-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></component>
     <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
@@ -22,8 +22,8 @@
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary">
-      <component :is="titleTag" class="title margin-top-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
-      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
+      <component :is="titleTag" class="title margin-top-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="showContributors !== false && contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
           <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
@@ -39,8 +39,8 @@
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary">
-      <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
-      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
+      <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="showContributors !== false && contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
           <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
@@ -56,8 +56,8 @@
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary" :class="panelClasses">
-      <component :is="titleTag" class="title margin-bottom-8"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
-      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="contributors.length > 0">
+      <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="showContributors !== false && contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
           <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
@@ -80,7 +80,7 @@ import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
   mixins: [knowsBunko, knowsFormatting, knowsWatchout],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'description', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'titleClasses', 'description', 'contributorListStyle', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors'],
   data() {
     return {
       PUNCT,
@@ -108,6 +108,9 @@ export default {
     },
     titleTag() {
       return `h${parseInt(this.h) ? parseInt(this.h) : 3}`
+    },
+    showContributors() {
+      return this.contributorListStyle !== null
     },
     contributors() {
       let personas = []
