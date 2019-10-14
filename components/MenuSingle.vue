@@ -2,8 +2,9 @@
 <div class="menu single" :class="classes">
   <ul class="items">
     <li class="item" :class="{ active: index === activeIndex }" v-for="(item, index) of menu" :key="index">
-      <a v-if="item.href" :href="item.href" class="item-text a-text" @click.native="activate($event, index)">{{ item.label.value }}</a>
-      <nuxt-link v-else-if="item.route" class="item-text a-text" :to="item.route" @click.native="activate($event, index)">{{ item.label.value }}</nuxt-link>
+      <a v-if="item.href" :href="item.href" :class="commonClasses" @click.native="activate($event, index)">{{ item.label.value }}</a>
+      <nuxt-link v-else-if="item.route" :class="commonClasses" :to="item.route" @click.native="activate($event, index)">{{ item.label.value }}</nuxt-link>
+      <a v-else-if="item.children" :class="[...commonClasses, 'has-children']" @click="activate($event, index)">{{ item.label.value }}</a>
       <div v-else class="item-text">{{ item.label.value }}</div>
     </li>
   </ul>
@@ -11,8 +12,14 @@
 </template>
 
 <script>
+let commonClasses = ['item-text', 'a-text', 'monochrome']
 export default {
   props: ['classes', 'menu', 'activeIndex'],
+  data() {
+    return {
+      commonClasses
+    }
+  },
   methods: {
     activate(event, index) {
       this.$emit('update:activeIndex', index)
@@ -35,7 +42,9 @@ export default {
       line-height: 1;
       cursor: pointer;
       &.active {
-        background-color: $color-avatar-background-white;
+        > .a-text {
+          @include underline(black, 1.0);
+        }
       }
     }
   }
