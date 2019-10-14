@@ -18,6 +18,7 @@ export default {
       cachedTags: 'caching/tags'
     }),
     // FIXME: putting these here are a bit weird
+    // FIXME: copy to knowsBunko
     authorOptions() {
       return Array.isArray(this.cachedAuthors) ? this.cachedAuthors.map(author => ({ value: author.persona, label: (author.personaObj ? author.personaObj.name : author.persona) })) : []
     },
