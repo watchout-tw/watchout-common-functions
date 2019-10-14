@@ -1,6 +1,6 @@
 <template>
 <div class="paging-container">
-  <div class="controls form-field-many-inputs form-field-align-center">
+  <div class="controls form-field-many-inputs no-wrap form-field-align-center">
     <submit-button :classes="[channel]" class="medium" v-if="prevPageExists && showBoundary" label="1" :state.sync="allButtonStatuses.firstPage.state" :message.sync="allButtonStatuses.firstPage.message" @click.native="firstPage" />
     <submit-button class="medium disabled" v-else label="1" />
     <submit-button :classes="[channel]" class="medium" v-if="prevPageExists" :label="PUNCT.L.ARR" :state.sync="allButtonStatuses.prevPage.state" :message.sync="allButtonStatuses.prevPage.message" @click.native="prevPage" />
