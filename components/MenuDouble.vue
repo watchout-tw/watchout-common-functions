@@ -1,10 +1,10 @@
 <template>
-<ul class="menu double">
-  <li class="tree" v-for="(item, index) of menu" :key="index">
+<ul class="menu double" :class="{ active: activeIndex > -1 }">
+  <li class="tree" :class="{ active: activeIndex === index }" v-for="(item, index) of menu" :key="index">
     <div class="root item" @click="activeIndex = index">
-      <a v-if="item.href" :href="item.href" class="root">{{ item.label.value }}</a>
-      <nuxt-link v-else-if="item.route" class="root" :to="item.route">{{ item.label.value }}</nuxt-link>
-      <div v-else class="root">{{ item.label.value }}</div>
+      <a v-if="item.href" :href="item.href" class="root a-text" @click.native="itemClicked(index, $event)">{{ item.label.value }}</a>
+      <nuxt-link v-else-if="item.route" class="root a-text" :to="item.route" @click.native="itemClicked(index, $event)">{{ item.label.value }}</nuxt-link>
+      <a v-else class="root a-text">{{ item.label.value }}</a>
     </div>
     <menu-single :class="['children']" :menu="item.children" v-if="index === activeIndex && item.children" @itemClicked="itemClicked(index, $event)" />
   </li>
@@ -40,12 +40,14 @@ export default {
     padding: 0;
     > .root {
       padding: 0.5rem;
+      font-size: 1.25rem;
       line-height: 1;
       cursor: pointer;
     }
-    > .children {
-      margin: -0.25rem 0 0.5rem 1rem;
-      font-size: 0.875em;
+  }
+  &.active {
+    > .tree:not(.active) {
+      opacity: 0.5;
     }
   }
 }

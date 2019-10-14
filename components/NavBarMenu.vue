@@ -1,5 +1,5 @@
 <template>
-<div class="nav-bar-menu">
+<div class="nav-bar-menu" :class="[whichSide]">
   <div class="roots">
     <menu-single :menu="internalMenu" :activeIndex.sync="activeTreeIndex" @itemClicked="rootSelected" />
   </div>
@@ -7,7 +7,7 @@
     <div class="close black" @click.stop.prevent="activeTreeIndex = -1"></div>
     <menu-single :menu="internalMenu[activeTreeIndex].children" :classes="['vertical']" />
   </div>
-  <div class="toggle-site-map" @click="addModal({ id: 'site-map', menu: internalMenu })">功能選單</div>
+  <div class="toggle-site-map" @click="addModal({ id: 'site-map', channel, menu: internalMenu })"></div>
 </div>
 </template>
 
@@ -16,7 +16,7 @@ import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import MenuSingle from 'watchout-common-functions/components/MenuSingle'
 export default {
   mixins: [knowsWindowManagement],
-  props: ['menu'],
+  props: ['channel', 'menu', 'whichSide'],
   data() {
     return {
       activeTreeIndex: -1,
@@ -46,9 +46,10 @@ export default {
 
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
+
 .nav-bar-menu {
   padding: 0.25rem 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
   > .roots {
     display: none;
   }
@@ -62,8 +63,11 @@ export default {
     @include shadow;
   }
   > .toggle-site-map {
-    padding: 0.5em;
-    line-height: 1;
+    width: 54px;
+    height: $nav-height;
+    margin: 0;
+    padding: 0;
+    background-size: contain;
     cursor: pointer;
   }
   @include tcl-sm {
@@ -75,6 +79,16 @@ export default {
     }
     > .toggle-site-map {
       display: none;
+    }
+  }
+  &.light {
+    > .toggle-site-map {
+      background-image: url('~watchout-common-assets/images/nav-button/menu/light.png');
+    }
+  }
+  &.dark {
+    > .toggle-site-map {
+      background-image: url('~watchout-common-assets/images/nav-button/menu/dark.png');
     }
   }
 }

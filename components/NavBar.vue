@@ -5,7 +5,7 @@
     <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)" />
   </nuxt-link>
   <div class="nav-item menu-container">
-    <nav-bar-menu :menu="menu" v-if="menu" />
+    <nav-bar-menu :channel="channel" :menu="menu" :which-side="whichSide" v-if="menu" />
   </div>
   <div class="nav-item search-container"></div>
   <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })"><no-ssr>
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     whichSide() {
-      return this.channel.isDark ? 'dark' : 'light'
+      return this.channel.dark ? 'dark' : 'light'
     },
     navClasses() {
       return [
@@ -39,7 +39,7 @@ export default {
     },
     switcherStyles() {
       return {
-        backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.channel.switcher.dark ? 'dark' : 'light') + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
+        backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.whichSide) + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
       }
     }
   },
