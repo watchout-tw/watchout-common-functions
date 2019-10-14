@@ -2,7 +2,9 @@
 <ul class="menu double">
   <li class="tree" v-for="(item, index) of menu" :key="index">
     <div class="root item" @click="activeIndex = index">
-      <component :is="item.route ? 'nuxt-link' : 'div'" class="root" :to="item.route">{{ item.label.value }}</component>
+      <a v-if="item.href" :href="item.href" class="root">{{ item.label.value }}</a>
+      <nuxt-link v-else-if="item.route" class="root" :to="item.route">{{ item.label.value }}</nuxt-link>
+      <div v-else class="root">{{ item.label.value }}</div>
     </div>
     <menu-single :class="['children']" :menu="item.children" v-if="index === activeIndex && item.children" @itemClicked="itemClicked(index, $event)" />
   </li>
