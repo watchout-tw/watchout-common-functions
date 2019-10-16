@@ -7,9 +7,11 @@ let projects = [
 ]
 
 export default {
-  devUser: {
-    email: 'email',
-    password: 'password'
+  sysUsers: {
+    userID: : {
+      email: 'email',
+      password: 'password'
+    }// add more system users
   },
   projects: Object.assign({}, ...projects.map(project => ({
     [project.name]: {
