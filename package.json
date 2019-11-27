@@ -6,7 +6,7 @@
   "author": "Department of Technology at Watchout <dev@watchout.tw>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "firebase": "^5.8.5",
     "he": "^1.2.0",
     "lodash.debounce": "^4.0.8",
