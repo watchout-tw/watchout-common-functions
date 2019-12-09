@@ -4,19 +4,16 @@
     <avatar :show="['avatar', 'name', 'identity']" :persona="activePersona" :classes="['horizontal']" :parties="parties" />
   </div>
   <div class="actions">
-    <a class="action" :href="activePersona ? getParkPersonaProfileURL(activePersona.id) : '#'">個人檔案</a>
-    <a class="action" :href="getParkSettingsURL()">變更設定</a>
-    <a class="action" @click="switchPersona" v-if="personas && personas.length > 1">切換身分</a>
     <a class="action" @click="logoutAndRemoveModal">登出</a>
   </div>
 </div>
 </template>
 
 <script>
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { knowsFSAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import Avatar from 'watchout-common-functions/components/Avatar'
 export default {
-  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsFSAuth, knowsWatchout, knowsWindowManagement],
   props: ['parties'],
   methods: {
     switchPersona() {

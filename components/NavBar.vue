@@ -8,7 +8,7 @@
     <nav-bar-menu :channel="channel" :menu="menu" :which-side="whichSide" v-if="menu" />
   </div>
   <div class="nav-item search-container"></div>
-  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'join' })"><no-ssr>
+  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'login' })"><no-ssr>
     <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
   </no-ssr></div>
 </nav>
@@ -16,12 +16,12 @@
 
 <script>
 // FIXME: perhaps better not use relative path
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { knowsFSAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
 import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
-  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsFSAuth, knowsWatchout, knowsWindowManagement],
   props: ['channel', 'menu', 'parties'],
   data() {
     return {
@@ -42,9 +42,6 @@ export default {
         backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.whichSide) + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
       }
     }
-  },
-  created() {
-    this.checkAuth()
   },
   components: {
     NavBarMenu,
@@ -95,6 +92,7 @@ nav.nav-bar {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    overflow: hidden;
   }
 }
 </style>
