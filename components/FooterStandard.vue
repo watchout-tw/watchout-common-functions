@@ -208,7 +208,7 @@ export default {
     }
   },
   computed: {
-    cptSocialGroups: function() {
+    cptSocialGroups() {
       let arr = this.social
       let result = []
       let platforms = {}

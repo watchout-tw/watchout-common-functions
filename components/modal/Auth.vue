@@ -1,7 +1,7 @@
 <template>
 <div class="modal auth">
   <div class="title">
-    <h2>進入沃草共有地</h2>
+    <h2>歡迎來到沃草共有地</h2>
   </div>
   <div class="action" v-if="data.joinOrLogin === 'join'">
     <join @success="onJoinSuccess" />

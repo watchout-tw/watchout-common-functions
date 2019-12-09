@@ -26,6 +26,7 @@ module.exports = {
     ],
     'no-console': 0,
     'no-extend-native': ['error', { 'exceptions': ['Array'] }],
+    'no-prototype-builtins': 0,
     'no-unneeded-ternary': ['error', { 'defaultAssignment': true }],
     'prefer-const': 0,
     'require-await': 0,

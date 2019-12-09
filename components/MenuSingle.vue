@@ -38,7 +38,7 @@ export default {
     padding: 0;
     > .item {
       margin: 0;
-      padding: 0.5em;
+      padding: 0.25rem 0.5rem;
       line-height: 1;
       cursor: pointer;
       &.active {

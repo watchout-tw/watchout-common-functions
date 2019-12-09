@@ -56,7 +56,7 @@ export default {
     },
     clearTokenCookie() {
       let domain = getCookieDomain()
-      document.cookie = `watchout_token=`
+      document.cookie = 'watchout_token='
       document.cookie = `Domain=${domain}`
       document.cookie = 'Path=/'
       document.cookie = 'Expires=Thu, 01 Jan 1970 00:00:01 GMT'
@@ -177,7 +177,7 @@ export default {
 
       let hasRole = false
       if(this.isLocal() && Array.isArray(this.roles) && role) {
-        if(role.indexOf(SEPARATOR) < 0) {
+        if(!role.includes(SEPARATOR)) {
           role = `${GLOBAL}${SEPARATOR}${role}`
         }
         let [channel, name] = role.split(SEPARATOR)
