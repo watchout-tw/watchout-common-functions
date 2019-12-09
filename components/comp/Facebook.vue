@@ -14,8 +14,8 @@ const TYPES = {
   POST: 'post'
 }
 const TYPE_MAP = {
-  'videos': TYPES.VIDEO,
-  'posts': TYPES.POST
+  videos: TYPES.VIDEO,
+  posts: TYPES.POST
 }
 
 export default {

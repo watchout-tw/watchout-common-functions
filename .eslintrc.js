@@ -29,6 +29,7 @@ module.exports = {
     'no-prototype-builtins': 0,
     'no-unneeded-ternary': ['error', { 'defaultAssignment': true }],
     'prefer-const': 0,
+    'quote-props': 0,
     'require-await': 0,
     'space-before-function-paren': ['error', 'never'],
     'vue/attribute-hyphenation': 0,
