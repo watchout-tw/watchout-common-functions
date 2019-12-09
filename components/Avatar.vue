@@ -30,6 +30,9 @@ Inherent classes: deactivated (from Persona.status)
 Show: avatar, name, identity
 */
 
+const NAME_UNSET = '顯示名稱尚未設定'
+const PERSONA_NOT_FOUND = '查無此人'
+
 export default {
   mixins: [knowsAvatar, knowsWatchout],
   props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'index', 'indexClasses', 'parties'],
@@ -38,10 +41,13 @@ export default {
       return this.hasLink ? 'a' : 'div'
     },
     internalLink() {
-      return typeof this.link === 'string' ? this.link : (this.link && this.persona ? this.getParkPersonaProfileURL(this.persona.id) : null)
+      return typeof this.link === 'string' ? this.link : (this.link && this.personaIsValid ? this.getParkPersonaProfileURL(this.persona.id) : null)
     },
     hasLink() {
       return !!(this.internalLink)
+    },
+    personaIsValid() {
+      return this.persona && this.persona.id !== null && this.persona.id !== undefined
     },
     isSmall() {
       return this.size === 'small'
@@ -64,7 +70,7 @@ export default {
       if(this.isSmall) {
         classes.push('small')
       }
-      if(this.persona) {
+      if(this.personaIsValid) {
         classes.push(this.persona.status)
       }
       classes = [...new Set(classes)]
@@ -76,7 +82,7 @@ export default {
       let url = null
       let dimensions = this.getSystemAvatar(id)
 
-      let avatar = this.avatar ? this.avatar : (this.persona ? this.persona.avatar : 'anon')
+      let avatar = this.avatar ? this.avatar : (this.personaIsValid ? this.persona.avatar : 'anon')
       if(avatar) {
         if(typeof avatar === 'string') {
           id = avatar
@@ -113,20 +119,20 @@ export default {
       }
     },
     internalName() {
-      let name = this.name ? this.name : (this.persona ? this.persona.name : null)
+      let name = this.name ? this.name : (this.personaIsValid ? this.persona.name : null)
       if([undefined, null, ''].includes(name)) {
-        name = '顯示名稱尚未設定'
-        if([undefined, null].includes(this.persona)) {
-          name = '查無此人'
+        name = NAME_UNSET
+        if(!this.personaIsValid) {
+          name = PERSONA_NOT_FOUND
         }
       }
       return name
     },
     isShowingParty() {
-      return this.persona ? !(this.persona && this.persona.type === 'default') : false
+      return this.personaIsValid && this.persona.type !== 'default'
     },
     internalParty() {
-      return this.persona && this.persona.data ? this.persona.data.party : null
+      return this.personaIsValid && this.persona.data ? this.persona.data.party : null
     }
   },
   methods: {
