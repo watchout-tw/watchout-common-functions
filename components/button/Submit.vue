@@ -75,8 +75,12 @@ export default {
     reset() {
       this.symbolOffsetX = 0
       this.showMessage = false
-      this.$emit('update:state', STATES.DEFAULT)
-      this.$emit('update:message', null)
+      if(this.state !== STATES.DEFAULT) {
+        this.$emit('update:state', STATES.DEFAULT)
+      }
+      if(this.message !== null) {
+        this.$emit('update:message', null)
+      }
     },
     finalize() {
       if(this.state === STATES.SUCCESS) {
