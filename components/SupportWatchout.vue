@@ -1,9 +1,11 @@
 <template>
-<a class="support-watchout a-block" :href="link" target="_blank" :class="containerClasses">
-  <h4 class="label" v-html="spacingOptimizer(label)"></h4>
-  <div class="secondary-label" v-html="spacingOptimizer(secondaryLabel)"></div>
+<div class="support-watchout a-block" :class="containerClasses">
   <div class="close left" @click.stop.prevent="toggleShowSupport(false)"></div>
-</a>
+  <a class="support-link a-block monochrome" :href="link" target="_blank">
+    <div class="label"><span class="a-target">{{ label }}</span></div>
+    <div class="secondary-label">{{ secondaryLabel }}</div>
+  </a>
+</div>
 </template>
 
 <script>
@@ -55,33 +57,27 @@ export default {
 .support-watchout {
   z-index: $z-fixed;
   position: fixed;
-  width: 9rem;
+  width: 10.625rem;
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   @include shadow;
-  > .label {
-    margin: 0.5rem 0 0.25rem;
-    text-align: center;
-    font-size: 1.125rem;
-    line-height: 1;
+  display: flex;
+  > .close {
+    position: relative;
+    height: unset; // FIXME: quick hack
   }
-  > .secondary-label {
-    margin: 0.25rem 0;
-    text-align: center;
-    font-size: 0.875rem;
-    line-height: 1.375;
-  }
-  & {
-    > .label,
-    > .secondary-label {
-      color: black;
+  > .support-link {
+    > .label {
+      margin: 0.5rem 0 0.25rem;
+      font-size: 1.125rem;
+      font-weight: bold;
+      line-height: 1;
     }
-  }
-  &:hover, &:active {
-    > .label,
     > .secondary-label {
-      color: white;
+      margin: 0.25rem 0;
+      font-size: 0.875rem;
+      line-height: 1.375;
     }
   }
 }
