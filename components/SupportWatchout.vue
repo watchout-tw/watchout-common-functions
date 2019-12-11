@@ -1,10 +1,10 @@
 <template>
 <div class="support-watchout a-block" :class="containerClasses">
-  <div class="close left" @click.stop.prevent="toggleShowSupport(false)"></div>
   <a class="support-link a-block monochrome" :href="link" target="_blank">
     <div class="label"><span class="a-target">{{ label }}</span></div>
     <div class="secondary-label">{{ secondaryLabel }}</div>
   </a>
+  <div class="close" @click.stop.prevent="toggleShowSupport(false)"></div>
 </div>
 </template>
 
@@ -63,11 +63,8 @@ export default {
   transform: translateX(-50%);
   @include shadow;
   display: flex;
-  > .close {
-    position: relative;
-    height: unset; // FIXME: quick hack
-  }
   > .support-link {
+    padding-left: 0.5rem;
     > .label {
       margin: 0.5rem 0 0.25rem;
       font-size: 1.125rem;
@@ -79,6 +76,10 @@ export default {
       font-size: 0.875rem;
       line-height: 1.375;
     }
+  }
+  > .close {
+    position: relative;
+    height: unset; // FIXME: quick hack
   }
 }
 </style>
