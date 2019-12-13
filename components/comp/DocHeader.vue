@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     cachedAuthorByPersona(personaID) {
-      return this.cachedAuthors ? this.cachedAuthors.find(author => author.persona === personaID) : null
+      return this.cachedAuthors && this.cachedAuthors.find(author => author.persona === personaID) ? this.cachedAuthors.find(author => author.persona === personaID) : { personaObj: {} }
     }
   },
   components: {
