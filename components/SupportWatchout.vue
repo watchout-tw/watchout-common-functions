@@ -4,7 +4,7 @@
     <div class="label"><span class="a-target">{{ label }}</span></div>
     <div class="secondary-label">{{ secondaryLabel }}</div>
   </a>
-  <div class="close" @click.stop.prevent="toggleShowSupport(false)"></div>
+  <div class="close-support-watchout" @click.stop.prevent="toggleShowSupport(false)">×</div>
 </div>
 </template>
 
@@ -57,13 +57,15 @@ export default {
 .support-watchout {
   z-index: $z-fixed;
   position: fixed;
-  width: 10.625rem;
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   @include shadow;
+  width: 10.75rem;
   display: flex;
+  justify-content: space-between;
   > .support-link {
+    flex-shrink: 0;
     padding-left: 0.5rem;
     > .label {
       margin: 0.5rem 0 0.25rem;
@@ -77,9 +79,14 @@ export default {
       line-height: 1.375;
     }
   }
-  > .close {
-    position: relative;
-    height: unset; // FIXME: quick hack
+  > .close-support-watchout {
+    flex-shrink: 0;
+    flex-basis: 2rem;
+    font-size: 2rem;
+    line-height: 0.875;
+    text-align: right;
+    padding: 0 0.25rem;
+    cursor: pointer;
   }
 }
 </style>
