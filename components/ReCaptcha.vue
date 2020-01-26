@@ -3,9 +3,8 @@
   <no-ssr><div class="recaptcha-inner-container">
     <div class="recaptcha" v-if="!token && initialized" :style="isInvisible ? {visibility: 'hidden', width: 0, height: 0}: {}">
       <div id="recaptcha-placeholder" class="g-recaptcha"></div>
-      <script src="https://www.google.com/recaptcha/api.js?onload=reCaptchaIsLoaded&render=explicit" async defer></script>
     </div>
-    <div class="font-size-small secondary-text">透過《沃草共有地》，我們希望更了解大家在想些什麼。你在這個頁面的各種行為將被紀錄，我們會用這些寶貴的資料做出更多作品，刺激思考，促進對話。</div>
+    <div class="font-size-small secondary-text">透過《沃草共有地》，我們希望更了解大家在想些什麼。你在這個頁面的各種行為將被紀錄，《沃草》會用這些寶貴的資料做出更多作品，刺激思考，促進對話。</div>
     <div class="recaptcha-text font-size-small secondary-text">
       <img :src="require('watchout-common-assets/images/attributions/recaptcha.svg')" v-if="tokenSource !== 'watchout'" />
       <div>
@@ -31,8 +30,9 @@ export default {
       initialized: false
     }
   },
-  beforeMount() {
-    window.reCaptchaIsLoaded = () => { // FIXME: a little dirty but ok
+  beforeMount() { // FIXME: dirty
+    // set handler
+    window.reCaptchaIsLoaded = () => {
       console.log('reCAPTCHA is loaded...')
       let renderConfig = {
         sitekey: config.reCaptchaSiteKey,
@@ -43,6 +43,18 @@ export default {
       if(this.isInvisible) {
         window.grecaptcha.execute(this.widgetID)
       }
+    }
+
+    // add script
+    let scriptIDKey = 'data-hid'
+    let scriptIDValue = 'grecaptcha'
+    if(!document.head.querySelector(`[${scriptIDKey}=${scriptIDValue}]`)) {
+      let scriptEl = document.createElement('script')
+      scriptEl.setAttribute(scriptIDKey, scriptIDValue)
+      scriptEl.setAttribute('src', 'https://www.google.com/recaptcha/api.js?onload=reCaptchaIsLoaded&render=explicit')
+      scriptEl.setAttribute('async', '')
+      scriptEl.setAttribute('defer', '')
+      document.head.appendChild(scriptEl)
     }
     this.initialized = true
   },
