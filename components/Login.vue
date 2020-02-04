@@ -13,13 +13,15 @@
 </template>
 
 <script>
+import * as util from 'watchout-common-functions/lib/util'
+import * as core from 'watchout-common-functions/lib/core'
 import * as STATES from 'watchout-common-functions/lib/states'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 import SubmitButton from 'watchout-common-functions/components/button/Submit.vue'
-import { knowsFSAuth, knowsError } from 'watchout-common-functions/interfaces'
+import { knowsAuth, knowsError } from 'watchout-common-functions/interfaces'
 
 export default {
-  mixins: [knowsFSAuth, knowsError],
+  mixins: [knowsAuth, knowsError],
   props: ['presetAccount'],
   data() {
     return {
@@ -38,17 +40,20 @@ export default {
   },
   methods: {
     async doLogin() {
-      if(this.account && this.password) {
+      if(this.submitButton.state === STATES.DEFAULT && this.account && this.password) {
+        let data = util.isEmail(this.account) ? { email: this.account } : { handle: this.account }
+        data.password = this.password
         this.submitButton.state = STATES.LOADING
         try {
-          await this.login(this.account, this.password)
+          let response = await core.login(data)
+          this.setAuth(response.data)
           this.submitButton.state = STATES.SUCCESS
+          this.submitButton.message = '歡迎回來'
         } catch(error) {
-          console.error(error.toString())
           this.submitButton.state = STATES.FAILED
+          this.submitButton.message = this.humanizeError(error)
+          this.handleError(error)
         }
-      } else {
-        this.submitButton.state = STATES.FAILED
       }
     },
     onSubmitSuccess() {

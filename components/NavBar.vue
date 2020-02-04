@@ -16,12 +16,12 @@
 
 <script>
 // FIXME: perhaps better not use relative path
-import { knowsFSAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
 import Avatar from 'watchout-common-functions/components/Avatar'
 
 export default {
-  mixins: [knowsFSAuth, knowsWatchout, knowsWindowManagement],
+  mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   props: ['channel', 'menu', 'parties'],
   data() {
     return {
@@ -42,6 +42,9 @@ export default {
         backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.whichSide) + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
       }
     }
+  },
+  created() {
+    this.checkAuth()
   },
   components: {
     NavBarMenu,

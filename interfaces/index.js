@@ -7,7 +7,6 @@ import knowsCoralReef from './knowsCoralReef'
 import knowsDOM from './knowsDOM'
 import knowsError from './knowsError'
 import knowsFormatting from './knowsFormatting'
-import knowsFSAuth from './knowsFSAuth'
 import knowsFSCache from './knowsFSCache'
 import knowsLabCaching from './knowsLabCaching'
 import knowsMarkdown from './knowsMarkdown'
@@ -27,7 +26,6 @@ export {
   knowsDOM,
   knowsError,
   knowsFormatting,
-  knowsFSAuth,
   knowsFSCache,
   knowsLabCaching,
   knowsMarkdown,
