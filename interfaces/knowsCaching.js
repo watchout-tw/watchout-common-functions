@@ -5,17 +5,13 @@ export default {
   async fetch({ store, params }) {
     await Promise.all([
       store.dispatch('caching/cacheTopics'),
-      store.dispatch('caching/cacheParties'),
-      store.dispatch('caching/cacheAuthors'),
-      store.dispatch('caching/cacheTags')
+      store.dispatch('caching/cacheParties')
     ])
   },
   computed: {
     ...mapGetters({
       cachedTopics: 'caching/topics',
-      cachedParties: 'caching/parties',
-      cachedAuthors: 'caching/authors',
-      cachedTags: 'caching/tags'
+      cachedParties: 'caching/parties'
     }),
     // FIXME: putting these here are a bit weird
     // FIXME: copy to knowsBunko
@@ -32,9 +28,6 @@ export default {
     },
     cachedParty(id) {
       return this.cachedParties.find(party => party.id === id)
-    },
-    cachedAuthor(id) {
-      return this.cachedAuthors.find(author => author.id === id)
     },
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors.find(author => author.persona === personaID)
@@ -53,9 +46,6 @@ export default {
     cachedAuthorNameByContent(type, id) {
       let author = this.cachedAuthorByContent(type, id)
       return author && author.personaObj ? author.personaObj.name : author.persona
-    },
-    cachedTag(id) {
-      return this.cachedTags.find(tag => tag.id === id)
     }
   }
 }
