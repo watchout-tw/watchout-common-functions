@@ -8,10 +8,10 @@ let projects = [
 
 export default {
   sysUsers: {
-    userID: : {
+    userID: {
       email: 'email',
       password: 'password'
-    }// add more system users
+    } // add more system users
   },
   projects: Object.assign({}, ...projects.map(project => ({
     [project.name]: {
