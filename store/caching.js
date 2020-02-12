@@ -1,4 +1,5 @@
 import * as core from 'watchout-common-functions/lib/core'
+import * as firestore from 'watchout-common-functions/lib/firestore'
 
 export const state = () => ({
   topics: [],
@@ -10,6 +11,14 @@ export const state = () => ({
 })
 
 export const actions = {
+  async cacheAuthors({ commit }) {
+    let authors = await firestore.bunko.getAuthors()
+    commit('cacheAuthors', authors)
+  },
+  async cacheTags({ commit }) {
+    let tags = await firestore.bunko.getTags()
+    commit('cacheTags', tags)
+  },
   async cacheTopics({ commit }) {
     let topics = await core.getTopics()
     commit('cacheTopics', topics.data.rows)
@@ -37,6 +46,12 @@ export const actions = {
 }
 
 export const mutations = {
+  cacheAuthors(state, value) {
+    state.authors = value
+  },
+  cacheTags(state, value) {
+    state.tags = value
+  },
   cacheTopics(state, value) {
     state.topics = value
   },
@@ -58,6 +73,12 @@ export const mutations = {
 }
 
 export const getters = {
+  authors(state) {
+    return state.authors
+  },
+  tags(state) {
+    return state.tags
+  },
   topics(state) {
     return state.topics
   },

@@ -5,12 +5,16 @@ export default {
   async fetch({ store, params }) {
     await Promise.all([
       store.dispatch('caching/cacheTopics'),
+      store.dispatch('caching/cacheParties'),
+      store.dispatch('caching/cacheAuthors'),
       store.dispatch('caching/cacheParties')
     ])
   },
   computed: {
     ...mapGetters({
       cachedTopics: 'caching/topics',
+      cachedAuthors: 'caching/authors',
+      cachedTags: 'caching/tags',
       cachedParties: 'caching/parties'
     }),
     // FIXME: putting these here are a bit weird
@@ -28,6 +32,12 @@ export default {
     },
     cachedParty(id) {
       return this.cachedParties.find(party => party.id === id)
+    },
+    cachedAuthor(id) {
+      return this.cachedAuthors.find(author => author.id === id)
+    },
+    cachedTag(id) {
+      return this.cachedTags.find(tag => tag.id === id)
     },
     cachedAuthorByPersona(personaID) {
       return this.cachedAuthors.find(author => author.persona === personaID)
