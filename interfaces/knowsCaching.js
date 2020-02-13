@@ -5,7 +5,7 @@ export default {
   async fetch({ store, params }) {
     await Promise.all([
       store.dispatch('caching/cacheTopics'),
-      store.dispatch('caching/cacheParties'),
+      store.dispatch('caching/cacheTags'),
       store.dispatch('caching/cacheAuthors'),
       store.dispatch('caching/cacheParties')
     ])
