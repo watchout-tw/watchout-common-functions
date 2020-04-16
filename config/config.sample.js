@@ -4,6 +4,7 @@ export default {
   reCaptchaSiteKey: 'google-re-captcha-site-key',
   reCaptchaType: 'invisible',
   ghostBaseURL: 'https://sample.watchout.tw',
+  ghostApiURL: 'https://sample.watchout.tw',
   ghostToken: 'ghost-client-secret',
   mapboxAccessToken: 'mapbox-access-token',
   imageUploadURL: 'image-upload-url',

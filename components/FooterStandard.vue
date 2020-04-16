@@ -24,11 +24,11 @@
     </div>
   </div>
   <div class="elements">
-    <no-ssr>
+    <client-only>
       <div class="grass d-flex align-items-end justify-content-between">
         <div v-for="i in patchCount" class="patch" :class="patchSize()" :style="patchStyles()" :key="i"></div>
       </div>
-    </no-ssr>
+    </client-only>
     <img v-for="tree of trees" :src="getTreeImage(tree)" :class="getTreeClasses(tree)" :key="tree.name" />
   </div>
 </footer>

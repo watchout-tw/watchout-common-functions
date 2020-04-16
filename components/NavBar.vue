@@ -8,9 +8,9 @@
     <nav-bar-menu :channel="channel" :menu="menu" :which-side="whichSide" v-if="menu" />
   </div>
   <div class="nav-item search-container"></div>
-  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'login' })"><no-ssr>
+  <div class="nav-item avatar-container" @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'login' })"><client-only>
     <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
-  </no-ssr></div>
+  </client-only></div>
 </nav>
 </template>
 
