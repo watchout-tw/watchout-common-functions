@@ -1,6 +1,6 @@
 <template>
 <div class="recaptcha-outer-container">
-  <no-ssr><div class="recaptcha-inner-container">
+  <client-only><div class="recaptcha-inner-container">
     <div class="recaptcha" v-if="!token && initialized" :style="isInvisible ? {visibility: 'hidden', width: 0, height: 0}: {}">
       <div id="recaptcha-placeholder" class="g-recaptcha"></div>
     </div>
@@ -13,7 +13,7 @@
         <template v-if="!token"><span>未登入的你，有可能會收到</span><span class="latin-within-han">reCAPTCHA</span><span>的挑戰。</span></template>
       </div>
     </div>
-  </div></no-ssr>
+  </div></client-only>
 </div>
 </template>
 
