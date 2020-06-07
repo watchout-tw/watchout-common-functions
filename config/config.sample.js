@@ -5,7 +5,7 @@ export default {
   reCaptchaType: 'invisible',
   ghostBaseURL: 'https://sample.watchout.tw',
   ghostApiURL: 'https://sample.watchout.tw',
-  ghostToken: 'ghost-client-secret',
+  ghostToken: 'ghost-admin-api-key',
   mapboxAccessToken: 'mapbox-access-token',
   imageUploadURL: 'image-upload-url',
   env: 'dev' // dev OR beta OR production
