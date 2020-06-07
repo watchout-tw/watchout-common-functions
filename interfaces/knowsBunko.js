@@ -4,7 +4,7 @@ import { statuses, publishDestinations, getPubDest, authorTypes, spacingOptimize
 export default {
   data() {
     return {
-      bunkoBaseURL: env.links.bunko.beta,
+      bunkoBaseURL: env.links.bunko.production,
       statuses,
       publishDestinations,
       authorTypes
