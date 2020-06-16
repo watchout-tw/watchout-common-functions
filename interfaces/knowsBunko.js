@@ -23,6 +23,9 @@ export default {
     isPublished(doc) {
       return doc.publishedFrom === 'firestore'
     },
+    getArticleEditURL(id) {
+      return this.bunkoBaseURL + 'ghost/#/editor/post/' + id
+    },
     spacingOptimizer
   }
 }
