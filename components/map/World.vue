@@ -177,7 +177,7 @@ export default {
 <style lang="scss">
 @import '~watchout-common-assets/styles/resources';
 
-.atlas-with-draw {
+.atlas-with-draw { // FIXME: duplicated in Region.vue
   > .draw {
     $transitionDuration: 0.25s;
     width: 100%;

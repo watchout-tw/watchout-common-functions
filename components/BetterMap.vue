@@ -47,11 +47,11 @@
 
 <script>
 import { knowsMarkdown, knowsWatchout } from 'watchout-common-functions/interfaces'
-import PopQuiz from './PopQuiz'
-import Tally from './Tally'
-import Regions from './Regions'
-import World from './World'
-import MapBox from './MapBox'
+import PopQuiz from './map/PopQuiz'
+import Tally from './map/Tally'
+import Regions from './map/Regions'
+import World from './map/World'
+import MapBox from './map/MapBox'
 
 export default {
   mixins: [knowsMarkdown, knowsWatchout],
