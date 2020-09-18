@@ -238,6 +238,9 @@ export default {
       })
       this.map.addControl(new mapbox.NavigationControl(), 'top-left')
       // this.map.addControl(new MapboxGeocoder({ accessToken: config.mapboxAccessToken }), 'top-left')
+      if(this.config.hasOwnProperty('disableScrollZoom') ? this.config.disableScrollZoom : true) {
+        this.map.scrollZoom.disable()
+      }
 
       // https://www.mapbox.com/mapbox-gl-js/example/add-image/
       // https://www.mapbox.com/mapbox-gl-js/example/popup-on-click/
