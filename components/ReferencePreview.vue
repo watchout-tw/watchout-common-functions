@@ -98,7 +98,13 @@ export default {
       return this.title ? this.title : (this.doc ? this.doc.title : '標題未定')
     },
     internalDescription() {
-      return this.description !== null ? this.description : (this.doc && this.doc.description ? this.doc.description : null)
+      let desc = this.doc && this.doc.description ? this.doc.description : null
+      if(this.description) {
+        desc = this.description
+      } else if(['', null].includes(this.description)) {
+        desc = null
+      }
+      return desc
     },
     containerClasses() {
       return this.display === 'tcl' ? ['tcl-container'] : ['container']
