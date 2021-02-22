@@ -10,8 +10,8 @@
     <div class="input button" @click="quitPlay" v-if="isPlaying || nextToPlay > 0">結束播放</div>
   </div>
   <div v-if="config.mode === 'fly'" class="controls form-field-many-inputs form-field-align-center margin-top-bottom-8">
-    <div class="input button" @click="flyBack" v-if="isPlaying && nextToPlay > 1">{{ prevStepButton }}</div>
-    <div class="input button large musou" @click="fly">{{ nextStepButton }}</div>
+    <div class="input button" @click="flyBack" v-if="isPlaying && nextToPlay > 1">{{ $t(prevStepButton) }}</div>
+    <div class="input button large musou" @click="fly">{{ $t(nextStepButton) }}</div>
   </div>
   <div class="note font-size-tiny margin-top-4" v-if="config.mode === 'play' && hasNotStarted">
     <div class="text-align-center" v-if="config.mode === 'play'">點擊「播放」自動播放各地新聞</div>
@@ -19,16 +19,16 @@
   </div>
   <div class="active-features tcl-container" v-if="activeFeatures.length > 0">
     <a v-for="(feature, index) of activeFeatures" class="feature a-block tcl-panel tcl-left-right-margin with-top-bottom-margin bg-very-very-light-grey" :href="feature.properties.link" target="_blank" :style="getFeatureStyles(feature)" :key="`active-feature-${index}`">
-      <div class="primary-secondary-fields" v-if="feature.properties[config.feature.primaryField]"><label>{{ feature.properties[config.feature.primaryField] }}</label>&nbsp;<label>{{ config.feature.secondaryFields ? config.feature.secondaryFields.map(key => feature.properties[key]).join('') : '' }}</label></div>
-      <div class="title" v-if="feature.properties.title">{{ feature.properties.title }}</div>
+      <div class="primary-secondary-fields" v-if="feature.properties[config.feature.primaryField]"><label>{{ $t(feature.properties[config.feature.primaryField]) }}</label>&nbsp;<label>{{ config.feature.secondaryFields ? config.feature.secondaryFields.map(key => feature.properties[key]).join('') : '' }}</label></div>
+      <div class="title" v-if="feature.properties.title">{{ $t(feature.properties.title) }}</div>
       <div class="image-container margin-top-bottom-4" v-if="feature.properties.image">
         <img class="image" v-show="imageIsLoaded" @load="imageIsLoaded = true" :src="feature.properties.image">
       </div>
-      <div class="image-caption secondary-text font-size-tiny" v-if="feature.properties.image_caption">{{ feature.properties.image_caption }}</div>
-      <div class="image-license secondary-text font-size-tiny" v-if="feature.properties.image_license">{{ feature.properties.image_license }}</div>
+      <div class="image-caption secondary-text font-size-tiny" v-if="feature.properties.image_caption">{{ $t(feature.properties.image_caption) }}</div>
+      <div class="image-license secondary-text font-size-tiny" v-if="feature.properties.image_license">{{ $t(feature.properties.image_license) }}</div>
       <audio controls class="audio" v-if="feature.properties.audio"><source :src="feature.properties.audio" type="audio/mp3">你的瀏覽器無法播放聲音檔</audio>
       <div class="title-tw" v-if="feature.properties.title_tw">{{ feature.properties.title_tw }}</div>
-      <div class="description paragraphs secondary-text font-size-small margin-top-bottom-8" v-html="markdown(feature.properties.description)"></div>
+      <div class="description paragraphs secondary-text font-size-small margin-top-bottom-8" v-html="markdown($t(feature.properties.description))"></div>
       <label class="more" v-if="feature.properties.link">閱讀更多</label>
     </a>
     <div class="tcl-panel"></div>
