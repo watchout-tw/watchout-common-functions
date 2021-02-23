@@ -247,7 +247,15 @@ export default {
       // https://www.mapbox.com/mapbox-gl-js/example/cluster/
       if(this.config.finale && this.config.finale.type === 'doc') {
         firestore.bunko.getProjectBySlug(`map/${this.id}`).then(response => {
-          return firestore.bunko.getDoc(response.config.finale.id, true)
+          let lang
+          if(this.$router.currentRoute.path.substring(0, 3).includes('en')) {
+            lang = 'en'
+          } else if(this.$router.currentRoute.path.substring(0, 3).includes('tb')) {
+            lang = 'tb'
+          } else {
+            lang = 'zh'
+          }
+          return firestore.bunko.getDoc(response.config.finale[lang].id, true)
         }).then(response => {
           this.$set(this, 'doc', response)
         }).catch(error => {
