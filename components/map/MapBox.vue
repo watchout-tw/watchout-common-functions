@@ -2,7 +2,7 @@
 <div class="map-box" :class="[config.theme]">
   <div class="map-container">
     <div class="map content" id="map"></div>
-    <div class="datetime" v-if="currentDateTime">{{ currentDateTime }}</div>
+    <div class="datetime" v-if="currentDateTime">{{ $t(currentDateTime) }}</div>
   </div>
   <div v-if="config.mode === 'play'" class="controls form-field-many-inputs form-field-align-center margin-top-bottom-8">
     <div class="input button large musou" @click="play" v-if="!isPlaying">{{ playButton }}</div>
