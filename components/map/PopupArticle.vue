@@ -7,7 +7,7 @@
         <div v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
       </template>
       <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
-        <img class="image" :src="ghostBaseURL + mobiledoc.cards[section[1]][1].src" />
+        <img class="image" :src="generateImgUrl(mobiledoc.cards[section[1]][1].src)" />
       </template>
     </div>
     <div class="share margin-top-bottom-single">
@@ -55,6 +55,9 @@ export default {
   methods: {
     dismiss() {
       this.$emit('update:show', false)
+    },
+    generateImgUrl(src) {
+      return (src.includes('http') ? '' : this.ghostBaseURL) + src
     }
   },
   components: {
