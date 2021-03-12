@@ -24,7 +24,7 @@ export default {
     activate(event, index) {
       this.$emit('update:activeIndex', index)
       // FIXME: sometimes event.path is undefined
-      if (event.path) {
+      if(event.path) {
         let el = event.path.find(el => el.className.split(' ').includes('item'))
         this.$emit('itemClicked', index, el)
       }
