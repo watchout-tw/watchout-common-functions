@@ -6,24 +6,24 @@
   "author": "Department of Technology at Watchout <dev@watchout.tw>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.0",
+    "@mapbox/mapbox-gl-geocoder": "^2.3.0",
+    "axios": "^0.21.1",
     "cookieparser": "^0.1.0",
+    "d3": "^5.1.0",
     "firebase": "^7.14.0",
     "he": "^1.2.0",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "lodash.debounce": "^4.0.8",
+    "mapbox-gl": "^0.51.0",
     "marked": "^0.7.0",
     "project-name-generator": "^2.1.6",
     "query-string": "^6.3.0",
-    "sanitize-html": "^1.20.0",
-    "@mapbox/mapbox-gl-geocoder": "^2.3.0",
-    "mapbox-gl": "^0.51.0",
-    "d3": "^5.1.0"
+    "sanitize-html": "^1.20.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.1.2",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.1",
     "socket.io-client": "^2.2.0"
   }
 }
