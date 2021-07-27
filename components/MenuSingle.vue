@@ -12,6 +12,12 @@
 </template>
 
 <script>
+/*
+  Archived component:
+  Navbar menu is now default-2-layer,
+  for maintaining 2-layer menu in the neighborhood of 1-layer menu.
+  Therefore, modulized menu-single component is now unused.
+*/
 let commonClasses = ['item-text', 'a-text', 'monochrome']
 export default {
   props: ['classes', 'menu', 'activeIndex'],
