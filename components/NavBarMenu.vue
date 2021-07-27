@@ -34,7 +34,6 @@ export default {
   mixins: [knowsWindowManagement],
   props: ['channel', 'menu', 'whichSide'],
   data() {
-    console.log(this.menu)
     return {
       activeTreeIndex: -1,
       activeChildTreeIndex: -1,
@@ -52,7 +51,7 @@ export default {
   },
   methods: {
     activate(event, index) {
-      this.activeTreeIndex = index
+      this.activeTreeIndex = this.activeTreeIndex === index ? -1 : index
       if(event.path) {
         let el = event.path.find(el => el.className.split(' ').includes('item'))
         this.rootSelected(index, el)
