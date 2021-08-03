@@ -3,10 +3,10 @@
   <div class="roots">
     <ul class="items vertical">
       <li class="item" :class="{ active: index === activeTreeIndex }" v-for="(item, index) of internalMenu" :key="index">
-        <a v-if="item.href" :href="item.href" :class="commonClasses" @click="activate($event, index)">{{ item.label.value }}</a>
-        <nuxt-link v-else-if="item.route" :class="commonClasses" :to="item.route" @click.native="activate($event, index)">{{ item.label.value }}</nuxt-link>
+        <a v-if="item.href" :href="item.href" :class="commonClasses" @click="activate(index)">{{ item.label.value }}</a>
+        <nuxt-link v-else-if="item.route" :class="commonClasses" :to="item.route" @click.native="activate(index)">{{ item.label.value }}</nuxt-link>
         <div v-else-if="item.children" class="has-children">
-          <a :class="[...commonClasses]" @click="activate($event, index)">{{ item.label.value }}</a>
+          <a :class="[...commonClasses]" @click="activate(index)">{{ item.label.value }}</a>
           <div class="children" v-if="activeTreeIndex > -1 && activeTreeIndex < internalMenu.length && item.children && index === activeTreeIndex" :style="childrenStyles">
             <div class="close black" @click.stop.prevent="activeTreeIndex = -1"></div>
             <ul class="items">
@@ -50,17 +50,8 @@ export default {
     }
   },
   methods: {
-    activate(event, index) {
+    activate(index) {
       this.activeTreeIndex = this.activeTreeIndex === index ? -1 : index
-      if(event.path) {
-        let el = event.path.find(el => el.className.split(' ').includes('item'))
-        this.rootSelected(index, el)
-      }
-    },
-    rootSelected(index, el) {
-      let rect = el.getBoundingClientRect()
-      this.childrenStyles.top = (rect.top + rect.height) + 'px'
-      this.childrenStyles.left = rect.left + 'px'
     }
   }
 }
