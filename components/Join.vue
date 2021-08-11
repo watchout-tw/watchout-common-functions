@@ -56,7 +56,6 @@ export default {
             password: this.password
           }).then(response => {
             this.state = STATES.SUCCESS
-            this.message = '認證信已寄出'
           }).catch(error => {
             this.state = STATES.FAILED
             this.message = this.humanizeError(error)

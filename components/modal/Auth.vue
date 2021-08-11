@@ -23,6 +23,11 @@
       <a class="a-block font-weight-bold" href="#" @click.stop.prevent="updateSelf('join')"><span class="a-target">我要註冊</span></a>
     </div>
   </div>
+  <div class="action" v-if="data.joinOrLogin === 'joinSuccess'">
+    <div class="title">
+      <h4>認證信已寄送至你的 Email</h4>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -46,7 +51,7 @@ export default {
       this.addModal({ id: 'emailer', action: EMAILER_ACTIONS.REQ_PWD_RESET })
     },
     onJoinSuccess() {
-      this.removeModal('auth')
+      this.updateModal({ id: 'auth', joinOrLogin: 'joinSuccess' })
     },
     onLoginSuccess() {
       this.removeModal('auth')
