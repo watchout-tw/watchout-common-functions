@@ -1,7 +1,9 @@
 <template>
 <div class="role-card bg-park-light">
   <div class="secondary-text font-size-small">目前權限</div>
-  <div>{{ roleText }}</div>
+  <div v-for="(text, index) in roleText" :key="index">
+    #{{ text }}&nbsp;
+  </div>
 </div>
 </template>
 
@@ -13,15 +15,19 @@ export default {
   mixins: [knowsAuth],
   computed: {
     roleText() {
-      let text = '路人'
+      let texts = ['路人']
       if(this.isLocal() && Array.isArray(this.roles)) {
+        texts = []
         if(this.hasRole(ROLES.WITH_INFO)) {
-          text = '大草民'
+          texts.push('大草民')
         } else {
-          text = '草民'
+          texts.push('草民')
+        }
+        if(this.hasRole(ROLES.WITH_PAYMENT)) {
+          texts.push('定期定額')
         }
       }
-      return text
+      return texts
     }
   }
 }
