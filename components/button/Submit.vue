@@ -116,8 +116,6 @@ export default {
     align-items: center;
     transition: transform 0.25s ease;
     transform-origin: center center;
-    > .symbol {
-    }
     > .loading {
       @include spinner;
     }
