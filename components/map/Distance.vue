@@ -13,6 +13,7 @@
 
 <script>
 import config from 'watchout-common-functions/config/config'
+import * as googleMap from 'watchout-common-functions/lib/google_map' 
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 
 export default {
@@ -87,7 +88,11 @@ export default {
       // }
     },
     fly() {
-      console.log('fly')
+      googleMap.getGeocoding(this.address).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.error(error)
+      })
     }
   },
   components: {

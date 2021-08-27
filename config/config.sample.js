@@ -9,7 +9,7 @@ export default {
   ghostToken: 'ghost-admin-api-key',
   springboardURL: 'spring-board-url',
   mapboxAccessToken: 'mapbox-access-token',
-  geocodeBaseURL: 'google-map-geocode-base-url',
+  googleMapBaseURL: 'google-map-geocode-base-url',
   geocodingApiKey: 'google-geocodeing-api-key',
   imageUploadURL: 'image-upload-url',
   env: 'dev' // dev OR beta OR production
