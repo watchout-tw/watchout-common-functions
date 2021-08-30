@@ -7,6 +7,9 @@
   "license": "MIT",
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^2.3.0",
+    "@turf/circle": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "@turf/length": "^6.5.0",
     "axios": "^0.21.1",
     "cookieparser": "^0.1.0",
     "d3": "^5.1.0",
