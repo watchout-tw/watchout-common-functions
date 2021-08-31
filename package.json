@@ -18,7 +18,7 @@
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "lodash.debounce": "^4.0.8",
-    "mapbox-gl": "^0.51.0",
+    "mapbox-gl": "^1.13.1",
     "marked": "^0.7.0",
     "project-name-generator": "^2.1.6",
     "query-string": "^6.3.0",

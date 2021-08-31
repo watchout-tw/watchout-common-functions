@@ -31,17 +31,18 @@ function makeFeature(marker) {
 }
 
 // https://stackoverflow.com/questions/37599561/drawing-a-circle-with-the-radius-in-miles-meters-with-mapbox-gl-js
-function makeCircle(marker, radius) {
+function makeCircle(marker, range) {
   var center = [marker.lng, marker.lat]
   var options = {
     steps: 50,
     units: 'kilometers',
-    properties: marker
+    properties: {
+      ...range,
+      ...marker
+    }
   }
-  return circle(center, radius, options)
+  return circle(center, range.radius, options)
 }
-
-
 
 export default {
   // mixins: [knowsMarkdown],
@@ -89,9 +90,31 @@ export default {
       }
       this.config.ranges.forEach(range => {
         let features = this.markers.map(marker => {
-          return makeCircle(marker, range.radius)
+          return makeCircle(marker, range)
         })
         this.featureCollectionSets.push(features)
+      })
+      this.map.loadImage('https://static.tumblr.com/wpquu0m/VvFmjcm2i/burn-01.png', (err, image) => {
+        if (err) throw err
+        // Add the image to the map style.
+        this.map.addImage('station', image)
+        this.map.addSource('markers-station', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: this.featureCollectionSets[0]
+          }
+        })
+        this.map.addLayer({
+          id: 'markers-station',
+          type: 'symbol',
+          source: 'markers-station',
+          layout: {
+            'icon-allow-overlap': true,
+            'icon-image': 'station', // reference the image
+            'icon-size': 0.1
+          }
+        })
       })
     },
     fly() {
@@ -108,9 +131,10 @@ export default {
         this.map.fitBounds([[userLoc.lng, userLoc.lat], [nearest.lng, nearest.lat]], {
           padding: 40
         })
-        for(let i = 0; i < this.config.ranges.length; i++) {
+        this.addLayer(0)
+        for(let i = 1; i < this.config.ranges.length; i++) {
           // pass parameter to anonymous function in setTimeout
-          window.setTimeout(this.addLayer.bind(null, i), 1000 + i * 1000)
+          window.setTimeout(this.updateLayer.bind(null, i), i * 1500)
         }
       }).catch(error => {
         console.error(error)
@@ -125,7 +149,7 @@ export default {
       })
     },
     addLayer(index) {
-      this.map.addSource(this.config.ranges[index].name, {
+      this.map.addSource('markers-explode', {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
@@ -133,14 +157,60 @@ export default {
         }
       })
       this.map.addLayer({
-        id: this.config.ranges[index].name,
+        id: 'markers-explode',
         type: 'fill',
-        source: this.config.ranges[index].name,
+        source: 'markers-explode',
         paint: {
-          'fill-color': this.config.ranges[index].color,
-          'fill-opacity': 0.4,
-          'fill-outline-color': 'yellow'
+          'fill-color': [
+            'match', ['get', 'radius'],
+            5,
+            '#800000',
+            20,
+            '#c0392b',
+            30,
+            '#d35400',
+            80,
+            '#e67e22',
+            100,
+            '#f39c12',
+            // 250 and others
+            '#f1c40f'
+          ],
+          'fill-opacity': [
+            'match', ['get', 'radius'],
+            5, 0.6,
+            20, 0.3,
+            30, 0.1,
+            80, 0.1,
+            100, 0.1,
+            // 250 and others
+            0.1
+          ]
+        },
+        layout: {
+          'fill-sort-key': ['to-number', ['get', 'radius']]
         }
+      })
+    },
+    updateLayer(index) {
+      let newFeatures = []
+      for(let i = 0; i <= index; i++) {
+        newFeatures = newFeatures.concat(this.featureCollectionSets[i])
+      }
+      let newDS = {
+        type: 'FeatureCollection',
+        features: newFeatures
+      }
+      this.map.getSource('markers-explode').setData(newDS)
+      if (this.config.ranges[index].radius > 50) {
+        this.flyToCenter()
+      }
+    },
+    flyToCenter() {
+      this.map.flyTo({
+        center: this.config.center,
+        zoom: this.config.zoom,
+        speed: 1.2
       })
     }
   },
