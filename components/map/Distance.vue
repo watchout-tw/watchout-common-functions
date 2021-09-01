@@ -6,7 +6,23 @@
   </div>
   <div class="map-container">
     <div class="map content" id="map"></div>
-    <!-- <div class="datetime" v-if="currentDateTime">{{ $t(currentDateTime) }}</div> -->
+  </div>
+  <div class="consequence full-width-container" v-if="endExplode">
+    <div class="title">你家離最近的核電廠 {{ shortestDistance }} 公里
+    </div>
+    <!-- <div v-for="(feature, index) of activeFeatures" class="feature a-block with-top-bottom-margin bg-very-very-light-grey" :href="feature.properties.link">
+      <div class="primary-secondary-fields" v-if="feature.properties[config.feature.primaryField]"><label>{{ $t(feature.properties[config.feature.primaryField]) }}</label>&nbsp;<label>{{ config.feature.secondaryFields ? config.feature.secondaryFields.map(key => feature.properties[key]).join('') : '' }}</label></div>
+      <div class="title" v-if="feature.properties.title">{{ $t(feature.properties.title) }}</div>
+      <div class="image-container margin-top-bottom-4" v-if="feature.properties.image">
+        <img class="image" v-show="imageIsLoaded" @load="imageIsLoaded = true" :src="feature.properties.image">
+      </div>
+      <div class="image-caption secondary-text font-size-tiny" v-if="feature.properties.image_caption">{{ $t(feature.properties.image_caption) }}</div>
+      <div class="image-license secondary-text font-size-tiny" v-if="feature.properties.image_license">{{ $t(feature.properties.image_license) }}</div>
+      <audio controls class="audio" v-if="feature.properties.audio"><source :src="feature.properties.audio" type="audio/mp3">你的瀏覽器無法播放聲音檔</audio>
+      <div class="title-tw" v-if="feature.properties.title_tw">{{ feature.properties.title_tw }}</div>
+      <div class="description paragraphs secondary-text font-size-small margin-top-bottom-8" v-html="markdown($t(feature.properties.description))"></div>
+      <label class="more" v-if="feature.properties.link">閱讀更多</label>
+    </div> -->
   </div>
 </div>
 </template>
@@ -66,13 +82,22 @@ export default {
   },
   data() {
     return {
+      endExplode: false,
       mapElementID: 'map',
       address: '',
-      featureCollectionSets: []
+      featureCollectionSets: [],
+      nearestSpot: {},
+      userSpot: {}
     }
   },
   mounted() {
     this.init()
+  },
+  computed: {
+    shortestDistance() {
+      let line = turfHelpers.lineString([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]])
+      return +(Math.round(length(line, { units: 'kilometers' }) + 'e+2')  + 'e-2')
+    }
   },
   methods: {
     init() {
@@ -94,7 +119,8 @@ export default {
         })
         this.featureCollectionSets.push(features)
       })
-      this.map.loadImage('https://static.tumblr.com/wpquu0m/VvFmjcm2i/burn-01.png', (err, image) => {
+      let stationIconURL = 'https://static.tumblr.com/wpquu0m/VvFmjcm2i/burn-01.png'
+      this.map.loadImage(stationIconURL, (err, image) => {
         if (err) throw err
         // Add the image to the map style.
         this.map.addImage('station', image)
@@ -120,15 +146,15 @@ export default {
     fly() {
       const mapbox = require('mapbox-gl')
       googleMap.getGeocoding(this.address).then(response => {
-        let userLoc = {
+        this.userSpot = {
           lng: response.data.results[0].geometry.location.lng,
           lat: response.data.results[0].geometry.location.lat
         }
         const marker1 = new mapbox.Marker()
-          .setLngLat([userLoc.lng, userLoc.lat])
+          .setLngLat([this.userSpot.lng, this.userSpot.lat])
           .addTo(this.map);
-        let nearest = this.getNearest(userLoc)
-        this.map.fitBounds([[userLoc.lng, userLoc.lat], [nearest.lng, nearest.lat]], {
+        this.nearestSpot = this.getNearest(this.userSpot)
+        this.map.fitBounds([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]], {
           padding: 40
         })
         this.addLayer(0)
@@ -205,6 +231,9 @@ export default {
       if (this.config.ranges[index].radius > 50) {
         this.flyToCenter()
       }
+      if (index === this.config.ranges.length - 1) {
+        this.endExplode = true
+      }
     },
     flyToCenter() {
       this.map.flyTo({
@@ -227,6 +256,11 @@ export default {
   > .address.controls {
     max-width: 500px;
     margin: 0 auto;
+  }
+  > .consequence {
+    > .title {
+      text-align: center;
+    }
   }
 }
 </style>
