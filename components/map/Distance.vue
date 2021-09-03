@@ -7,22 +7,14 @@
   <div class="map-container">
     <div class="map content" id="map"></div>
   </div>
-  <div class="consequence full-width-container" v-if="endExplode">
-    <div class="title">你家離最近的核電廠 {{ shortestDistance }} 公里
-    </div>
-    <!-- <div v-for="(feature, index) of activeFeatures" class="feature a-block with-top-bottom-margin bg-very-very-light-grey" :href="feature.properties.link">
-      <div class="primary-secondary-fields" v-if="feature.properties[config.feature.primaryField]"><label>{{ $t(feature.properties[config.feature.primaryField]) }}</label>&nbsp;<label>{{ config.feature.secondaryFields ? config.feature.secondaryFields.map(key => feature.properties[key]).join('') : '' }}</label></div>
-      <div class="title" v-if="feature.properties.title">{{ $t(feature.properties.title) }}</div>
-      <div class="image-container margin-top-bottom-4" v-if="feature.properties.image">
-        <img class="image" v-show="imageIsLoaded" @load="imageIsLoaded = true" :src="feature.properties.image">
+  <div class="consequence full-width-container yellow" v-if="endExplode">
+    <div class="title">你家離最近的核電廠 {{ userSpot.distance }} 公里</div>
+    <div class="description">於日本福島核災中，符合 <span class="action">{{ this.config.ranges[userSpot.nearestIndex].text }}</span> 的受災程度</div>
+    <div class="suggestions">
+      <div v-for="range of this.config.ranges" class="suggestion" :key="range.name">
+        {{ range.name }}：{{ range.text }}
       </div>
-      <div class="image-caption secondary-text font-size-tiny" v-if="feature.properties.image_caption">{{ $t(feature.properties.image_caption) }}</div>
-      <div class="image-license secondary-text font-size-tiny" v-if="feature.properties.image_license">{{ $t(feature.properties.image_license) }}</div>
-      <audio controls class="audio" v-if="feature.properties.audio"><source :src="feature.properties.audio" type="audio/mp3">你的瀏覽器無法播放聲音檔</audio>
-      <div class="title-tw" v-if="feature.properties.title_tw">{{ feature.properties.title_tw }}</div>
-      <div class="description paragraphs secondary-text font-size-small margin-top-bottom-8" v-html="markdown($t(feature.properties.description))"></div>
-      <label class="more" v-if="feature.properties.link">閱讀更多</label>
-    </div> -->
+    </div>
   </div>
 </div>
 </template>
@@ -34,17 +26,6 @@ import TextEditor from 'watchout-common-functions/components/TextEditor'
 import circle from '@turf/circle'
 import length from '@turf/length'
 import * as turfHelpers from '@turf/helpers'
-
-function makeFeature(marker) {
-  return {
-    type: 'Feature',
-    properties: marker,
-    geometry: {
-      type: 'Point',
-      coordinates: [marker.lng, marker.lat]
-    }
-  }
-}
 
 // https://stackoverflow.com/questions/37599561/drawing-a-circle-with-the-radius-in-miles-meters-with-mapbox-gl-js
 function makeCircle(marker, range) {
@@ -61,7 +42,6 @@ function makeCircle(marker, range) {
 }
 
 export default {
-  // mixins: [knowsMarkdown],
   props: {
     shareURL: {
       type: String,
@@ -87,6 +67,7 @@ export default {
       address: '',
       featureCollectionSets: [],
       nearestSpot: {},
+      distanceToStation: 0,
       userSpot: {}
     }
   },
@@ -154,13 +135,22 @@ export default {
           .setLngLat([this.userSpot.lng, this.userSpot.lat])
           .addTo(this.map);
         this.nearestSpot = this.getNearest(this.userSpot)
+        let line = turfHelpers.lineString([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]])
+        this.userSpot.distance =  +(Math.round(length(line, { units: 'kilometers' }) + 'e+2')  + 'e-2')
         this.map.fitBounds([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]], {
           padding: 40
         })
         this.addLayer(0)
-        for(let i = 1; i < this.config.ranges.length; i++) {
+        let locatedInRange = false
+        for(let i = 0; i < this.config.ranges.length; i++) {
           // pass parameter to anonymous function in setTimeout
-          window.setTimeout(this.updateLayer.bind(null, i), i * 1500)
+          if (i > 0) {
+            window.setTimeout(this.updateLayer.bind(null, i), i * 1500)
+          }
+          if (this.userSpot.distance < this.config.ranges[i].radius && !locatedInRange) {
+            locatedInRange = true
+            this.userSpot.nearestIndex = i
+          }
         }
       }).catch(error => {
         console.error(error)
@@ -258,8 +248,26 @@ export default {
     margin: 0 auto;
   }
   > .consequence {
+    padding: 1rem 0;
+    &.yellow {
+      background-color: $color-park;
+    }
     > .title {
       text-align: center;
+      font-size: 2rem;
+    }
+    > .description {
+      text-align: center;
+      font-size: 1.5rem;
+      > .action {
+        font-size: 2rem;
+        color: red;
+      }
+    }
+    > .suggestions {
+      > .suggestion {
+        text-align: center;
+      }
     }
   }
 }
