@@ -41,6 +41,8 @@ function makeCircle(marker, range) {
   return circle(center, range.radius, options)
 }
 
+let currentMarker = null
+
 export default {
   props: {
     shareURL: {
@@ -62,10 +64,11 @@ export default {
   },
   data() {
     return {
-      endExplode: false,
-      mapElementID: 'map',
       address: '',
+      currentMarker: null,
+      endExplode: false,
       featureCollectionSets: [],
+      mapElementID: 'map',
       nearestSpot: {},
       distanceToStation: 0,
       userSpot: {}
@@ -126,14 +129,20 @@ export default {
     },
     fly() {
       const mapbox = require('mapbox-gl')
+      if (currentMarker !== null) {
+        currentMarker.remove()
+        this.map.removeLayer('markers-explode')
+        this.map.removeSource('markers-explode')
+        this.endExplode = false
+      }
       googleMap.getGeocoding(this.address).then(response => {
         this.userSpot = {
           lng: response.data.results[0].geometry.location.lng,
           lat: response.data.results[0].geometry.location.lat
         }
-        const marker1 = new mapbox.Marker()
+        currentMarker = new mapbox.Marker()
           .setLngLat([this.userSpot.lng, this.userSpot.lat])
-          .addTo(this.map);
+          .addTo(this.map)
         this.nearestSpot = this.getNearest(this.userSpot)
         let line = turfHelpers.lineString([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]])
         this.userSpot.distance =  +(Math.round(length(line, { units: 'kilometers' }) + 'e+2')  + 'e-2')
