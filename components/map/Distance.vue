@@ -104,26 +104,28 @@ export default {
         this.featureCollectionSets.push(features)
       })
       let stationIconURL = 'https://static.tumblr.com/wpquu0m/VvFmjcm2i/burn-01.png'
-      this.map.loadImage(stationIconURL, (err, image) => {
-        if (err) throw err
-        // Add the image to the map style.
-        this.map.addImage('station', image)
-        this.map.addSource('markers-station', {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: this.featureCollectionSets[0]
-          }
-        })
-        this.map.addLayer({
-          id: 'markers-station',
-          type: 'symbol',
-          source: 'markers-station',
-          layout: {
-            'icon-allow-overlap': true,
-            'icon-image': 'station', // reference the image
-            'icon-size': 0.1
-          }
+      this.map.on('load', () => {
+        this.map.loadImage(stationIconURL, (err, image) => {
+          if (err) throw err
+          // Add the image to the map style.
+          this.map.addImage('station', image)
+          this.map.addSource('markers-station', {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: this.featureCollectionSets[0]
+            }
+          })
+          this.map.addLayer({
+            id: 'markers-station',
+            type: 'symbol',
+            source: 'markers-station',
+            layout: {
+              'icon-allow-overlap': true,
+              'icon-image': 'station', // reference the image
+              'icon-size': 0.1
+            }
+          })
         })
       })
     },
