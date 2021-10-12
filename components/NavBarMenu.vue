@@ -10,7 +10,7 @@
           <div class="children" v-if="activeTreeIndex > -1 && activeTreeIndex < internalMenu.length && item.children && index === activeTreeIndex" :style="childrenStyles">
             <div class="close black" @click.stop.prevent="activeTreeIndex = -1"></div>
             <ul class="items">
-              <li class="item" v-for="(childItem, childIndex) of item.children" :key="childIndex" @click.stop.prevent="activeTreeIndex = -1">
+              <li class="item" v-for="(childItem, childIndex) of item.children" :key="childIndex" @click.stop="activeTreeIndex = -1">
                 <a v-if="childItem.href" :href="childItem.href" :class="commonClasses">{{ childItem.label.value }}</a>
                 <nuxt-link v-else-if="childItem.route" :class="commonClasses" :to="childItem.route">{{ childItem.label.value }}</nuxt-link>
                 <div v-else class="item-text">{{ item.label.value }}</div>
