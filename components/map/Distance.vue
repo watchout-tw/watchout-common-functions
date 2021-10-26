@@ -2,7 +2,7 @@
 <div class="map-box distance" :class="[config.theme]">
   <div class="address controls form-field-many-inputs form-field-align-center margin-top-bottom-8">
     <text-editor placeholder="輸入你家地址 / 地標" v-model="address" :classes="['park']" :simple="true" />
-    <div class="input button park" @click="fly">確認</div>
+    <div class="input button flat hover dark" @click="fly">確認</div>
   </div>
   <div class="map-container">
     <div class="map content" id="map"></div>
