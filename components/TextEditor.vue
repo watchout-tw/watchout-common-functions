@@ -62,6 +62,10 @@ export default {
       background-color: $color-park-very-light;
       border-color: $color-park;
     }
+    &.dark {
+      background-color: $color-light-grey;
+      border-color: $color-anti-nuclear;
+    }
   }
   &.small {
     font-size: $font-size-small;
