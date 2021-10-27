@@ -10,7 +10,7 @@
     "@turf/circle": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "@turf/length": "^6.5.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "cookieparser": "^0.1.0",
     "d3": "^5.1.0",
     "firebase": "^7.14.0",
