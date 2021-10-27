@@ -19,8 +19,8 @@ const baseURL = 'https://raw.githubusercontent.com/watchout-tw/watchout-common-a
 
 const data = {
   banner: {
-    reference: 'project://hongkonger',
-    image: 'projects/hongkonger-cover.jpg'
+    reference: 'project://anti-nuclear',
+    image: 'projects/anti-nuclear-cover.gif'
   },
   shortcuts: [
     {

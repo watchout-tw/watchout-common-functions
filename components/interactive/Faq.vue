@@ -1,6 +1,6 @@
 <template>
 <div class="section faq dark" id="faq">
-  <div class="section-header tcl-container">
+  <div v-if="hasTitle" class="section-header tcl-container">
     <div class="tcl-panel tcl-left-right-margin">
       <h3 class="title text-align-center" v-html="spacingOptimizer(faqTitle)"></h3>
       <div class="update text-align-center secondary-text font-size-small">{{ lastUpdateTime }}</div>
@@ -26,7 +26,7 @@ const showDetail = '⋯'
 
 export default {
   mixins: [knowsBunko, knowsMarkdown],
-  props: ['lastUpdate', 'faq'],
+  props: ['lastUpdate', 'faq', 'hasTitle'],
   data() {
     let faqIX = this.faq.map(item => {
       return {

@@ -2,7 +2,7 @@
 <nav class="nav-bar" :class="navClasses">
   <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles" @click="addModal('transporter')"></div>
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
-    <img :src="getProjectLogoWithType(channel.id)" :style="getProjectLogoWithTypeStyles(channel.id)" />
+    <img :src="getProjectLogoWithType(channelOrPageID)" :style="getProjectLogoWithTypeStyles(channelOrPageID)" />
   </nuxt-link>
   <div class="nav-item menu-container">
     <nav-bar-menu :channel="channel" :menu="menu" :which-side="whichSide" v-if="menu" />
@@ -29,6 +29,9 @@ export default {
     }
   },
   computed: {
+    channelOrPageID() {
+      return this.channel.pageID ? this.channel.pageID : this.channel.id
+    },
     whichSide() {
       return this.channel.dark ? 'dark' : 'light'
     },
