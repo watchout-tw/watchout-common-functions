@@ -179,36 +179,23 @@ export default {
           features: this.featureCollectionSets[index]
         }
       })
+      let fillColorMap = this.config.ranges.reduce((prev, current) => {
+        return prev.concat(current.radius).concat(current.color)
+      }, [])
+      let fillOpacityMap = this.config.ranges.reduce((prev, current) => {
+        return prev.concat(current.radius).concat(current.opacity)
+      }, [])
       this.map.addLayer({
         id: 'markers-explode',
         type: 'fill',
         source: 'markers-explode',
         paint: {
           'fill-color': [
-            'match', ['get', 'radius'],
-            5,
-            '#800000',
-            20,
-            '#c0392b',
-            30,
-            '#d35400',
-            80,
-            '#e67e22',
-            100,
-            '#f39c12',
-            // 250 and others
-            '#f1c40f'
-          ],
+            'match', ['get', 'radius']
+          ].concat(fillColorMap).concat('#f1c40f'),
           'fill-opacity': [
-            'match', ['get', 'radius'],
-            5, 0.6,
-            20, 0.3,
-            30, 0.1,
-            80, 0.1,
-            100, 0.1,
-            // 250 and others
-            0.1
-          ]
+            'match', ['get', 'radius']
+          ].concat(fillOpacityMap).concat(0.1)
         },
         layout: {
           'fill-sort-key': ['to-number', ['get', 'radius']]
@@ -249,6 +236,9 @@ export default {
 <style lang="scss">
 @import 'watchout-common-functions/assets/mapbox.scss';
 
+$color-nuclear-yellow: #f9ca06;
+$color-nuclear-warning: #ff4200;
+
 .map-box.distance {
   > .address.controls {
     max-width: 500px;
@@ -257,7 +247,7 @@ export default {
   > .consequence {
     padding: 1rem 0;
     &.yellow {
-      background-color: $color-park;
+      background-color: $color-nuclear-yellow;
     }
     > .title {
       text-align: center;
@@ -268,7 +258,8 @@ export default {
       font-size: 1.5rem;
       > .action {
         font-size: 2rem;
-        color: red;
+        font-weight: bold;
+        color: $color-nuclear-warning;
       }
     }
     > .suggestions {
