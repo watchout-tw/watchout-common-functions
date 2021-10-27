@@ -1,14 +1,14 @@
 <template>
 <div class="map-box distance" :class="[config.theme]">
   <div class="address controls form-field-many-inputs form-field-align-center margin-top-bottom-8">
-    <text-editor placeholder="輸入你家地址 / 地標" v-model="address" :classes="['dark']" :simple="true" />
+    <text-editor placeholder="輸入地址 / 地標" v-model="address" :classes="['dark']" :simple="true" />
     <div class="input button flat hover dark" @click="fly">確認</div>
   </div>
   <div class="map-container">
     <div class="map content" id="map"></div>
   </div>
   <div class="consequence full-width-container yellow" v-if="endExplode">
-    <div class="title">你家離最近的核電廠 {{ userSpot.distance }} 公里</div>
+    <div class="title">你離最近的核電廠 {{ userSpot.distance }} 公里</div>
     <div class="description" v-if="userSpot.nearestIndex">符合 <span class="action">{{ this.config.ranges[userSpot.nearestIndex].text }}</span> 範圍的受災程度</div>
     <div class="suggestions">
       <div v-for="range of this.config.ranges" class="suggestion" :key="range.name">
