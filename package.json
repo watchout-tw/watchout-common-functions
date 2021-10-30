@@ -1,10 +1,10 @@
 {
-  "name": "watchout-common-functions",
-  "version": "0.0.1",
+  "name": "@watchoutdev/common-functions",
+  "version": "1.0.0",
   "description": "Common functions across Watchout Commons",
   "main": "index.js",
   "author": "Department of Technology at Watchout <dev@watchout.tw>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "dependencies": {
     "@mapbox/mapbox-gl-geocoder": "^2.3.0",
     "@turf/circle": "^6.5.0",
@@ -28,5 +28,16 @@
     "@nuxtjs/eslint-config": "^1.1.2",
     "socket.io": "^2.4.1",
     "socket.io-client": "^2.2.0"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watchout-tw/watchout-common-functions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/watchout-tw/watchout-common-functions/issues"
+  },
+  "homepage": "https://github.com/watchout-tw/watchout-common-functions#readme"
 }
