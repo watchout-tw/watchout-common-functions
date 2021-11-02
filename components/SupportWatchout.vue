@@ -17,19 +17,19 @@ const supportPackages = {
   ask: {
     channel: 'ask',
     link: env.links.support.ask.direct,
-    secondaryLabel: '給我們錢做更多專題',
+    secondaryLabel: '加入定期定額',
     label: '支持沃草'
   },
   musou: {
     channel: 'musou',
     link: env.links.support.watchout.custom,
-    secondaryLabel: '給我們錢做更多專題',
+    secondaryLabel: '加入定期定額',
     label: '支持沃草'
   },
   lab: {
     channel: 'lab',
     link: env.links.support.watchout.direct,
-    secondaryLabel: '給我們錢做更多專題',
+    secondaryLabel: '加入定期定額',
     label: '支持沃草'
   }
 }
