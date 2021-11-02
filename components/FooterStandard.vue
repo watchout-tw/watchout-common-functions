@@ -116,11 +116,11 @@ const linkGroups = [
         url: 'editorial-independence',
         relative: true
       },
-      {
-        title: '透明報告',
-        url: 'transparency/2014',
-        relative: true
-      },
+      // {
+      //   title: '透明報告',
+      //   url: 'transparency/2021',
+      //   relative: true
+      // },
       {
         title: '授權條款',
         url: 'license',
