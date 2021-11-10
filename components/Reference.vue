@@ -76,30 +76,22 @@ export default {
     }
   },
   data() {
+    let referenceObj = parseReference(this.reference)
     return {
+      id: referenceObj.id,
+      type: referenceObj.type,
       types: this.customTypes.length > 0 ? this.customTypes : allTypes.filter(type => type.category === (this.category ? this.category : defaultCategory))
     }
   },
-  computed: {
-    referenceObj() {
-      return parseReference(this.reference)
-    },
-    type: {
-      get() {
-        return this.referenceObj ? this.referenceObj.type : null
-      },
-      set(value) {
-        this.$emit('update:reference', makeReference(value, this.id).url)
+  watch: {
+    id(newVal, oldVal) {
+      if(newVal && this.type) {
+        this.$emit('update:reference', makeReference(this.type, newVal).url)
       }
     },
-    id: {
-      get() {
-        return this.referenceObj ? this.referenceObj.id : null
-      },
-      set(value) {
-        let test = parseReference(value) // paste reference into id input box to change type & id
-        let newReference = test ? test : makeReference(this.type, value)
-        this.$emit('update:reference', newReference.url)
+    type(newVal, oldVal) {
+      if(newVal && this.id) {
+        this.$emit('update:reference', makeReference(newVal, this.id).url)
       }
     }
   },
