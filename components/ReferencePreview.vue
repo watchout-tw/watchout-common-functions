@@ -53,7 +53,7 @@
   </div>
   <div class="preview default" :class="containerClasses" v-else><!-- default is flexible -->
     <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
-      <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
+      <!-- <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div> -->
     </a>
     <div class="summary" :class="panelClasses">
       <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
@@ -80,6 +80,7 @@ import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
   mixins: [knowsBunko, knowsFormatting, knowsWatchout],
+  // TODO: remove showPubDest, since we're merging sites
   props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'titleClasses', 'description', 'contributorListStyle', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors'],
   data() {
     return {
@@ -182,6 +183,7 @@ export default {
       return this.status !== 'disabled'
     },
     linkURL() {
+      // link (from props) 優先，否則使用 reference 的 permalink
       return this.isActive ? (this.link ? this.link : (this.reference && this.reference.permalink ? this.reference.permalink : null)) : null
     }
   },
@@ -231,14 +233,14 @@ export default {
       background-size: cover;
       background-position: center center;
       @include shadow;
-      > .pub-dest-logo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 24px;
-        height: 24px;
-        background-size: contain;
-      }
+      // > .pub-dest-logo {
+      //   position: absolute;
+      //   top: 0;
+      //   left: 0;
+      //   width: 24px;
+      //   height: 24px;
+      //   background-size: contain;
+      // }
     }
     > .summary {
       > .contributors {
