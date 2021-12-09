@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import qs from 'query-string'
 import { knowsAuth, knowsBunko, knowsCoralReef, knowsError, knowsMarkdown, knowsReCaptcha, knowsWatchout } from 'watchout-common-functions/interfaces'
 import ReCaptcha from 'watchout-common-functions/components/ReCaptcha'
 import * as coralreef from 'watchout-common-functions/lib/coralreef'
@@ -299,6 +300,9 @@ export default {
             path: this.$route.path,
             query: { [key]: value }
           })
+          if(this.project.willUpdateShareURL) {
+            this.updateShareURL(window.location.href + '?' + key + '=' + value)
+          }
         } else {
           this.clearQuery()
         }
@@ -505,7 +509,10 @@ export default {
     showPrompt() {
       this.prompt.show = true
       setTimeout(() => { this.prompt.show = false }, this.prompt.duration)
-    }
+    },
+    updateShareURL(url) {
+      this.$emit('updateShareURL', url)
+    },
   },
   components: {
     ReCaptcha
