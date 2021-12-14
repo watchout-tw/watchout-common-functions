@@ -70,6 +70,11 @@
         </div>
       </div>
     </div>
+    <div v-if="doShowResult('showSelection') && actionShowSelction.show" class="result-occurences responsive-typesetting-container-medium padding-top-bottom-single">
+      <div class="section-title small with-underline text-align-center"><span>你的投票意志</span></div>
+      <h2 class="text-align-center padding-top-double">「{{ result.selection.title }}」</h2>
+      <div v-if="result.selection.description" class="text-align-center margin-top-8">{{ result.selection.description }}</div>
+    </div>
   </div>
   <div class="closing-container padding-top-bottom-double responsive-typesetting-container-medium" v-if="isHuman && isCompleted && hasClosing">
     <div class="closing paragraphs no-margin a-text-parent" v-html="markdown(project.closing)"></div>
@@ -90,6 +95,7 @@
 </template>
 
 <script>
+import qs from 'query-string'
 import { knowsAuth, knowsBunko, knowsCoralReef, knowsError, knowsMarkdown, knowsReCaptcha, knowsWatchout } from 'watchout-common-functions/interfaces'
 import ReCaptcha from 'watchout-common-functions/components/ReCaptcha'
 import * as coralreef from 'watchout-common-functions/lib/coralreef'
@@ -143,6 +149,7 @@ export default {
       currentSceneIndex: -1,
       history: [],
       accumulatedScore: 0,
+      accumulatedSelection: [],
       accumulatedDetails: [],
       hasClosing,
       hasAppendix,
@@ -251,6 +258,15 @@ export default {
         })
         result.occurences = occurences
       }
+      if(this.doShowResult('showSelection')) {
+        let action = this.getShowResultAction('showSelection')
+        // not using totalCount here
+        let userSelection = this.accumulatedSelection.reduce((accu, curr) => {
+          return accu + (accu.length > 0 ? '-' : '') + curr.value
+        }, '')
+        let matchedSelection = action.savedSelection.find(item => item.pattern === userSelection)
+        result.selection = matchedSelection ? matchedSelection : action.defaultSelection
+      }
       return result
     },
     actionShowPrompt() {
@@ -261,6 +277,9 @@ export default {
     },
     actionShowOccur() {
       return this.doShowResult('showOccurences') ? this.getShowResultAction('showOccurences') : undefined
+    },
+    actionShowSelction() {
+      return this.doShowResult('showSelection') ? this.getShowResultAction('showSelection') : undefined
     },
     currentScene() {
       return this.history.length > 0 ? this.history[this.history.length - 1] : null
@@ -281,6 +300,9 @@ export default {
             path: this.$route.path,
             query: { [key]: value }
           })
+          if(this.project.willUpdateShareURL) {
+            this.updateShareURL(window.location.href + '?' + key + '=' + value)
+          }
         } else {
           this.clearQuery()
         }
@@ -444,6 +466,9 @@ export default {
         }
         this.accumulateDetails(option.details, keys, +1)
       }
+      if(this.doAfterClick('accumulateSelection')) {
+        this.accumulatedSelection.push(option)
+      }
 
       // set selected option
       scene.selectedOption = option
@@ -484,7 +509,10 @@ export default {
     showPrompt() {
       this.prompt.show = true
       setTimeout(() => { this.prompt.show = false }, this.prompt.duration)
-    }
+    },
+    updateShareURL(url) {
+      this.$emit('updateShareURL', url)
+    },
   },
   components: {
     ReCaptcha
