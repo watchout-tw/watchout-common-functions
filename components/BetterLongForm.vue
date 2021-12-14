@@ -70,10 +70,13 @@
         </div>
       </div>
     </div>
-    <div v-if="doShowResult('showSelection') && actionShowSelction.show" class="result-occurences responsive-typesetting-container-medium padding-top-bottom-single">
+    <div v-if="doShowResult('showSelection') && actionShowSelection.show" class="result-selection responsive-typesetting-container-medium padding-top-bottom-single">
       <div class="section-title small with-underline text-align-center"><span>你的投票意志</span></div>
       <h2 class="text-align-center padding-top-double">「{{ result.selection.title }}」</h2>
       <div v-if="result.selection.description" class="text-align-center margin-top-8">{{ result.selection.description }}</div>
+    </div>
+    <div v-if="doShowResult('showImage') && actionShowSelection.show" class="result-image responsive-typesetting-container image-container-medium padding-top-bottom-single">
+      <img :src="result.imageURL">
     </div>
   </div>
   <div class="closing-container padding-top-bottom-double responsive-typesetting-container-medium" v-if="isHuman && isCompleted && hasClosing">
@@ -95,7 +98,6 @@
 </template>
 
 <script>
-import qs from 'query-string'
 import { knowsAuth, knowsBunko, knowsCoralReef, knowsError, knowsMarkdown, knowsReCaptcha, knowsWatchout } from 'watchout-common-functions/interfaces'
 import ReCaptcha from 'watchout-common-functions/components/ReCaptcha'
 import * as coralreef from 'watchout-common-functions/lib/coralreef'
@@ -267,6 +269,16 @@ export default {
         let matchedSelection = action.savedSelection.find(item => item.pattern === userSelection)
         result.selection = matchedSelection ? matchedSelection : action.defaultSelection
       }
+      if(this.doShowResult('showImage')) {
+        let action = this.getShowResultAction('showImage')
+        if(action.pathTemplate) {
+          let userSelection = this.accumulatedSelection.reduce((accu, curr) => {
+            return accu + (accu.length > 0 ? '-' : '') + curr.value
+          }, '')
+          // FIXME: Dirty work here, cause require cannot use variable
+          result.imageURL = action.pathTemplate.replace('{1}', userSelection)
+        }
+      }
       return result
     },
     actionShowPrompt() {
@@ -278,7 +290,7 @@ export default {
     actionShowOccur() {
       return this.doShowResult('showOccurences') ? this.getShowResultAction('showOccurences') : undefined
     },
-    actionShowSelction() {
+    actionShowSelection() {
       return this.doShowResult('showSelection') ? this.getShowResultAction('showSelection') : undefined
     },
     currentScene() {
