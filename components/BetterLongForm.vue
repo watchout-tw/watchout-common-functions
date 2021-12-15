@@ -75,7 +75,7 @@
       <h2 class="text-align-center padding-top-double">「{{ result.selection.title }}」</h2>
       <div v-if="result.selection.description" class="text-align-center margin-top-8">{{ result.selection.description }}</div>
     </div>
-    <div v-if="doShowResult('showImage') && actionShowSelection.show" class="result-image responsive-typesetting-container image-container-medium padding-top-bottom-single">
+    <div v-if="doShowResult('showImage') && actionShowSelection.show" class="result-image image-container-medium padding-right-left-single padding-top-bottom-single">
       <img :src="result.imageURL">
     </div>
   </div>
