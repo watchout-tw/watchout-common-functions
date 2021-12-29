@@ -20,15 +20,21 @@ const supportPackages = {
     secondaryLabel: '加入定期定額',
     label: '支持沃草'
   },
-  musou: {
-    channel: 'musou',
-    link: env.links.support.watchout.custom,
-    secondaryLabel: '加入定期定額',
-    label: '支持沃草'
-  },
   lab: {
     channel: 'lab',
     link: env.links.support.watchout.direct,
+    secondaryLabel: '加入定期定額',
+    label: '支持沃草'
+  },
+  musou: {
+    channel: 'musou',
+    link: env.links.support.musou.custom,
+    secondaryLabel: '加入定期定額',
+    label: '支持沃草'
+  },
+  watchout: {
+    channel: 'watchout',
+    link: env.links.support.watchout.custom,
     secondaryLabel: '加入定期定額',
     label: '支持沃草'
   }
