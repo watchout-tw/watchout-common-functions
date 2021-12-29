@@ -32,6 +32,12 @@ const supportPackages = {
     secondaryLabel: '加入定期定額',
     label: '支持沃草'
   },
+  uc: {
+    channel: 'uc',
+    link: env.links.support.watchout.direct,
+    secondaryLabel: '加入定期定額',
+    label: '支持沃草'
+  },
   watchout: {
     channel: 'watchout',
     link: env.links.support.watchout.custom,
