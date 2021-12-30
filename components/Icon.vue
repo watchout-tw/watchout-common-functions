@@ -16,6 +16,7 @@ library.add(faTrashAlt, faEdit);
 
 const ICON_NAME_LIST = {
   'trash-alt': 'faTrashAlt',
+  'edit': 'faEdit',
 };
 
 const ICON_SIZE_LIST = {
@@ -30,7 +31,6 @@ const ICON_SIZE_LIST = {
 };
 
 export default {
-  name: 'Icon',
   props: {
     // icon 名稱
     iconName: {
