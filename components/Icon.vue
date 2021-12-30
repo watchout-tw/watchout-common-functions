@@ -5,14 +5,14 @@
 </template >
 
 <script >
-import {library} from '@fortawesome/fontawesome-svg-core';
-import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 // icon 樣式 請參考以下網址
 // https://fontawesome.com/v5.15/icons?d=gallery&p=2&s=solid&m=free
 
-library.add( faTrashAlt );
+library.add(faTrashAlt);
 
 const ICON_NAME_LIST = {
   'trash-alt': 'faTrashAlt',
