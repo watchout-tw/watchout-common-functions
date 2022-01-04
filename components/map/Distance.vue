@@ -21,7 +21,7 @@
 
 <script>
 import config from 'watchout-common-functions/config/config'
-import * as googleMap from 'watchout-common-functions/lib/google_map' 
+import * as googleMap from 'watchout-common-functions/lib/google_map'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
 import circle from '@turf/circle'
 import length from '@turf/length'
@@ -29,8 +29,8 @@ import * as turfHelpers from '@turf/helpers'
 
 // https://stackoverflow.com/questions/37599561/drawing-a-circle-with-the-radius-in-miles-meters-with-mapbox-gl-js
 function makeCircle(marker, range) {
-  var center = [marker.lng, marker.lat]
-  var options = {
+  let center = [marker.lng, marker.lat]
+  let options = {
     steps: 50,
     units: 'kilometers',
     properties: {
@@ -76,7 +76,7 @@ export default {
   computed: {
     shortestDistance() {
       let line = turfHelpers.lineString([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]])
-      return +(Math.round(length(line, { units: 'kilometers' }) + 'e+2')  + 'e-2')
+      return +(Math.round(length(line, { units: 'kilometers' }) + 'e+2') + 'e-2')
     }
   },
   methods: {
@@ -102,7 +102,7 @@ export default {
       let stationIconURL = 'https://static.tumblr.com/wpquu0m/VvFmjcm2i/burn-01.png'
       this.map.on('load', () => {
         this.map.loadImage(stationIconURL, (err, image) => {
-          if (err) throw err
+          if(err) { throw err }
           // Add the image to the map style.
           this.map.addImage('station', image)
           this.map.addSource('markers-station', {
@@ -127,7 +127,7 @@ export default {
     },
     fly() {
       const mapbox = require('mapbox-gl')
-      if (currentMarker !== null) {
+      if(currentMarker !== null) {
         currentMarker.remove()
         this.map.removeLayer('markers-explode')
         this.map.removeSource('markers-explode')
@@ -143,7 +143,7 @@ export default {
           .addTo(this.map)
         this.nearestSpot = this.getNearest(this.userSpot)
         let line = turfHelpers.lineString([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]])
-        this.userSpot.distance =  +(Math.round(length(line, { units: 'kilometers' }) + 'e+2')  + 'e-2')
+        this.userSpot.distance = +(Math.round(length(line, { units: 'kilometers' }) + 'e+2') + 'e-2')
         this.map.fitBounds([[this.userSpot.lng, this.userSpot.lat], [this.nearestSpot.lng, this.nearestSpot.lat]], {
           padding: 40
         })
@@ -151,10 +151,10 @@ export default {
         let locatedInRange = false
         for(let i = 0; i < this.config.ranges.length; i++) {
           // pass parameter to anonymous function in setTimeout
-          if (i > 0) {
+          if(i > 0) {
             window.setTimeout(this.updateLayer.bind(null, i), i * 1500)
           }
-          if (this.userSpot.distance < this.config.ranges[i].radius && !locatedInRange) {
+          if(this.userSpot.distance < this.config.ranges[i].radius && !locatedInRange) {
             locatedInRange = true
             this.userSpot.nearestIndex = i
           }
@@ -212,10 +212,10 @@ export default {
         features: newFeatures
       }
       this.map.getSource('markers-explode').setData(newDS)
-      if (this.config.ranges[index].radius > 50) {
+      if(this.config.ranges[index].radius > 50) {
         this.flyToCenter()
       }
-      if (index === this.config.ranges.length - 1) {
+      if(index === this.config.ranges.length - 1) {
         this.endExplode = true
       }
     },

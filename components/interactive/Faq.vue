@@ -34,7 +34,7 @@ export default {
       }
     })
     return {
-      faqIX: faqIX
+      faqIX
     }
   },
   computed: {

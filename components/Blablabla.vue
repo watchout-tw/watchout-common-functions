@@ -248,7 +248,7 @@ export default {
         this.socket.emit('comment', {
           room: message.room,
           order: message.order,
-          type: type
+          type
         })
       }
     },
@@ -257,7 +257,7 @@ export default {
         this.socket.emit('cancelComment', {
           room: message.room,
           order: message.order,
-          type: type
+          type
         })
       }
     },
