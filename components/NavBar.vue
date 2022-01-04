@@ -1,6 +1,5 @@
 <template>
 <nav class="nav-bar" :class="navClasses">
-  <div class="nav-item switcher" v-if="channel.switcher.show" :style="switcherStyles" @click="addModal('transporter')"></div>
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
     <img :src="getProjectLogoWithType(channelOrPageID)" :style="getProjectLogoWithTypeStyles(channelOrPageID)" />
   </nuxt-link>
@@ -39,11 +38,6 @@ export default {
       return [
         this.channel.classes.backgroundColor.opaque
       ]
-    },
-    switcherStyles() {
-      return {
-        backgroundImage: 'url(' + require('watchout-common-assets/images/nav-button/switcher/' + (this.whichSide) + (this.channel.switcher.iconOnly ? '-icon-only' : '') + '.png') + ')'
-      }
     }
   },
   created() {
@@ -70,13 +64,6 @@ nav.nav-bar {
 
   > .nav-item {
     flex-grow: 0;
-  }
-  > .switcher {
-    flex-shrink: 0;
-    flex-basis: 52px;
-    background-size: cover;
-    background-position: center;
-    cursor: pointer;
   }
   > .logo-with-type {
     flex-shrink: 0;
