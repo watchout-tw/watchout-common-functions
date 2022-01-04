@@ -524,7 +524,7 @@ export default {
     },
     updateShareURL(url) {
       this.$emit('updateShareURL', url)
-    },
+    }
   },
   components: {
     ReCaptcha

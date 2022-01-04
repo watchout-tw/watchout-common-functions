@@ -1,23 +1,23 @@
-<template >
-  <div class="iconBlock" >
+<template>
+  <div class="iconBlock">
     <FontAwesomeIcon :icon="iconName" :size="iconSize" />
-  </div >
-</template >
+  </div>
+</template>
 
 <script >
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // icon 樣式 請參考以下網址
 // https://fontawesome.com/v5.15/icons?d=gallery&p=2&s=solid&m=free
 
-library.add(faTrashAlt, faEdit);
+library.add(faTrashAlt, faEdit)
 
 const ICON_NAME_LIST = {
   'trash-alt': 'faTrashAlt',
-  'edit': 'faEdit',
-};
+  'edit': 'faEdit'
+}
 
 const ICON_SIZE_LIST = {
   '2xs': '2xs', // 10px
@@ -27,25 +27,25 @@ const ICON_SIZE_LIST = {
   'xl': 'xl', // 24px
   '2xl': '2xl', // 32px
   '1x': '1x', // 16px
-  '2x': '2x', // 32px
-};
+  '2x': '2x' // 32px
+}
 
 export default {
   props: {
     // icon 名稱
     iconName: {
-      type: String,
+      type: String
     },
     // icon 尺寸大小
     iconSize: {
       type: String,
-      default: 'sm',
-    },
+      default: 'sm'
+    }
   },
   components: {
-    FontAwesomeIcon,
-  },
-};
+    FontAwesomeIcon
+  }
+}
 </script >
 
 <style lang="scss" >

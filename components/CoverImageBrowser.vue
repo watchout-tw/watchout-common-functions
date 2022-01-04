@@ -54,7 +54,7 @@ export default {
       let indices = []
       while(indices.length < size) {
         let index = Math.floor(Math.random() * range)
-        if(indices.indexOf(index) > -1) continue
+        if(indices.includes(index)) { continue }
         indices.push(index)
       }
       return indices
@@ -99,7 +99,7 @@ export default {
       this.$emit('update:selectedOptions', this.selectedOptions)
     },
     isSelected(option) {
-      return this.selectedOptions.indexOf(option) > -1
+      return this.selectedOptions.includes(option)
     }
   },
   components: {

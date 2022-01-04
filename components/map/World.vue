@@ -48,7 +48,7 @@ function bfs(v, adjacency, visited) {
 }
 
 export default {
-  data: function() {
+  data() {
     return {
       el: {},
       size: {},
@@ -58,10 +58,10 @@ export default {
   },
   props: ['rows', 'debug'],
   watch: {
-    rows: function() {
+    rows() {
       this.update()
     },
-    debug: function(now) {
+    debug(now) {
       this.el.container.classed('debug', now)
     }
   },
@@ -100,7 +100,7 @@ export default {
       this.group()
       this.spread()
     },
-    draw: function() {
+    draw() {
       // draw quotes
       let quotes = this.el.root.selectAll('g.quote').data(this.internalRows)
       quotes.exit().remove()
@@ -126,7 +126,7 @@ export default {
         .attr('cy', d => d.y)
         .attr('r', 2)
     },
-    group: function() {
+    group() {
       let adjacency = []
       let rectangles = this.el.root.selectAll('g.quote').nodes()
       let i
@@ -154,7 +154,7 @@ export default {
         }
       }
     },
-    spread: function() {
+    spread() {
       let self = this
       let simulation = d3.forceSimulation()
       simulation.force('collide', d3.forceCollide()
