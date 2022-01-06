@@ -35,6 +35,7 @@ export default {
   background-color: $color-very-light-grey;
   background-size: contain;
   background-position: center center;
+  background-repeat: no-repeat;
 
   &[width="2"] {
     @include rect(2/1);
