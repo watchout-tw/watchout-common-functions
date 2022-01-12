@@ -103,9 +103,6 @@ export default {
 <style lang="scss">
 @import 'watchout-common-functions/assets/mapbox.scss';
 
-$color-nuclear-yellow: #f9ca06;
-$color-nuclear-warning: #ff4200;
-
 .title {
   font-weight: bolder;
   padding-bottom: 15px;
