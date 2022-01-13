@@ -85,7 +85,6 @@ export default {
       }
     },
     showPop(marker) {
-      console.log(marker)
       this.prompt = {
         show: true,
         title: marker.question,
