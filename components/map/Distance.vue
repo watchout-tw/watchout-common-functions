@@ -9,9 +9,9 @@
   </div>
   <div class="consequence full-width-container yellow" v-if="endExplode">
     <div class="title">你離最近的核電廠 {{ userSpot.distance }} 公里</div>
-    <div class="description" v-if="userSpot.nearestIndex">符合 <span class="action">{{ this.config.ranges[userSpot.nearestIndex].text }}</span> 範圍的受災程度</div>
+    <div class="description" v-if="userSpot.nearestIndex">符合 <span class="action">{{ config.ranges[userSpot.nearestIndex].text }}</span> 範圍的受災程度</div>
     <div class="suggestions">
-      <div v-for="range of this.config.ranges" class="suggestion" :key="range.name">
+      <div v-for="range of config.ranges" class="suggestion" :key="range.name">
         {{ range.name }}：{{ range.text }}
       </div>
     </div>
