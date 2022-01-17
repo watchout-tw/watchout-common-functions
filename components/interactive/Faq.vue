@@ -88,7 +88,7 @@ export default {
 }
 
 .imageBox {
-  width: 432px;
+  width: 100%;
   height: auto;
   margin: 0 auto 1em;
 
