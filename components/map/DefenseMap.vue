@@ -12,8 +12,17 @@
     </div>
     <div class="prompt-overlay" :class="[config.theme]" v-if="prompt.show">
       <div class="prompt with-dismiss" :class="['correct']">
-        <div class="title">{{ prompt.title }}</div>
-        <div class="message">{{ prompt.description }}</div>
+        <div class="title" v-if="prompt.title">{{ prompt.title }}</div>
+        <div class="message" v-if="prompt.description">{{ prompt.description }}</div>
+        <div class="referenceTitle" v-if="prompt.isNeedReferences">參考資料</div>
+        <div class="reference" v-for=" referenceData of prompt.references" :key="referenceData.text">
+          <div class="referenceContent" v-if="referenceData.text">{{ referenceData.text }}</div>
+          <a class="referenceLink a-text" v-if="referenceData.link" :href="referenceData.link"
+             target="_blank"
+          >
+            {{ referenceData.link }}
+          </a>
+        </div>
         <div class="dismiss" @click="dismissPrompt"><span>OK</span></div>
       </div>
     </div>
@@ -26,7 +35,8 @@ import config from 'watchout-common-functions/config/config'
 const defaultPrompt = {
   show: false,
   title: '',
-  description: ''
+  description: '',
+  references: []
 }
 
 export default {
@@ -73,7 +83,6 @@ export default {
         const width = marker.iconSize[0]
         const height = marker.iconSize[1]
         el.className = 'marker'
-        el.style.backgroundImage = `url(${marker.iconImage})`
         el.style.width = `${width}px`
         el.style.height = `${height}px`
 
@@ -88,7 +97,9 @@ export default {
       this.prompt = {
         show: true,
         title: marker.question,
-        description: marker.answer
+        description: marker.answer,
+        references: marker.references,
+        isNeedReferences: marker.references.length > 0
       }
     },
     dismissPrompt() {
@@ -109,9 +120,19 @@ export default {
 }
 
 .marker {
-  background-repeat: no-repeat;
-  background-size: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 50%;
   cursor: pointer;
+}
+
+.referenceTitle {
+  margin-top: 1rem;
+  font-size: 12px;
+}
+
+.reference {
+  margin-top: 0.5rem;
+  font-size: 12px;
 }
 
 </style>
