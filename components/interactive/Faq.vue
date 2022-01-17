@@ -90,7 +90,7 @@ export default {
 .imageBox {
   width: 100%;
   height: auto;
-  margin: 0 auto 1em;
+  margin-bottom: 1em;
 
   img {
     width: 100%;
