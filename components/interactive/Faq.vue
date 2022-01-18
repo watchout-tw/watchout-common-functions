@@ -14,7 +14,11 @@
              v-show="faqIX[itemIndex].show"
         />
 
-        <div class="imageBox" v-if="faqIX[itemIndex].show">
+        <div class="linkBox" v-if="item.link && faqIX[itemIndex].show">
+          <a class="a-text" :href="item.link">{{ item.linkText }}</a>
+        </div>
+
+        <div class="imageBox" v-if="item.imageLink && faqIX[itemIndex].show">
           <img :src="item.imageLink" :alt="itemIndex">
         </div>
 
@@ -97,4 +101,10 @@ export default {
     height: 100%
   }
 }
+
+.linkBox {
+  font-size: 12px;
+  margin-bottom: 1em;
+}
+
 </style>
