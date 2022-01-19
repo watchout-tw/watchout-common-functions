@@ -18,7 +18,7 @@
           {{ reference.link }}
         </a>
       </div>
-      <div class="dismiss" @click="removeModal('PopUpMessage')"><span>OK</span></div>
+      <div class="dismiss" @click="removeModal('message')"><span>OK</span></div>
     </div>
   </div>
 </template>

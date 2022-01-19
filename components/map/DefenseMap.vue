@@ -72,7 +72,7 @@ export default {
           isNeedReferences: marker.references.length > 0
         }
 
-        el.addEventListener('click', () => this.addModal({ id: 'PopUpMessage', prompt }))
+        el.addEventListener('click', () => this.addModal({ id: 'message', prompt }))
         const mapBoxGL = require('mapbox-gl')
         new mapBoxGL.Marker(el)
           .setLngLat([marker.lng, marker.lat])

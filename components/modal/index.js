@@ -7,7 +7,7 @@ import Share from './Share'
 import SiteMap from './SiteMap'
 import SwissKnife from './SwissKnife'
 import Transporter from './Transporter'
-import PopUpMessage from './PopUpMessage'
+import Message from './Message'
 
 export const modals = {
   Auth,
@@ -19,5 +19,5 @@ export const modals = {
   SiteMap,
   SwissKnife,
   Transporter,
-  PopUpMessage
+  Message
 }
