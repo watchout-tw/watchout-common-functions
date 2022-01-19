@@ -85,6 +85,7 @@ export default {
         el.className = 'marker'
         el.style.width = `${width}px`
         el.style.height = `${height}px`
+        el.style.opacity = marker.opacity
 
         el.addEventListener('click', () => this.showPop(marker))
         const mapBoxGL = require('mapbox-gl')
@@ -120,7 +121,7 @@ export default {
 }
 
 .marker {
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgb(0, 0, 0);
   border-radius: 50%;
   cursor: pointer;
 }
