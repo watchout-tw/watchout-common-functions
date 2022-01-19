@@ -14,11 +14,11 @@
              v-show="faqIX[itemIndex].show"
         />
 
-        <div class="linkBox" v-show="item.link && faqIX[itemIndex].show">
+        <div class="linkBox" v-if="item.link" v-show="faqIX[itemIndex].show">
           <a class="a-text" :href="item.link">{{ item.linkText }}</a>
         </div>
 
-        <div class="imageBox" v-show="item.imageLink && faqIX[itemIndex].show">
+        <div class="imageBox" v-if="item.imageLink" v-show="faqIX[itemIndex].show">
           <img :src="item.imageLink" :alt="itemIndex">
         </div>
 
