@@ -10,36 +10,15 @@
         </div>
       </div>
     </div>
-    <div class="prompt-overlay" :class="[config.theme]" v-if="prompt.show">
-      <div class="prompt with-dismiss" :class="['correct']">
-        <div class="title" v-if="prompt.title">{{ prompt.title }}</div>
-        <div class="message" v-if="prompt.description">{{ prompt.description }}</div>
-        <div class="referenceTitle" v-if="prompt.isNeedReferences">參考資料</div>
-        <div class="reference" v-for=" referenceData of prompt.references" :key="referenceData.text">
-          <div class="referenceContent" v-if="referenceData.text">{{ referenceData.text }}</div>
-          <a class="referenceLink a-text" v-if="referenceData.link" :href="referenceData.link"
-             target="_blank"
-          >
-            {{ referenceData.link }}
-          </a>
-        </div>
-        <div class="dismiss" @click="dismissPrompt"><span>OK</span></div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import config from 'watchout-common-functions/config/config'
 
-const defaultPrompt = {
-  show: false,
-  title: '',
-  description: '',
-  references: []
-}
-
 export default {
+  mixins: [knowsWindowManagement],
   props: {
     shareURL: {
       type: String,
@@ -56,8 +35,7 @@ export default {
   },
   data() {
     return {
-      mapElementID: 'map',
-      prompt: defaultPrompt
+      mapElementID: 'map'
     }
   },
   mounted() {
@@ -87,24 +65,19 @@ export default {
         el.style.height = `${height}px`
         el.style.opacity = marker.opacity
 
-        el.addEventListener('click', () => this.showPop(marker))
+        const prompt = {
+          title: marker.question,
+          description: marker.answer,
+          references: marker.references,
+          isNeedReferences: marker.references.length > 0
+        }
+
+        el.addEventListener('click', () => this.addModal({ id: 'message', prompt }))
         const mapBoxGL = require('mapbox-gl')
         new mapBoxGL.Marker(el)
           .setLngLat([marker.lng, marker.lat])
           .addTo(this.map)
       }
-    },
-    showPop(marker) {
-      this.prompt = {
-        show: true,
-        title: marker.question,
-        description: marker.answer,
-        references: marker.references,
-        isNeedReferences: marker.references.length > 0
-      }
-    },
-    dismissPrompt() {
-      this.prompt = defaultPrompt
     }
   },
   components: {}
