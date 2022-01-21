@@ -5,20 +5,20 @@
         <div class="map content" id="map"></div>
       </div>
       <div class="active-features tcl-container">
-        <div class="feature tcl-panel tcl-left-right-margin with-top-bottom-margin bg-very-very-light-grey">
-          {{ markers.description }}
-        </div>
+        <div class="feature tcl-panel tcl-left-right-margin with-top-bottom-margin bg-very-very-light-grey"
+             v-html="markdown( markers.description)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import { knowsMarkdown, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import config from 'watchout-common-functions/config/config'
 
 export default {
-  mixins: [knowsWindowManagement],
+  mixins: [ knowsMarkdown, knowsWindowManagement ],
   props: {
     shareURL: {
       type: String,
@@ -63,7 +63,6 @@ export default {
         el.className = 'marker'
         el.style.width = `${width}px`
         el.style.height = `${height}px`
-        el.style.opacity = marker.opacity
 
         const prompt = {
           title: marker.question,
@@ -87,6 +86,21 @@ export default {
 <style lang="scss">
 @import 'watchout-common-functions/assets/mapbox.scss';
 
+@keyframes scaleDraw {
+  0% {
+    width : 20px;
+    height : 20px
+  }
+  50%{
+    width : 30px;
+    height : 30px
+  }
+  100%{
+    width : 20px;
+    height : 20px
+  }
+}
+
 .title {
   font-weight: bolder;
   padding-bottom: 15px;
@@ -94,9 +108,14 @@ export default {
 }
 
 .marker {
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(65, 156, 130);
   border-radius: 50%;
   cursor: pointer;
+  animation: scaleDraw 2s infinite;
+  opacity : 0.6;
+  &:hover{
+    opacity : 1;
+  }
 }
 
 .referenceTitle {

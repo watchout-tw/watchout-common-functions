@@ -11,11 +11,10 @@
       <div class="message" v-if="data.prompt.description">{{ data.prompt.description }}</div>
       <div class="referenceTitle" v-if="data.prompt.isNeedReferences">參考資料</div>
       <div class="reference" v-for=" ( reference, index ) of data.prompt.references" :key="`reference.text_${index}`">
-        <div class="referenceContent" v-if="reference.text">{{ reference.text }}</div>
-        <a class="referenceLink a-text" v-if="reference.link" :href="reference.link"
+        <a class="referenceLink a-text" v-if="reference.link && reference.text" :href="reference.link"
            target="_blank"
         >
-          {{ reference.link }}
+          {{ reference.text }}
         </a>
       </div>
       <div class="dismiss" @click="removeModal('message')"><span>OK</span></div>
