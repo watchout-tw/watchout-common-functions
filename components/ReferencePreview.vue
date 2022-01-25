@@ -104,6 +104,9 @@ export default {
       } else if(['', null].includes(this.description)) {
         desc = null
       }
+      if(desc.length > 100) {
+        desc = desc.substring(0, 100) + '...'
+      }
       return desc
     },
     containerClasses() {
