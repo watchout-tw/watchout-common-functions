@@ -147,7 +147,7 @@ export default {
       return this.readMoreStyle !== null
     },
     readMoreText() {
-      return this.readMore ? this.readMore : '閱讀更多'
+      return this.readMore ? this.readMore : '閱讀全文'
     },
     readMoreClasses() {
       let classes = []
