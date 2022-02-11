@@ -35,6 +35,15 @@ export default {
       newValue: null
     }
   },
+  watch: {
+    value(newValue, oldValue) {
+      const isOldDataSame = JSON.stringify(oldValue) === JSON.stringify(this.values)
+      const isNewDataDifferent = JSON.stringify(newValue) !== JSON.stringify(oldValue)
+      if(isOldDataSame && isNewDataDifferent) {
+        this.values = newValue
+      }
+    }
+  },
   methods: {
     addValue() {
       if(this.newValue) {
