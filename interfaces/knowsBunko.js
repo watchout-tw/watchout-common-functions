@@ -11,6 +11,7 @@ export default {
     }
   },
   computed: {
+    // TODO: To be removed
     authorOptions() {
       return Array.isArray(this.cachedAuthors) ? this.cachedAuthors.map(author => ({ value: author.persona, label: (author.personaObj ? author.personaObj.name : author.persona) })) : []
     },

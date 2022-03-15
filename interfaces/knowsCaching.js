@@ -19,6 +19,7 @@ export default {
     }),
     // FIXME: putting these here are a bit weird
     // FIXME: copy to knowsBunko
+    // TODO: To be removed
     authorOptions() {
       return Array.isArray(this.cachedAuthors) ? this.cachedAuthors.map(author => ({ value: author.persona, label: (author.personaObj ? author.personaObj.name : author.persona) })) : []
     },

@@ -60,7 +60,11 @@ export default {
     getLabel(value) {
       let label = value
       if(this.type === 'select') {
-        let option = this.options.find(option => option.value === value)
+        let option = this.options.find(option => {
+          // During firebase migration, also lookup firebase_id
+          return option.value.toString() === value.toString() ||
+            (option.data && option.data.firebase_id && option.data.firebase_id === value)
+        })
         label = option ? option.label : value
       }
       return label
