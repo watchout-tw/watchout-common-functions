@@ -47,8 +47,10 @@ export default {
   methods: {
     addValue() {
       if(this.newValue) {
-        this.values.push(this.newValue)
-        this.newValue = null
+        if(!this.values.includes(this.newValue)) {
+          this.values.push(this.newValue)
+          this.newValue = null
+        }
       }
     },
     removeValue(index) {
