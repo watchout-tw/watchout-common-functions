@@ -7,6 +7,9 @@ export default {
     },
     getDateTimeString(d) {
       return util.formatter.datetime(d)
+    },
+    getDateTimeStringForFile(d) {
+      return util.formatter.datetimeForFile(d)
     }
   }
 }
