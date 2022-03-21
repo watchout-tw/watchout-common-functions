@@ -38,7 +38,7 @@
 import { env } from 'watchout-common-assets'
 import { getBaseURL } from 'watchout-common-functions/lib/watchout'
 
-const getPlatformIcon = platform => require('watchout-common-assets/images/platforms/' + platform + '/black.png')
+const getPlatformIcon = platform => require('watchout-common-assets/images/social/' + platform + '/black.png')
 
 const social = [
   {

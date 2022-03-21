@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import twitterIconBlack from 'watchout-common-assets/images/platforms/twitter/black.png'
-import lineIconBlack from 'watchout-common-assets/images/platforms/line/black.png'
-import facebookIconBlack from 'watchout-common-assets/images/platforms/facebook/black.png'
-import twitterIconWhite from 'watchout-common-assets/images/platforms/twitter/white.png'
-import lineIconWhite from 'watchout-common-assets/images/platforms/line/white.png'
-import facebookIconWhite from 'watchout-common-assets/images/platforms/facebook/white.png'
+import twitterIconBlack from 'watchout-common-assets/images/social/twitter/black.png'
+import lineIconBlack from 'watchout-common-assets/images/social/line/black.png'
+import facebookIconBlack from 'watchout-common-assets/images/social/facebook/black.png'
+import twitterIconWhite from 'watchout-common-assets/images/social/twitter/white.png'
+import lineIconWhite from 'watchout-common-assets/images/social/line/white.png'
+import facebookIconWhite from 'watchout-common-assets/images/social/facebook/white.png'
 import { getPlatformShareURLs } from 'watchout-common-functions/functions'
 
 export default {
