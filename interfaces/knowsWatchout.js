@@ -11,6 +11,7 @@ export default {
     getLargeProjectLogo(id) {
       return require('watchout-common-assets/images/logo/' + id + '/large.png')
     },
+    // TODO: push /images/watchout-logo to /images/logo+type
     getProjectLogoWithType(id) {
       return require('watchout-common-assets/images/logo+type/' + id + '/regular.png')
     },

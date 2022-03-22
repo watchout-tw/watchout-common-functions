@@ -1,7 +1,7 @@
 <template>
-<nav class="nav-bar" :class="navClasses">
+<nav class="nav-bar">
   <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
-    <img :src="getProjectLogoWithType(channelOrPageID)" :style="getProjectLogoWithTypeStyles(channelOrPageID)" />
+    <img :src="logo" :style="'height: 34px'" />
   </nuxt-link>
   <div class="nav-item menu-container">
     <nav-bar-menu :channel="channel" :menu="menu" :which-side="whichSide" v-if="menu" />
@@ -18,13 +18,15 @@
 import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
 import Avatar from 'watchout-common-functions/components/Avatar'
+import logo from 'watchout-common-assets/images/watchout-logo/white-reverse.png'
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   props: ['channel', 'menu', 'parties'],
   data() {
     return {
-      anon: { id: 'anon', type: 'system' }
+      anon: { id: 'anon', type: 'system' },
+      logo
     }
   },
   computed: {
@@ -61,9 +63,11 @@ nav.nav-bar {
   margin: 0;
   padding: 0;
   z-index: $z-nav;
+  background-color: $color-watchout-black;
 
   > .nav-item {
     flex-grow: 0;
+    margin: auto 0 auto 1rem;
   }
   > .logo-with-type {
     flex-shrink: 0;
