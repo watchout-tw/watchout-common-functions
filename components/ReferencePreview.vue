@@ -7,22 +7,22 @@
     <div class="tcl-panel"></div>
   </div>
   <div class="preview image" v-else-if="display === 'image'">
-    <a :href="linkURL" class="image margin-bottom-8" :aspect-ratio="imageRatio" :style="imageStyles"></a>
-    <div v-if="isActive && showReadMore" class="more text-align-right"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+    <a :href="linkURL" class="image margin-bottom-8" :aspect-ratio="imageRatio" :style="imageStyles" :target="target"></a>
+    <div v-if="isActive && showReadMore" class="more text-align-right"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
   </div>
   <div class="preview forward" v-else-if="display === 'forward'" :class="previewClasses">
-    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles" :target="target">
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
-    <component :is="titleTag" class="title margin-top-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)"></a></component>
-    <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
+    <component :is="titleTag" class="title margin-top-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text text-color-musou" v-html="spacingOptimizer(internalTitle)" :target="target"></a></component>
+    <a :href="linkURL" class="hand-container" :target="target"><img class="hand" :src="hand" /></a>
   </div>
   <div class="preview vertical" v-else-if="display === 'vertical'" :class="previewClasses">
-    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles" :target="target">
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary">
-      <component :is="titleTag" class="title margin-top-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <component :is="titleTag" class="title margin-top-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)" :target="target"></a></component>
       <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="showContributors !== false && contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
           <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
@@ -31,15 +31,15 @@
       </div>
       <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
-      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
     </div>
   </div>
   <div class="preview horizontal" v-else-if="display === 'horizontal'" :class="previewClasses">
-    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles">
+    <a :href="linkURL" class="image" :aspect-ratio="imageRatio" :style="imageStyles" :target="target">
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary">
-      <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)" :target="target"></a></component>
       <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="showContributors !== false && contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
           <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
@@ -48,15 +48,15 @@
       </div>
       <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
-      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
     </div>
   </div>
   <div class="preview default" :class="containerClasses" v-else><!-- default is flexible -->
-    <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles">
+    <a :href="linkURL" class="image" :class="panelClasses" :aspect-ratio="imageRatio" :style="imageStyles" :target="target">
       <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div>
     </a>
     <div class="summary" :class="panelClasses">
-      <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)"></a></component>
+      <component :is="titleTag" class="title margin-bottom-8" :class="titleClasses"><a :href="linkURL" class="a-text" v-html="spacingOptimizer(internalTitle)" :target="target"></a></component>
       <div class="contributors margin-top-bottom-4 font-size-small secondary-text" v-if="showContributors !== false && contributors.length > 0">
         <template v-for="(contributor, contributorIndex) of contributors">
           <avatar :persona="cachedAuthorPersona(contributor)" :show="['name']" :classes="['list-item', 'horizontal']" :link="true" :key="`contributor-${contributorIndex}`" />
@@ -65,7 +65,7 @@
       </div>
       <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
-      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a></div>
+      <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
     </div>
   </div>
 </div>
@@ -80,7 +80,7 @@ import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
   mixins: [knowsBunko, knowsFormatting, knowsWatchout],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'titleClasses', 'description', 'contributorListStyle', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'titleClasses', 'description', 'contributorListStyle', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors', 'target'],
   data() {
     return {
       PUNCT,
