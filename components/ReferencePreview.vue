@@ -232,15 +232,6 @@ export default {
       background-color: $color-very-light-grey;
       background-size: cover;
       background-position: center center;
-      @include shadow;
-      // > .pub-dest-logo {
-      //   position: absolute;
-      //   top: 0;
-      //   left: 0;
-      //   width: 24px;
-      //   height: 24px;
-      //   background-size: contain;
-      // }
     }
     > .summary {
       > .contributors {
