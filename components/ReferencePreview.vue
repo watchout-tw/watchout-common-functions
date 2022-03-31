@@ -29,7 +29,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
     </div>
@@ -46,7 +46,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
     </div>
@@ -63,7 +63,7 @@
           <span v-if="contributorIndex < contributors.length - 1" v-html="spacingOptimizer(PUNCT.PAUSE)" :key="`contributor-${contributorIndex}-separator`"></span>
         </template>
       </div>
-      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateTimeString(pubAt) }}</div>
+      <div class="date font-size-tiny secondary-text margin-top-bottom-4" v-if="showPubAt && pubAt">{{ getDateString(pubAt) }}</div>
       <div class="description" v-if="internalDescription">{{ internalDescription }}</div>
       <div v-if="isActive && showReadMore" class="more margin-top-bottom-4"><a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a></div>
     </div>
@@ -80,7 +80,7 @@ import hand from 'watchout-common-assets/images/hand.svg'
 
 export default {
   mixins: [knowsBunko, knowsFormatting, knowsWatchout],
-  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'titleClasses', 'description', 'contributorListStyle', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors', 'target'],
+  props: ['reference', 'data', 'display', 'align', 'imageRatio', 'imageSize', 'imageStyle', 'image', 'link', 'title', 'h', 'titleClasses', 'description', 'contributorListStyle', 'readMore', 'readMoreStyle', 'showPubDest', 'status', 'cachedAuthors', 'target', 'date'],
   data() {
     return {
       PUNCT,
@@ -135,10 +135,17 @@ export default {
       return personas
     },
     showPubAt() {
-      return this.reference ? WATCHOUT_REF_TYPES.includes(this.reference.type) : false
+      if(this.reference) {
+        return WATCHOUT_REF_TYPES.includes(this.reference.type)
+      } else if(this.date) {
+        // 額外設定 date 也顯示
+        return true
+      } else {
+        return false
+      }
     },
     pubAt() {
-      return this.doc ? this.doc.publishedAt : null
+      return this.doc ? this.doc.publishedAt : (this.date ? this.date : null)
     },
     pubDestLogo() {
       return this.getSmallProjectLogo(this.doc && this.doc.publishedTo ? this.doc.publishedTo : 'external')
