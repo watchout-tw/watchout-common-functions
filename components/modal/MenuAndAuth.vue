@@ -1,13 +1,25 @@
 <template>
   <div class="modal menuAndAuth">
-    <div class="section-title with-underline small text-align-center margin-bottom-4">
-      <span>菜單</span>
+    <div
+      class="section-title with-underline small text-align-center margin-bottom-4"
+    >
+      <span>選單</span>
     </div>
-    <menu-double :menu="data.menu" @itemClicked="removeModal('menu-and-auth')" />
-    <div class="section-title with-underline small text-align-center margin-top-4 margin-bottom-4">
+    <menu-double
+      :menu="data.menu"
+      @itemClicked="removeModal('menu-and-auth')"
+    />
+    <div
+      class="section-title with-underline small text-align-center margin-top-4 margin-bottom-4"
+      v-show="isMemberBlockShow"
+    >
       <span>會員</span>
     </div>
-    <div class="memberText" @click="clickMemberBlock()">
+    <div
+      class="memberText"
+      @click="clickMemberBlock()"
+      v-show="isMemberBlockShow"
+    >
       <span class="a-text">{{ memberText }}</span>
     </div>
   </div>
@@ -19,16 +31,19 @@ import MenuDouble from 'watchout-common-functions/components/MenuDouble'
 
 export default {
   mixins: [knowsWindowManagement],
-  props: ['data'],
+  props: ['data', 'isMemberBlockShow'],
   data() {
     const memberText = !this.data.isCitizen ? '登入' : '狀態'
+
     return {
       memberText
     }
   },
   methods: {
     clickMemberBlock() {
-      !this.data.isCitizen ? this.addModal({ id: 'auth', joinOrLogin: 'login' }) : this.addModal('swiss-knife')
+      !this.data.isCitizen
+        ? this.addModal({ id: 'auth', joinOrLogin: 'login' })
+        : this.addModal('swiss-knife')
       this.removeModal('menu-and-auth')
     }
   },
@@ -71,5 +86,4 @@ export default {
     }
   }
 }
-
 </style>

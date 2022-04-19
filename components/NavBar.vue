@@ -4,11 +4,22 @@
       <img :src="logo" :style="'height: 34px'" />
     </nuxt-link>
     <div class="nav-item menu-container">
-      <nav-bar-menu :channel="channel" :menu="menu" :which-side="whichSide" v-if="menu" />
+      <nav-bar-menu
+        :channel="channel"
+        :menu="menu"
+        :which-side="whichSide"
+        v-if="menu"
+      />
     </div>
     <div class="nav-item search-container"></div>
-    <div class="nav-item avatar-container"
-         @click="isCitizen ? addModal('swiss-knife') : addModal({ id: 'auth', joinOrLogin: 'login' })"
+    <div
+      class="nav-item avatar-container"
+      @click="
+        isCitizen
+          ? addModal('swiss-knife')
+          : addModal({ id: 'auth', joinOrLogin: 'login' })
+      "
+      v-show="isMemberBlockShow"
     >
       <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
     </div>
@@ -19,17 +30,23 @@
       <img :src="mobileLogo" :style="'height: 34px'" alt="logo" />
     </nuxt-link>
     <div class="nav-item menu-container">
-      <div class="nav-icon" @click="addModal({ id: 'menu-and-auth', menu, isCitizen })">
+      <div
+        class="nav-icon"
+        @click="addModal({ id: 'menu-and-auth', menu, isCitizen })"
+      >
         <Icon iconName="bars" iconSize="30px" />
       </div>
     </div>
   </nav>
-
 </template>
 
 <script>
 // FIXME: perhaps better not use relative path
-import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
+import {
+  knowsAuth,
+  knowsWatchout,
+  knowsWindowManagement
+} from 'watchout-common-functions/interfaces'
 import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
 import Avatar from 'watchout-common-functions/components/Avatar'
 import Icon from 'watchout-common-functions/components/Icon.vue'
@@ -38,13 +55,20 @@ import mobileLogo from 'watchout-common-assets/images/watchout-logo/waite-chines
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
-  props: ['channel', 'menu', 'parties'],
+  props: ['channel', 'menu', 'parties', 'initialMemberBlockShow'],
   data() {
+    let isMemberBlockShow = false
+    if(!this.initialMemberBlockShow) {
+      isMemberBlockShow = false
+    } else {
+      isMemberBlockShow = true
+    }
     return {
       anon: { id: 'anon', type: 'system' },
       logo,
       mobileLogo,
-      isMobile: false
+      isMobile: false,
+      isMemberBlockShow
     }
   },
   computed: {
@@ -55,9 +79,7 @@ export default {
       return this.channel.dark ? 'dark' : 'light'
     },
     navClasses() {
-      return [
-        this.channel.classes.backgroundColor.opaque
-      ]
+      return [this.channel.classes.backgroundColor.opaque]
     }
   },
   created() {
