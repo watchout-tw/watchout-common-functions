@@ -11,14 +11,14 @@
     />
     <div
       class="section-title with-underline small text-align-center margin-top-4 margin-bottom-4"
-      v-show="isMemberBlockShow"
+      v-show="data.initialMemberBlockShow"
     >
       <span>會員</span>
     </div>
     <div
       class="memberText"
       @click="clickMemberBlock()"
-      v-show="isMemberBlockShow"
+      v-show="data.initialMemberBlockShow"
     >
       <span class="a-text">{{ memberText }}</span>
     </div>
@@ -31,7 +31,7 @@ import MenuDouble from 'watchout-common-functions/components/MenuDouble'
 
 export default {
   mixins: [knowsWindowManagement],
-  props: ['data', 'isMemberBlockShow'],
+  props: ['data'],
   data() {
     const memberText = !this.data.isCitizen ? '登入' : '狀態'
 

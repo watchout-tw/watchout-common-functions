@@ -19,7 +19,7 @@
           ? addModal('swiss-knife')
           : addModal({ id: 'auth', joinOrLogin: 'login' })
       "
-      v-show="isMemberBlockShow"
+      v-show="initialMemberBlockShow"
     >
       <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
     </div>
@@ -32,7 +32,7 @@
     <div class="nav-item menu-container">
       <div
         class="nav-icon"
-        @click="addModal({ id: 'menu-and-auth', menu, isCitizen })"
+        @click="addModal({ id: 'menu-and-auth', menu, isCitizen, initialMemberBlockShow })"
       >
         <Icon iconName="bars" iconSize="30px" />
       </div>
@@ -51,24 +51,17 @@ import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
 import Avatar from 'watchout-common-functions/components/Avatar'
 import Icon from 'watchout-common-functions/components/Icon.vue'
 import logo from 'watchout-common-assets/images/watchout-logo/white-reverse.png'
-import mobileLogo from 'watchout-common-assets/images/watchout-logo/waite-chinese.png'
+import mobileLogo from 'watchout-common-assets/images/watchout-logo/white-chinese.png'
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
   props: ['channel', 'menu', 'parties', 'initialMemberBlockShow'],
   data() {
-    let isMemberBlockShow = false
-    if(!this.initialMemberBlockShow) {
-      isMemberBlockShow = false
-    } else {
-      isMemberBlockShow = true
-    }
     return {
       anon: { id: 'anon', type: 'system' },
       logo,
       mobileLogo,
-      isMobile: false,
-      isMemberBlockShow
+      isMobile: false
     }
   },
   computed: {
@@ -119,9 +112,6 @@ nav.nav-bar {
     margin: auto 0 auto 1rem;
 
     > .nav-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       height: 100%;
       margin-right: 1rem;
 
