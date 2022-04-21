@@ -8,6 +8,7 @@ import SiteMap from './SiteMap'
 import SwissKnife from './SwissKnife'
 import Transporter from './Transporter'
 import Message from './Message'
+import MenuAndAuth from './MenuAndAuth'
 
 export const modals = {
   Auth,
@@ -19,5 +20,6 @@ export const modals = {
   SiteMap,
   SwissKnife,
   Transporter,
-  Message
+  Message,
+  MenuAndAuth
 }
