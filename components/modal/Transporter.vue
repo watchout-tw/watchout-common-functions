@@ -11,6 +11,8 @@
 import { env } from 'watchout-common-assets'
 import { knowsWatchout } from 'watchout-common-functions/interfaces' // FIXME: no relative paths
 
+// Notes: 原本用於多站切換的 Navigation，在 2022 年網站整併之後，此 Components 已暫不使用
+
 const channelIDs = ['park', 'musou', 'ask', 'lab', 'uc', 'watchout']
 export default {
   mixins: [knowsWatchout],

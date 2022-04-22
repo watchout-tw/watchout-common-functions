@@ -11,6 +11,7 @@ export default {
     getLargeProjectLogo(id) {
       return require('watchout-common-assets/images/logo/' + id + '/large.png')
     },
+    // TODO: push /images/watchout-logo to /images/logo+type
     getProjectLogoWithType(id) {
       return require('watchout-common-assets/images/logo+type/' + id + '/regular.png')
     },
@@ -53,6 +54,7 @@ export default {
     getWatchoutNewsletterURL(id) {
       return this.getBaseURL('watchout') + 'news/' + id
     },
+    // TODO: Remove channelID
     generateMeta(channelID, pageTitle, pageDescription, image) {
       let baseURL = this.getBaseURL(channelID)
       if(!image) {
