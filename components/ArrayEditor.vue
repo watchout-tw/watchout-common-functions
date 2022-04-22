@@ -35,11 +35,22 @@ export default {
       newValue: null
     }
   },
+  watch: {
+    value(newValue, oldValue) {
+      const isOldDataSame = JSON.stringify(oldValue) === JSON.stringify(this.values)
+      const isNewDataDifferent = JSON.stringify(newValue) !== JSON.stringify(oldValue)
+      if(isOldDataSame && isNewDataDifferent) {
+        this.values = newValue
+      }
+    }
+  },
   methods: {
     addValue() {
       if(this.newValue) {
-        this.values.push(this.newValue)
-        this.newValue = null
+        if(!this.values.includes(this.newValue)) {
+          this.values.push(this.newValue)
+          this.newValue = null
+        }
       }
     },
     removeValue(index) {
@@ -51,7 +62,11 @@ export default {
     getLabel(value) {
       let label = value
       if(this.type === 'select') {
-        let option = this.options.find(option => option.value === value)
+        let option = this.options.find(option => {
+          // During firebase migration, also lookup firebase_id
+          return option.value.toString() === value.toString() ||
+            (option.data && option.data.firebase_id && option.data.firebase_id === value)
+        })
         label = option ? option.label : value
       }
       return label

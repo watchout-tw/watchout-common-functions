@@ -16,9 +16,10 @@
         class="image margin-bottom-8"
         :aspect-ratio="imageRatio"
         :style="imageStyles"
+        :target="target"
       />
       <div v-if="isActive && showReadMore" class="more text-align-right">
-        <a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a>
+        <a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a>
       </div>
     </div>
     <div
@@ -31,6 +32,7 @@
         class="image"
         :aspect-ratio="imageRatio"
         :style="imageStyles"
+        :target="target"
       >
         <div
           v-if="showPubDest"
@@ -47,9 +49,10 @@
           :href="linkURL"
           class="a-text text-color-musou"
           v-html="spacingOptimizer(internalTitle)"
+          :target="target"
         />
       </component>
-      <a :href="linkURL" class="hand-container"><img class="hand" :src="hand" /></a>
+      <a :href="linkURL" class="hand-container" :target="target"><img class="hand" :src="hand" /></a>
     </div>
     <div
       class="preview vertical"
@@ -61,6 +64,7 @@
         class="image"
         :aspect-ratio="imageRatio"
         :style="imageStyles"
+        :target="target"
       >
         <div
           v-if="showPubDest"
@@ -78,6 +82,7 @@
             :href="linkURL"
             class="a-text"
             v-html="spacingOptimizer(internalTitle)"
+            :target="target"
           />
         </component>
         <div
@@ -109,7 +114,7 @@
           {{ internalDescription }}
         </div>
         <div v-if="isActive && showReadMore" class="more margin-top-bottom-4">
-          <a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a>
+          <a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a>
         </div>
       </div>
     </div>
@@ -123,6 +128,7 @@
         class="image"
         :aspect-ratio="imageRatio"
         :style="imageStyles"
+        :target="target"
       >
         <div
           v-if="showPubDest"
@@ -139,6 +145,7 @@
             :href="linkURL"
             class="a-text"
             v-html="spacingOptimizer(internalTitle)"
+            :target="target"
           />
         </component>
         <div
@@ -170,7 +177,7 @@
           {{ internalDescription }}
         </div>
         <div v-if="isActive && showReadMore" class="more margin-top-bottom-4">
-          <a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a>
+          <a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a>
         </div>
       </div>
     </div>
@@ -182,6 +189,7 @@
         :class="panelClasses"
         :aspect-ratio="imageRatio"
         :style="imageStyles"
+        :target="target"
       >
         <!-- <div v-if="showPubDest" class="pub-dest-logo" :style="{ backgroundImage: 'url(' + pubDestLogo + ')' }"></div> -->
       </a>
@@ -195,6 +203,7 @@
             :href="linkURL"
             class="a-text"
             v-html="spacingOptimizer(internalTitle)"
+            :target="target"
           />
         </component>
         <div
@@ -226,7 +235,7 @@
           {{ internalDescription }}
         </div>
         <div v-if="isActive && showReadMore" class="more margin-top-bottom-4">
-          <a :href="linkURL" :class="readMoreClasses">{{ readMoreText }}</a>
+          <a :href="linkURL" :class="readMoreClasses" :target="target">{{ readMoreText }}</a>
         </div>
       </div>
     </div>
@@ -269,7 +278,9 @@ export default {
     'readMoreStyle',
     'showPubDest',
     'status',
-    'cachedAuthors'
+    'cachedAuthors',
+    'target',
+    'date'
   ],
   data() {
     return {
@@ -327,12 +338,17 @@ export default {
       return personas
     },
     showPubAt() {
-      return this.reference
-        ? WATCHOUT_REF_TYPES.includes(this.reference.type)
-        : false
+      if(this.reference) {
+        return WATCHOUT_REF_TYPES.includes(this.reference.type)
+      } else if(this.date) {
+        // 額外設定 date 也顯示
+        return true
+      } else {
+        return false
+      }
     },
     pubAt() {
-      return this.doc ? this.doc.publishedAt : null
+      return this.doc ? this.doc.publishedAt : (this.date ? this.date : null)
     },
     pubDestLogo() {
       return this.getSmallProjectLogo(
