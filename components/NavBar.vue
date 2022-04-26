@@ -1,38 +1,35 @@
 <template>
-  <nav class="nav-bar" v-if="!isMobile">
-    <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
-      <img :src="logo" :style="'height: 34px'" />
+  <nav class="nav-bar">
+    <!--    pc block-->
+    <nuxt-link class="nav-item logo-with-type pc" :to="{ name: 'index' }">
+      <img :src="logo" :style="'height: 34px'" alt="logo" />
     </nuxt-link>
-    <div class="nav-item menu-container">
+    <div class="nav-item menu-container pc">
       <nav-bar-menu
-        :channel="channel"
-        :menu="menu"
-        :which-side="whichSide"
-        v-if="menu"
+          :channel="channel"
+          :menu="menu"
+          :which-side="whichSide"
+          v-if="menu"
       />
     </div>
-    <div class="nav-item search-container"></div>
-    <div
-      class="nav-item avatar-container"
-      @click="
-        isCitizen
-          ? addModal('swiss-knife')
-          : addModal({ id: 'auth', joinOrLogin: 'login' })
-      "
-      v-show="initialMemberBlockShow"
+    <div class="nav-item search-container pc" />
+    <div class="nav-item avatar-container pc"
+         @click="isCitizen? addModal('swiss-knife'): addModal({ id: 'auth', joinOrLogin: 'login' })"
+         v-show="initialMemberBlockShow"
     >
       <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
     </div>
-  </nav>
 
-  <nav class="nav-bar mobile" v-else>
-    <nuxt-link class="nav-item logo-with-type" :to="{ name: 'index' }">
+    <!--    mobile block-->
+
+    <nuxt-link class="nav-item logo-with-type mobile" :to="{ name: 'index' }">
       <img :src="mobileLogo" :style="'height: 34px'" alt="logo" />
     </nuxt-link>
-    <div class="nav-item menu-container">
+
+    <div class="nav-item menu-container mobile">
       <div
-        class="nav-icon"
-        @click="addModal({ id: 'menu-and-auth', menu, isCitizen, initialMemberBlockShow })"
+          class="nav-icon"
+          @click="addModal({ id: 'menu-and-auth', menu, isCitizen, initialMemberBlockShow })"
       >
         <Icon iconName="bars" iconSize="30px" />
       </div>
@@ -42,11 +39,7 @@
 
 <script>
 // FIXME: perhaps better not use relative path
-import {
-  knowsAuth,
-  knowsWatchout,
-  knowsWindowManagement
-} from 'watchout-common-functions/interfaces'
+import { knowsAuth, knowsWatchout, knowsWindowManagement } from 'watchout-common-functions/interfaces'
 import NavBarMenu from 'watchout-common-functions/components/NavBarMenu'
 import Avatar from 'watchout-common-functions/components/Avatar'
 import Icon from 'watchout-common-functions/components/Icon.vue'
@@ -60,8 +53,7 @@ export default {
     return {
       anon: { id: 'anon', type: 'system' },
       logo,
-      mobileLogo,
-      isMobile: false
+      mobileLogo
     }
   },
   computed: {
@@ -77,9 +69,6 @@ export default {
   },
   created() {
     this.checkAuth()
-  },
-  mounted() {
-    this.isMobile = window.innerWidth <= 768
   },
   components: {
     NavBarMenu,
@@ -103,13 +92,17 @@ nav.nav-bar {
   z-index: $z-nav;
   background-color: $color-watchout-black;
 
-  &.mobile {
-    justify-content: space-between;
-  }
-
   > .nav-item {
     flex-grow: 0;
     margin: auto 0 auto 1rem;
+
+    &.pc {
+      display: flex;
+    }
+
+    &.mobile {
+      display: none;
+    }
 
     > .nav-icon {
       height: 100%;
@@ -159,5 +152,20 @@ nav.nav-bar {
     cursor: pointer;
     overflow: hidden;
   }
+}
+
+@media (max-width: 768px) {
+  nav.nav-bar {
+    > .nav-item {
+      &.pc {
+        display: none;
+      }
+
+      &.mobile {
+        display: flex;
+      }
+    }
+  }
+
 }
 </style>
