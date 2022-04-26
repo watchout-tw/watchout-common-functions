@@ -80,6 +80,12 @@ export default {
         }
         > .has-children {
           position: relative;
+          > .item-text {
+            color: white;
+          }
+          > .a-text {
+            @include underline(white, 1.0);
+          }
           > .children {
             margin-top: 1.8rem;
             padding-right: 1.5rem; // close
@@ -93,6 +99,9 @@ export default {
             > .items {
               > .item {
                 padding: 0.5rem 0;
+                > .item-text {
+                  color: black;
+                }
               }
             }
           }
