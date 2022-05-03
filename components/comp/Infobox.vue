@@ -10,13 +10,13 @@
     <template v-else>
       <h4 class="title text-align-center" v-html="spacingOptimizer(title)"></h4>
     </template>
-    <div class="content" v-if="mobiledoc">
-      <div class="card" v-for="(section, index) of mobiledoc.sections" :key="index" v-if="index < maxNumSection && section[0] === 10"><!-- && section[0] === 10 && mobiledoc.cards[section[1]][0] === 'markdown'">-->
-        <template v-if="mobiledoc.cards[section[1]][0] === 'markdown'">
-          <div class="paragraphs no-margin a-text-parent heading-size-medium" v-html="markdown(mobiledoc.cards[section[1]][1].markdown)"></div>
+    <div class="content">
+      <div class="card" v-for="(section, index) of mobiledocSections" :key="index">
+        <template v-if="mobiledocCards[section[1]][0] === 'markdown'">
+          <div class="paragraphs no-margin a-text-parent heading-size-medium" v-html="markdown(mobiledocCards[section[1]][1].markdown)"></div>
         </template>
         <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
-          <img :src="ghostBaseURL + mobiledoc.cards[section[1]][1].src" />
+          <img :src="ghostBaseURL + mobiledocCards[section[1]][1].src" />
         </template>
       </div>
     </div>
@@ -34,7 +34,6 @@ export default {
   props: ['id', 'data', 'display', 'horizontalSpace', 'titleStyle', 'headingStyle'],
   data() {
     return {
-      maxNumSection: 2,
       ghostBaseURL: config.ghostBaseURL
     }
   },
@@ -48,8 +47,21 @@ export default {
     title() {
       return this.doc ? this.doc.title : null
     },
-    mobiledoc() {
-      return this.doc && this.doc.content ? JSON.parse(this.doc.content.mobiledoc) : null
+    mobiledocCards() {
+      if(this.doc && this.doc.content) {
+        let mobiledoc = JSON.parse(this.doc.content.mobiledoc)
+        return mobiledoc.cards
+      } else {
+        return {}
+      }
+    },
+    mobiledocSections() {
+      if(this.doc && this.doc.content) {
+        let mobiledoc = JSON.parse(this.doc.content.mobiledoc)
+        return mobiledoc.sections.filter(section => section[0] === 10) // mobile 的格式判斷，只顯示文字 + 圖片
+      } else {
+        return []
+      }
     },
     classes() {
       let classes = []
