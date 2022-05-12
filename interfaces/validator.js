@@ -28,6 +28,9 @@ export default {
         if(!config[key].allowNull && config[key].isArray && obj[key].length === 0) {
           return error(config[key].messages.missing)
         }
+        if(config[key].regex && !config[key].regex.test(obj[key])) {
+          return error(config[key].messages.regexError)
+        }
       }
       return success()
     }
