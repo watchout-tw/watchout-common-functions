@@ -33,7 +33,7 @@ export default {
     // icon 尺寸大小
     iconSize: {
       type: String,
-      default: '14px'
+      default: 'm'
     }
   },
   components: {
