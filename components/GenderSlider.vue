@@ -10,7 +10,7 @@
       <div class="hint queer"><div class="dot"></div></div>
     </div>
   </div>
-  <input type="range" min="-100" max="100" step="1" v-model="model" @change="push" />
+  <input id="genderRange" type="range" min="-100" max="100" step="1" v-model="model" @change="push" />
   <div class="nob-container">
     <div class="nob" :style="getPositionFromLeft(model)"></div>
   </div>
@@ -30,7 +30,7 @@ let hints = [
   }
 ]
 export default {
-  props: ['value'],
+  props: ['value', 'disabled'],
   data() {
     return {
       hints,
@@ -73,6 +73,11 @@ export default {
     },
     push() {
       this.$emit('update:value', this.model)
+    }
+  },
+  mounted() {
+    if(!!this.disabled && JSON.parse(this.disabled.toLowerCase())) {
+      document.getElementById('genderRange').disabled = true
     }
   }
 }
@@ -146,6 +151,9 @@ export default {
     }
   }
   > input {
+    &:disabled{
+      cursor: default;
+    }
     position: absolute;
     opacity: 0;
     top: 0;
