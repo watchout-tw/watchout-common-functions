@@ -1,7 +1,7 @@
 <template>
 <form @submit.prevent="doLogin">
   <div class="form-field">
-    <text-editor placeholder="草民代號／Email" v-model="account" :classes="['park']" :simple="true" key="loginAccount" />
+    <text-editor placeholder="E-Mail" v-model="email" :classes="['park']" :simple="true" key="loginEmail" />
   </div>
   <div class="form-field">
     <text-editor placeholder="密碼" type="password" v-model="password" :classes="['park']" :simple="true" key="loginPassword" />
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import * as util from 'watchout-common-functions/lib/util'
 import * as core from 'watchout-common-functions/lib/core'
 import * as STATES from 'watchout-common-functions/lib/states'
 import TextEditor from 'watchout-common-functions/components/TextEditor'
@@ -22,10 +21,9 @@ import { knowsAuth, knowsError } from 'watchout-common-functions/interfaces'
 
 export default {
   mixins: [knowsAuth, knowsError],
-  props: ['presetAccount'],
   data() {
     return {
-      account: this.presetAccount ? this.presetAccount : null,
+      email: null,
       password: null,
       submitButton: {
         state: STATES.DEFAULT,
@@ -33,16 +31,13 @@ export default {
       }
     }
   },
-  watch: {
-    presetAccount() {
-      this.account = this.presetAccount
-    }
-  },
   methods: {
     async doLogin() {
-      if(this.submitButton.state === STATES.DEFAULT && this.account && this.password) {
-        let data = util.isEmail(this.account) ? { email: this.account } : { handle: this.account }
-        data.password = this.password
+      if(this.submitButton.state === STATES.DEFAULT && this.email && this.password) {
+        let data = {
+          email: this.email,
+          password: this.password
+        }
         this.submitButton.state = STATES.LOADING
         try {
           let response = await core.login(data)
