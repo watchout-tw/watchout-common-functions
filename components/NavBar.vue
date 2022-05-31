@@ -31,7 +31,7 @@
           class="nav-icon"
           @click="addModal({ id: 'menu-and-auth', menu, isCitizen, initialMemberBlockShow })"
       >
-        <Icon iconName="bars" iconSize="30px" />
+        <Icon iconName="bars" />
       </div>
     </div>
   </nav>
