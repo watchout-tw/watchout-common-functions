@@ -6,13 +6,19 @@
 
 <script >
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrashAlt, faEdit, faIcons, faBars } from '@fortawesome/free-solid-svg-icons'
+import {
+  faTrashAlt,
+  faEdit,
+  faIcons,
+  faBars,
+  faChevronCircleLeft
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // icon 樣式 請參考以下網址
 // https://fontawesome.com/v5/search?m=free
 
-library.add(faTrashAlt, faEdit, faIcons, faBars)
+library.add(faTrashAlt, faEdit, faIcons, faBars, faChevronCircleLeft)
 
 /*********************/
 /*     Icon Name     */
