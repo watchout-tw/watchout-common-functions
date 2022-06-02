@@ -14,8 +14,7 @@
     </div>
     <div class="nav-item search-container pc" />
     <div class="nav-item avatar-container pc"
-         @click="isCitizen? addModal('swiss-knife'): addModal({ id: 'auth', joinOrLogin: 'login' })"
-         v-show="initialMemberBlockShow"
+         @click="isCitizen? addModal({ id : 'swiss-knife', memberInfoEditable : memberInfoEditable }): addModal({ id: 'auth', joinOrLogin: 'login' })"
     >
       <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
     </div>
@@ -29,7 +28,7 @@
     <div class="nav-item menu-container mobile">
       <div
           class="nav-icon"
-          @click="addModal({ id: 'menu-and-auth', menu, isCitizen, initialMemberBlockShow })"
+          @click="addModal({ id: 'menu-and-auth', menu, isCitizen, memberInfoEditable : memberInfoEditable })"
       >
         <Icon iconName="bars" />
       </div>
@@ -48,7 +47,7 @@ import mobileLogo from 'watchout-common-assets/images/watchout-logo/white-chines
 
 export default {
   mixins: [knowsAuth, knowsWatchout, knowsWindowManagement],
-  props: ['channel', 'menu', 'parties', 'initialMemberBlockShow'],
+  props: ['channel', 'menu', 'parties', 'memberInfoEditable'],
   data() {
     return {
       anon: { id: 'anon', type: 'system' },
