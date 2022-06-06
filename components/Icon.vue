@@ -18,16 +18,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // icon 樣式 請參考以下網址
 // https://fontawesome.com/v5/search?m=free
 
+// size 表格 請參考以下網址
+// https://fontawesome.com/docs/web/style/size
+// * 記得輸入時記得把前綴 "fa-" 移除
+
 library.add(faTrashAlt, faEdit, faIcons, faBars, faChevronCircleLeft)
-
-/*********************/
-/*     Icon Name     */
-/*********************/
-
-// faTrashAlt = trash-alt
-// faEdit = edit
-// faIcons = icons
-// faBars = bars
 
 export default {
   props: {
@@ -39,7 +34,7 @@ export default {
     // icon 尺寸大小
     iconSize: {
       type: String,
-      default: 'm'
+      default: 'sm'
     }
   },
   components: {
