@@ -53,11 +53,8 @@ export default {
     getWatchoutNewsletterURL(id) {
       return this.getBaseURL('watchout') + 'news/' + id
     },
-    getWatchoutEditMemberInfoURL() {
-      return this.getBaseURL('watchout') + 'member/edit'
-    },
-    getWatchoutChangePasswordURL() {
-      return this.getBaseURL('watchout') + 'member/password'
+    getWatchoutMemberInfoURL() {
+      return this.getBaseURL('watchout') + 'member'
     },
     // TODO: Remove channelID
     generateMeta(channelID, pageTitle, pageDescription, image) {
