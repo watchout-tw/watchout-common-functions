@@ -173,7 +173,8 @@ export default {
       return this.project.sequence.navigation
     },
     isHuman() {
-      return this.doAfterClick('coralreef') ? this.crToken !== undefined && this.crToken !== null : true
+      // return this.doAfterClick('coralreef') ? this.crToken !== undefined && this.crToken !== null : true
+      return true
     },
     hasCorrectAnswer() {
       return this.project.sequence.hasCorrectAnswer
