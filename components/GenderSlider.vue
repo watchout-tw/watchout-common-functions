@@ -1,21 +1,47 @@
 <template>
-<div class="gender-slider input">
-  <div class="track-container">
-    <div class="track"></div>
-    <div class="hints secondary-text font-size-tiny">
-      <div class="hint" v-for="(hint, index) of hints" :style="getPosition(hint.value)" :key="index">
-        <div class="dot"></div>
-        <div class="label">{{ hint.label }}</div>
+  <div class="gender-slider input">
+    <div class="track-container">
+      <div class="track"></div>
+      <div class="hints secondary-text font-size-tiny">
+        <div
+          class="hint"
+          v-for="(hint, index) of hints"
+          :style="getPosition(hint.value)"
+          :key="index"
+        >
+          <div class="dot"></div>
+          <div class="label">{{ hint.label }}</div>
+        </div>
+        <div class="hint queer"><div class="dot"></div></div>
       </div>
-      <div class="hint queer"><div class="dot"></div></div>
+    </div>
+    <input
+      id="genderRange"
+      type="range"
+      min="-100"
+      max="100"
+      step="1"
+      v-model="model"
+      @change="push"
+    />
+    <div class="nob-container">
+      <div class="nob" :style="getPositionFromLeft(model)"></div>
+    </div>
+    <div class="label-box">
+      <div class="label">
+        <span v-if="percentageMale !== 0" class="latin-within-han first">
+          {{ Math.abs(percentageMale) }}%
+          </span>
+        <span>{{ labelMale }}</span>
+      </div>
+      <div class="label">
+        <span v-if="percentageFemale !== 0" class="latin-within-han first">
+          {{ Math.abs(percentageFemale) }}%
+          </span>
+        <span>{{ labelFemale }}</span>
+      </div>
     </div>
   </div>
-  <input id="genderRange" type="range" min="-100" max="100" step="1" v-model="model" @change="push" />
-  <div class="nob-container">
-    <div class="nob" :style="getPositionFromLeft(model)"></div>
-  </div>
-  <div class="label"><span v-if="percentage !== 0" class="latin-within-han first">{{ Math.abs(percentage) }}%</span><span>{{ label }}</span></div>
-</div>
 </template>
 
 <script>
@@ -38,27 +64,33 @@ export default {
     }
   },
   watch: {
-    'value'() {
+    value() {
       this.pull()
     }
   },
   computed: {
-    percentage() {
-      return parseInt(this.model)
+    percentageMale() {
+      return 50 + parseInt(this.model / 2)
     },
-    label() {
-      return this.percentage === 0 ? '酷兒' : (this.percentage > 0 ? '男性' : '女性')
+    percentageFemale() {
+      return 50 - parseInt(this.model / 2)
+    },
+    labelMale() {
+      return this.percentageMale === 0 ? '' : '男性'
+    },
+    labelFemale() {
+      return this.percentageFemale === 0 ? '' : '女性'
     }
   },
   methods: {
     getPositionFromLeft(val) {
       return {
-        left: ((parseInt(val) + 100) / 2) + '%'
+        left: (parseInt(val) + 100) / 2 + '%'
       }
     },
     getPosition(val) {
       let from = 'left'
-      let pos = ((parseInt(val) + 100) / 2)
+      let pos = (parseInt(val) + 100) / 2
       if(pos > 50) {
         from = 'right'
         pos = 100 - pos
@@ -84,7 +116,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~watchout-common-assets/styles/resources';
+@import "~watchout-common-assets/styles/resources";
 
 .gender-slider {
   $track-height: 0.125rem;
@@ -125,12 +157,12 @@ export default {
         left: 50%;
         transform: translateX(-50%);
         > .dot {
-          $color-rainbow-red: #EF606A;
-          $color-rainbow-orange: #F4B456;
-          $color-rainbow-yellow: #F9E341;
-          $color-rainbow-green: #41EF5E;
-          $color-rainbow-blue: #6BBCF9;
-          $color-rainbow-purple: #B66CEF;
+          $color-rainbow-red: #ef606a;
+          $color-rainbow-orange: #f4b456;
+          $color-rainbow-yellow: #f9e341;
+          $color-rainbow-green: #41ef5e;
+          $color-rainbow-blue: #6bbcf9;
+          $color-rainbow-purple: #b66cef;
           background: linear-gradient(
             180deg,
             $color-rainbow-red 0%,
@@ -151,7 +183,7 @@ export default {
     }
   }
   > input {
-    &:disabled{
+    &:disabled {
       cursor: default;
     }
     position: absolute;
@@ -171,7 +203,7 @@ export default {
     z-index: 1;
     > .nob {
       position: absolute;
-      top: - $nob-size / 2;
+      top: -$nob-size / 2;
       width: $nob-size;
       height: $nob-size;
       border-radius: $nob-size;
@@ -179,6 +211,13 @@ export default {
       transform: translateX(-50%);
       @include shadow;
     }
+  }
+
+  > .label-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
 }
 </style>
