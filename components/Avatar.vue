@@ -35,7 +35,7 @@ const PERSONA_NOT_FOUND = '查無此人'
 
 export default {
   mixins: [knowsAvatar, knowsWatchout],
-  props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'index', 'indexClasses', 'parties'],
+  props: ['size', 'show', 'persona', 'avatar', 'name', 'link', 'classes', 'secondaryText', 'secondaryClasses', 'index', 'indexClasses', 'parties', 'citizen'],
   computed: {
     componentIsTag() {
       return this.hasLink ? 'a' : 'div'
@@ -119,7 +119,20 @@ export default {
       }
     },
     internalName() {
-      let name = this.name ? this.name : (this.personaIsValid ? this.persona.name : null)
+      let name = null
+
+      if(this.name) {
+        name = this.name
+      }
+
+      if(this.personaIsValid) {
+        name = this.persona.name
+      }
+
+      if(this.citizen && this.citizen.nickname) {
+        name = this.citizen.nickname
+      }
+
       if([undefined, null, ''].includes(name)) {
         name = NAME_UNSET
         if(!this.personaIsValid) {
