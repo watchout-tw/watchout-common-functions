@@ -1,10 +1,5 @@
 <template>
 <form @submit.prevent="join">
-  <div class="form-field-many-inputs no-wrap">
-    <text-editor placeholder="草民代號" v-model="handle" :classes="['park']" :simple="true" key="joinHandle" />
-    <button type="button" class="button small park" @click.prevent="generateHandle">隨機</button>
-  </div>
-  <div class="font-size-small text-color-nice-grey">草民代號是你在沃草共有地的獨特身份識別，無法更改，請謹慎選擇。你可以使用A-Z、a-z、0-9、_、-。</div>
   <div class="form-field">
     <text-editor placeholder="Email" type="email" v-model="email" :classes="['park']" :simple="true" key="joinEmail" />
   </div>
@@ -28,13 +23,10 @@ import TextEditor from 'watchout-common-functions/components/TextEditor'
 import SubmitButton from 'watchout-common-functions/components/button/Submit.vue'
 import { knowsAuth, knowsError } from 'watchout-common-functions/interfaces'
 
-const nameGenerator = require('project-name-generator')
-
 export default {
   mixins: [knowsAuth, knowsError],
   data() {
     return {
-      handle: null,
       email: null,
       password: null,
       iAgree: false,
@@ -43,15 +35,11 @@ export default {
     }
   },
   methods: {
-    generateHandle() {
-      this.handle = nameGenerator({ words: Math.ceil(Math.random() * 2) + 1 }).raw.join('_')
-    },
     join() {
-      if(this.state === STATES.DEFAULT && this.handle && this.email && this.password && this.iAgree) {
+      if(this.state === STATES.DEFAULT && this.email && this.password && this.iAgree) {
         if(util.isEmail(this.email)) {
           this.state = STATES.LOADING
           core.join({
-            handle: this.handle,
             email: this.email,
             password: this.password
           }).then(response => {

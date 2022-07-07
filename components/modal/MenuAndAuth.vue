@@ -9,16 +9,12 @@
       :menu="data.menu"
       @itemClicked="removeModal('menu-and-auth')"
     />
-    <div
-      class="section-title with-underline small text-align-center margin-top-4 margin-bottom-4"
-      v-show="data.initialMemberBlockShow"
-    >
+    <div class="section-title with-underline small text-align-center margin-top-4 margin-bottom-4">
       <span>會員</span>
     </div>
     <div
       class="memberText"
       @click="clickMemberBlock()"
-      v-show="data.initialMemberBlockShow"
     >
       <span class="a-text">{{ memberText }}</span>
     </div>
@@ -34,7 +30,6 @@ export default {
   props: ['data'],
   data() {
     const memberText = !this.data.isCitizen ? '登入' : '狀態'
-
     return {
       memberText
     }
@@ -43,7 +38,7 @@ export default {
     clickMemberBlock() {
       !this.data.isCitizen
         ? this.addModal({ id: 'auth', joinOrLogin: 'login' })
-        : this.addModal('swiss-knife')
+        : this.addModal({ id: 'swiss-knife', memberInfoEditable: this.data.memberInfoEditable })
       this.removeModal('menu-and-auth')
     }
   },
