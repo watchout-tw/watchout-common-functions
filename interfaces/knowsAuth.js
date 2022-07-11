@@ -87,7 +87,6 @@ export default {
           } else {
             // citizen has logged IN here
             let citizenID = localStorage.getItem(ls.CITIZEN_ID)
-            let handle = localStorage.getItem(ls.HANDLE)
             let albumID = localStorage.getItem(ls.ALBUM_ID)
             let personaID = localStorage.getItem(ls.PERSONA_ID)
             let personas = decodePersonas(localStorage.getItem(ls.PERSONAS))
@@ -95,7 +94,6 @@ export default {
             this.setAuth({
               token: tokenInLocalStorage,
               citizen_id: citizenID,
-              handle,
               album_id: albumID,
               persona_id: personaID,
               personas,
@@ -120,7 +118,6 @@ export default {
           // update localStorage
           localStorage.setItem(ls.TOKEN, data.token)
           localStorage.setItem(ls.CITIZEN_ID, data.citizen_id)
-          localStorage.setItem(ls.HANDLE, data.handle)
           localStorage.setItem(ls.ALBUM_ID, data.album_id)
           localStorage.setItem(ls.PERSONA_ID, data.persona_id)
           localStorage.setItem(ls.PERSONAS, encodePersonas(data.personas))
@@ -142,7 +139,6 @@ export default {
         // update localStorage
         localStorage.removeItem(ls.TOKEN)
         localStorage.removeItem(ls.CITIZEN_ID)
-        localStorage.removeItem(ls.HANDLE)
         localStorage.removeItem(ls.ALBUM_ID)
         localStorage.removeItem(ls.PERSONA_ID)
         localStorage.removeItem(ls.PERSONAS)
