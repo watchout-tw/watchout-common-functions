@@ -1,7 +1,7 @@
 <template>
 <form @submit.prevent="doLogin">
   <div class="form-field">
-    <text-editor placeholder="草民代號／Email" v-model="account" :classes="['park']" :simple="true" key="loginAccount" />
+    <text-editor placeholder="Email" v-model="account" :classes="['park']" :simple="true" key="loginAccount" />
   </div>
   <div class="form-field">
     <text-editor placeholder="密碼" type="password" v-model="password" :classes="['park']" :simple="true" key="loginPassword" />
