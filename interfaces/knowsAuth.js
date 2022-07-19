@@ -147,6 +147,7 @@ export default {
         localStorage.removeItem(ls.PERSONA_ID)
         localStorage.removeItem(ls.PERSONAS)
         localStorage.removeItem(ls.ROLES)
+        localStorage.removeItem(ls.HANDLE)
         // clear cookie
         this.clearTokenCookie()
       }
