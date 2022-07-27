@@ -44,24 +44,27 @@ export default {
         if(this.data.action === EMAILER_ACTIONS.REQ_EMAIL_VERIF) {
           core.requestEmailVerification({
             email: this.email
-          }).then(response => {
+          }).then(() => {
             this.state = STATES.SUCCESS
             this.message = '請收信'
-          }).catch(error => {
-            error = null
-            this.state = STATES.SUCCESS
-            this.message = '請收信'
+          }).catch(() => {
+            this.state = STATES.FAILED
+            this.message = '找不到這個 Email'
           })
         } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
           core.requestPasswordReset({
             email: this.email
-          }).then(response => {
+          }).then(() => {
             this.state = STATES.SUCCESS
             this.message = '請收信'
           }).catch(error => {
-            error = null
-            this.state = STATES.SUCCESS
-            this.message = '請收信'
+            const message = error.response.data.message
+            this.state = STATES.FAILED
+            if(message === 'CITIZEN_EMAIL_ALREADY_VERIFIED') {
+              this.message = 'Email 已經驗證過了'
+            } else {
+              this.message = '找不到這個 Email'
+            }
           })
         }
       } else {
