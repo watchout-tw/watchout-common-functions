@@ -48,16 +48,6 @@ export default {
             this.state = STATES.SUCCESS
             this.message = '請收信'
           }).catch(error => {
-            this.state = STATES.FAILED
-            this.message = error.response.status === 400 ? '找不到這個 Email' : '無法預期的錯誤，請與我們連絡'
-          })
-        } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
-          core.requestPasswordReset({
-            email: this.email
-          }).then(() => {
-            this.state = STATES.SUCCESS
-            this.message = '請收信'
-          }).catch(error => {
             const message = error.response.data.message
             const status = error.response.status
             this.state = STATES.FAILED
@@ -71,6 +61,17 @@ export default {
             } else {
               this.message = '無法預期的錯誤，請與我們連絡'
             }
+
+          })
+        } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
+          core.requestPasswordReset({
+            email: this.email
+          }).then(() => {
+            this.state = STATES.SUCCESS
+            this.message = '請收信'
+          }).catch(error => {
+            this.state = STATES.FAILED
+            this.message = error.response.status === 400 ? '找不到這個 Email' : '無法預期的錯誤，請與我們連絡'
           })
         }
       } else {
