@@ -24,6 +24,7 @@ module.exports = {
         }
       }
     ],
+    "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
     'no-console': 0,
     'no-extend-native': ['error', { 'exceptions': ['Array'] }],
     'no-prototype-builtins': 0,
