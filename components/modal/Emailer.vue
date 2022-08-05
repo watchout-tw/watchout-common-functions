@@ -1,14 +1,26 @@
 <template>
-<div class="modal email-verifier">
-  <form @submit.prevent="sendEmail">
-    <div class="form-field">
-      <text-editor placeholder="請輸入你的註冊Email" type="email" v-model="email" :classes="['park']" :simple="true" key="email" />
-    </div>
-    <div class="form-field margin-top-8">
-      <submit-button type="submit" :classes="['park']" :label="label" :state.sync="state" :message.sync="message" @success="onSubmitSuccess" />
-    </div>
-  </form>
-</div>
+  <div class="modal email-verifier">
+    <form @submit.prevent="sendEmail">
+      <div class="form-field">
+        <text-editor placeholder="請輸入你的註冊Email"
+                     type="email"
+                     v-model="email"
+                     :classes="['park']"
+                     :simple="true"
+                     key="email"
+        />
+      </div>
+      <div class="form-field margin-top-8">
+        <submit-button type="submit"
+                       :classes="['park']"
+                       :label="label"
+                       :state.sync="state"
+                       :message.sync="message"
+                       @success="onSubmitSuccess"
+        />
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -48,16 +60,6 @@ export default {
             this.state = STATES.SUCCESS
             this.message = '請收信'
           }).catch(error => {
-            this.state = STATES.FAILED
-            this.message = error.response.status === 400 ? '找不到這個 Email' : '無法預期的錯誤，請與我們連絡'
-          })
-        } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
-          core.requestPasswordReset({
-            email: this.email
-          }).then(() => {
-            this.state = STATES.SUCCESS
-            this.message = '請收信'
-          }).catch(error => {
             const message = error.response.data.message
             const status = error.response.status
             this.state = STATES.FAILED
@@ -71,6 +73,16 @@ export default {
             } else {
               this.message = '無法預期的錯誤，請與我們連絡'
             }
+          })
+        } else if(this.data.action === EMAILER_ACTIONS.REQ_PWD_RESET) {
+          core.requestPasswordReset({
+            email: this.email
+          }).then(() => {
+            this.state = STATES.SUCCESS
+            this.message = '請收信'
+          }).catch(error => {
+            this.state = STATES.FAILED
+            this.message = error.response.status === 400 && error.response.data.message === 'CITIZEN_EMAIL_NOT_FOUND' ? '找不到這個 Email' : '無法預期的錯誤，請與我們連絡'
           })
         }
       } else {
