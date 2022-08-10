@@ -1,7 +1,6 @@
 <template>
 <div class="after-article">
   <div class="share margin-top-double margin-bottom-quad">
-    <div class="section-title with-underline text-align-center margin-top-bottom-single"><span>認同請分享</span></div>
     <share-to-platforms :url="shareURL" />
   </div>
   <div class="links" v-if="links && links.length > 0">
