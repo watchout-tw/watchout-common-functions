@@ -215,7 +215,7 @@
               :persona="cachedAuthorPersona(contributor)"
               :show="['name']"
               :classes="['list-item', 'horizontal']"
-              :link="true"
+              :link="false"
               :key="`contributor-${contributorIndex}`"
             />
             <span
