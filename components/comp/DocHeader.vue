@@ -7,7 +7,7 @@
   <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural] && doc[type.valuePlural].length > 0">
     <div class="author-type section-title with-underline small"><span>{{ getAuthorTypeLabel(type) }}</span></div>
     <div class="authors">
-      <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="index" />
+      <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author).personaObj" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="false" :key="index" />
     </div>
   </div>
   <div class="dates secondary-text font-size-small margin-top-bottom-8">
