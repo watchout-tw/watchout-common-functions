@@ -15,7 +15,7 @@
         <template v-if="mobiledocCards[section[1]][0] === 'markdown'">
           <div class="paragraphs no-margin a-text-parent heading-size-medium" v-html="markdown(mobiledocCards[section[1]][1].markdown)"></div>
         </template>
-        <template v-else-if="mobiledoc.cards[section[1]][0] === 'image'">
+        <template v-else-if="mobiledocCards[section[1]][0] === 'image'">
           <img :src="ghostBaseURL + mobiledocCards[section[1]][1].src" />
         </template>
       </div>
