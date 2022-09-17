@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     cachedAuthorByPersona(personaID) {
-      return this.cachedAuthors && this.cachedAuthors.find(author => author.persona === personaID) ? this.cachedAuthors.find(author => author.persona === personaID) : { personaObj: {} }
+      return this.cachedAuthors && this.cachedAuthors.find(author => author.persona == personaID) ? this.cachedAuthors.find(author => author.persona == personaID) : { personaObj: {} }
     },
     // FIXME: workaround of i18n
     getAuthorTypeLabel(type) {
