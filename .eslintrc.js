@@ -15,6 +15,7 @@ module.exports = {
   ],
   rules: {
     'arrow-parens': ['error', 'as-needed'],
+    'eqeqeq': 0,
     'keyword-spacing': [
       'error',
       {
