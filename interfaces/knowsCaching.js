@@ -16,16 +16,7 @@ export default {
       cachedAuthors: 'caching/authors',
       cachedTags: 'caching/tags',
       cachedParties: 'caching/parties'
-    }),
-    // FIXME: putting these here are a bit weird
-    // FIXME: copy to knowsBunko
-    // TODO: To be removed
-    authorOptions() {
-      return Array.isArray(this.cachedAuthors) ? this.cachedAuthors.map(author => ({ value: author.persona, label: (author.personaObj ? author.personaObj.name : author.persona) })) : []
-    },
-    tagOptions() {
-      return Array.isArray(this.cachedTags) ? this.cachedTags.map(tag => ({ value: tag.id, label: tag.title })) : []
-    }
+    })
   },
   methods: {
     cachedTopic(id) {
