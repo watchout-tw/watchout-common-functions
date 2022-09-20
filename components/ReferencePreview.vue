@@ -414,9 +414,9 @@ export default {
   methods: {
     cachedAuthorPersona(personaID) {
       let author = this.cachedAuthors
-        ? this.cachedAuthors.find(author => author.persona === personaID)
+        ? this.cachedAuthors.find(author => author.id == personaID)
         : null
-      return author ? author.personaObj : null
+      return author ? author : null
     }
   },
   components: {
