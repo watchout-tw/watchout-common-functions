@@ -21,7 +21,7 @@
   <template v-else>
     <div class="items grid tcl-container no-margin" v-if="items">
       <div class="item grid-item tcl-panel half-width" v-for="(item, index) of items" :key="`item-${index}`">
-        <reference-preview :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" :show-pub-dest="true" :cachedAuthors="cachedAuthors" />
+        <reference-preview :reference="item.referenceObj" :data="data" display="vertical" :image="getItemImage(item)" :title="item.title" :h="4" :description="null" :read-more-style="null" :show-pub-dest="true" :cachedAuthors="cachedAuthors" :titleClasses="['referencePreviewTitle', 'medium']" />
       </div>
       <div class="tcl-panel half-width"></div>
       <div class="tcl-panel half-width"></div>
@@ -54,14 +54,16 @@ export default {
       // FIXME: id + data: proper collection / collection: custom collection
       // reconcile different data source
       // optimize data fetching and parsing
-      return this.internalCollection ? this.internalCollection.items.map(item => {
-        let content = this.data ? this.data[item.reference] : null
-        let publishedTo = content ? content.publishedTo : null
-        return Object.assign({}, item, {
-          referenceObj: parseReference(item.reference, { publishedTo }),
-          content
+      return this.internalCollection
+        ? this.internalCollection.items.map(item => {
+          let content = this.data ? this.data[item.reference] : null
+          let publishedTo = content ? content.publishedTo : null
+          return Object.assign({}, item, {
+            referenceObj: parseReference(item.reference, { publishedTo }),
+            content
+          })
         })
-      }) : null
+        : null
     }
   },
   methods: {
