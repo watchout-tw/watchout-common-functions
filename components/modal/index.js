@@ -9,7 +9,6 @@ import SwissKnife from './SwissKnife'
 import Transporter from './Transporter'
 import Message from './Message'
 import MenuAndAuth from './MenuAndAuth'
-import Reminder from './Reminder'
 
 export const modals = {
   Auth,
@@ -22,6 +21,5 @@ export const modals = {
   SwissKnife,
   Transporter,
   Message,
-  MenuAndAuth,
-  Reminder
+  MenuAndAuth
 }
