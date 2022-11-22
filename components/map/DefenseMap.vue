@@ -6,7 +6,7 @@
       </div>
       <div class="active-features tcl-container">
         <div class="feature tcl-panel tcl-left-right-margin with-top-bottom-margin bg-very-very-light-grey"
-             v-html="markdown( markers.description)"
+             v-html="markdown(markers.description)"
         />
       </div>
     </div>
@@ -18,7 +18,7 @@ import { knowsMarkdown, knowsWindowManagement } from 'watchout-common-functions/
 import config from 'watchout-common-functions/config/config'
 
 export default {
-  mixins: [ knowsMarkdown, knowsWindowManagement ],
+  mixins: [knowsMarkdown, knowsWindowManagement],
   props: {
     shareURL: {
       type: String,
@@ -91,21 +91,22 @@ export default {
     width : 20px;
     height : 20px
   }
-  50%{
+  50% {
     width : 30px;
     height : 30px
   }
-  100%{
+  100% {
     width : 20px;
     height : 20px
   }
 }
 
-.title {
-  font-weight: bolder;
-  padding-bottom: 15px;
-  font-size: 20px;
-}
+// FIXME: 這邊會影響到首頁，也用了 title 的 div
+// .title {
+//   font-weight: bolder;
+//   padding-bottom: 15px;
+//   font-size: 20px;
+// }
 
 .marker {
   background-color: rgb(65, 156, 130);
@@ -113,7 +114,7 @@ export default {
   cursor: pointer;
   animation: scaleDraw 2s infinite;
   opacity : 0.6;
-  &:hover{
+  &:hover {
     opacity : 1;
   }
 }
