@@ -6,7 +6,8 @@
   "author": "Department of Technology at Watchout <dev@watchout.tw>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint-fix": "eslint --ext .js,.vue --ignore-path .gitignore . --fix"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.9",
