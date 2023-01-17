@@ -168,7 +168,8 @@ export default {
         let linePrev = turfHelpers.lineString([[location.lng, location.lat], [prev.lng, prev.lat]])
         let lineCurrent = turfHelpers.lineString([[location.lng, location.lat], [current.lng, current.lat]])
         return (length(linePrev, { units: 'kilometers' }) < length(lineCurrent, { units: 'kilometers' }))
-          ? prev : current
+          ? prev
+          : current
       })
     },
     addLayer(index) {
