@@ -21,7 +21,7 @@
     "axios": "^0.21.1",
     "cookieparser": "^0.1.0",
     "d3": "^7.6.1",
-    "firebase": "^7.14.0",
+    "firebase": "^9.15.0",
     "he": "^1.2.0",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
