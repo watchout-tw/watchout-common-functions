@@ -17,7 +17,7 @@
          @click="isCitizen? addModal({ id : 'swiss-knife', memberInfoEditable : memberInfoEditable }): addModal({ id: 'auth', joinOrLogin: 'login' })"
     >
       <div class="member-name" v-show="activePersona">
-        Hi! {{ nickname }}
+        Hi! {{ name }}
       </div>
       <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
     </div>
@@ -59,14 +59,18 @@ export default {
       anon: { id: 'anon', type: 'system' },
       logo,
       mobileLogo,
-      nickname: ''
+      name: null
     }
   },
   beforeMount() {
     core.getCitizen().then(response => {
-      this.nickname = response.data.nickname
+      if(response.data.name) {
+        this.name = response.data.name
+      } else {
+        this.name = NAME_UNSET
+      }
     }).catch(() => {
-      this.nickname = NAME_UNSET
+      this.name = NAME_UNSET
     })
   },
   computed: {
