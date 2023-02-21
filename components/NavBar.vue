@@ -17,7 +17,7 @@
          @click="isCitizen? addModal({ id : 'swiss-knife', memberInfoEditable : memberInfoEditable }): addModal({ id: 'auth', joinOrLogin: 'login' })"
     >
       <div class="member-name" v-show="activePersona">
-        Hi! {{ name }}
+        Hi! {{ internalName }}
       </div>
       <avatar :show="['avatar']" :persona="activePersona" :parties="parties" />
     </div>
@@ -57,21 +57,10 @@ export default {
   data() {
     return {
       anon: { id: 'anon', type: 'system' },
+      citizenObj: null,
       logo,
-      mobileLogo,
-      name: null
+      mobileLogo
     }
-  },
-  beforeMount() {
-    core.getCitizen().then(response => {
-      if(response.data.name) {
-        this.name = response.data.name
-      } else {
-        this.name = NAME_UNSET
-      }
-    }).catch(() => {
-      this.name = NAME_UNSET
-    })
   },
   computed: {
     channelOrPageID() {
@@ -82,10 +71,41 @@ export default {
     },
     navClasses() {
       return [this.channel.classes.backgroundColor.opaque]
+    },
+    internalName() {
+      let name = null
+
+      if(this.citizenObj) {
+        if(this.citizenObj.nickname) {
+          name = this.citizenObj.nickname
+        } else if(!this.citizenObj.nickname && this.citizenObj.name) {
+          name = this.citizenObj.name
+        }
+      }
+
+      if([undefined, null, ''].includes(name)) {
+        name = NAME_UNSET
+      }
+      return name
     }
+
   },
   created() {
     this.checkAuth()
+  },
+  methods: {
+    getCitizen() {
+      core.getCitizen().then(response => {
+        this.citizenObj = response.data
+      })
+    }
+  },
+  watch: {
+    activePersona(newActivePersona) {
+      if(newActivePersona) {
+        this.getCitizen()
+      }
+    }
   },
   components: {
     NavBarMenu,
