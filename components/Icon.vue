@@ -9,6 +9,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faCopy,
   faTrashAlt,
+  faThumbtack,
   faEdit,
   faIcons,
   faBars,
@@ -23,7 +24,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // https://fontawesome.com/docs/web/style/size
 // * 記得輸入時記得把前綴 "fa-" 移除
 
-library.add(faCopy, faTrashAlt, faEdit, faIcons, faBars, faChevronCircleLeft)
+library.add(faCopy, faTrashAlt, faThumbtack, faEdit, faIcons, faBars, faChevronCircleLeft)
 
 export default {
   props: {
