@@ -1,6 +1,8 @@
 <template>
-  <div class="iconBlock">
-    <FontAwesomeIcon :icon="iconName" :size="iconSize" />
+  <div class="component icon">
+    <div :class="`${isCircle ? 'circle' : ''} ${className} icon-block`">
+      <FontAwesomeIcon :icon="iconName" :size="iconSize" />
+    </div>
   </div>
 </template>
 
@@ -36,6 +38,14 @@ export default {
     iconSize: {
       type: String,
       default: 'sm'
+    },
+    isCircle: {
+      type: Boolean,
+      default: false
+    },
+    className: {
+      type: String,
+      default: ''
     }
   },
   components: {
@@ -45,5 +55,19 @@ export default {
 </script >
 
 <style lang="scss" >
-@import '~watchout-common-assets/styles/resources';
+.component.icon{
+
+  .circle{
+    border-radius: 1rem;
+  }
+
+  .icon-block{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+}
 </style >
