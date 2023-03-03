@@ -1,21 +1,17 @@
 <template>
   <div class="component icon">
-    <div :class="`${isCircle ? 'circle' : ''} ${className} icon-block`">
+    <component :is="'div'"
+               class="icon-block"
+               :class="[ classes , isCircle ? 'circle' : '' ]"
+    >
       <FontAwesomeIcon :icon="iconName" :size="iconSize" />
-    </div>
+    </component>
   </div>
 </template>
 
-<script >
+<script>
 import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  faCopy,
-  faTrashAlt,
-  faEdit,
-  faIcons,
-  faBars,
-  faChevronCircleLeft
-} from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // icon 樣式 請參考以下網址
@@ -25,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // https://fontawesome.com/docs/web/style/size
 // * 記得輸入時記得把前綴 "fa-" 移除
 
-library.add(faCopy, faTrashAlt, faEdit, faIcons, faBars, faChevronCircleLeft)
+library.add(fas)
 
 export default {
   props: {
@@ -43,25 +39,25 @@ export default {
       type: Boolean,
       default: false
     },
-    className: {
-      type: String,
-      default: ''
+    classes: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
     FontAwesomeIcon
   }
 }
-</script >
+</script>
 
-<style lang="scss" >
-.component.icon{
+<style lang="scss">
+.component.icon {
 
-  .circle{
+  .circle {
     border-radius: 1rem;
   }
 
-  .icon-block{
+  .icon-block {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,4 +66,4 @@ export default {
     cursor: pointer;
   }
 }
-</style >
+</style>
