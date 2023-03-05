@@ -1,20 +1,17 @@
 <template>
-  <div class="iconBlock">
-    <FontAwesomeIcon :icon="iconName" :size="iconSize" />
+  <div class="component icon">
+    <component :is="'div'"
+               class="icon-block"
+               :class="[ classes , isCircle ? 'circle' : '' ]"
+    >
+      <FontAwesomeIcon :icon="iconName" :size="iconSize" />
+    </component>
   </div>
 </template>
 
-<script >
+<script>
 import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  faCopy,
-  faTrashAlt,
-  faThumbtack,
-  faEdit,
-  faIcons,
-  faBars,
-  faChevronCircleLeft
-} from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // icon 樣式 請參考以下網址
@@ -24,7 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // https://fontawesome.com/docs/web/style/size
 // * 記得輸入時記得把前綴 "fa-" 移除
 
-library.add(faCopy, faTrashAlt, faThumbtack, faEdit, faIcons, faBars, faChevronCircleLeft)
+library.add(fas)
 
 export default {
   props: {
@@ -37,14 +34,36 @@ export default {
     iconSize: {
       type: String,
       default: 'sm'
+    },
+    isCircle: {
+      type: Boolean,
+      default: false
+    },
+    classes: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
     FontAwesomeIcon
   }
 }
-</script >
+</script>
 
-<style lang="scss" >
-@import '~watchout-common-assets/styles/resources';
-</style >
+<style lang="scss">
+.component.icon {
+
+  .circle {
+    border-radius: 1rem;
+  }
+
+  .icon-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+}
+</style>

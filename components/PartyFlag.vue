@@ -11,15 +11,17 @@ export default {
   props: ['id', 'code', 'options', 'parties'], // use party ID or code
   computed: {
     party() {
-      return Array.isArray(this.parties) ? this.parties.filter(party => {
-        let match = false
-        if(this.id) {
-          match = +party.id === +this.id
-        } else if(this.code) {
-          match = party.code === this.code
-        }
-        return match
-      }).pop() : null
+      return Array.isArray(this.parties)
+        ? this.parties.filter(party => {
+          let match = false
+          if(this.id) {
+            match = +party.id === +this.id
+          } else if(this.code) {
+            match = party.code === this.code
+          }
+          return match
+        }).pop()
+        : null
     },
     stripes() {
       let colors = this.party ? this.party.colors : ['#ddd']
