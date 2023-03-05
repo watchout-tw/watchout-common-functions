@@ -2,7 +2,7 @@
   <div class="component icon">
     <component :is="'div'"
                class="icon-block"
-               :class="[ classes , isCircle ? 'circle' : '' ]"
+               :class="[classes, isCircle ? 'circle' : '' ]"
     >
       <FontAwesomeIcon :icon="iconName" :size="iconSize" />
     </component>
@@ -55,6 +55,7 @@ export default {
 
   .circle {
     border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
   }
 
   .icon-block {
