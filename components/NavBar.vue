@@ -33,7 +33,7 @@
           class="nav-icon"
           @click="addModal({ id: 'menu-and-auth', menu, isCitizen, memberInfoEditable : memberInfoEditable })"
       >
-        <Icon iconName="bars" />
+        <Icon iconName="bars" iconSize="lg" :classes="['color']" />
       </div>
     </div>
   </nav>
@@ -121,13 +121,13 @@ export default {
 nav.nav-bar {
   position: relative;
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 64px;
   margin: 0;
   padding: 0;
-  z-index: $z-nav;
+  width: 100%;
+  height: 64px;
   background-color: $color-watchout-black;
+  z-index: $z-nav;
+  flex-direction: row;
 
   > .nav-item {
     flex-grow: 0;
@@ -142,27 +142,27 @@ nav.nav-bar {
     }
 
     > .nav-icon {
-      height: 100%;
       margin-right: 1rem;
+      height: 100%;
 
       > .iconBlock {
-        color: #ffffff;
-        background-color: initial;
         position: relative;
         top: initial;
         right: initial;
-        z-index: initial;
-        border-radius: initial;
         font-size: 30px;
+        color: #ffffff;
+        background-color: initial;
+        border-radius: initial;
+        z-index: initial;
       }
     }
   }
 
   > .logo-with-type {
-    flex-shrink: 0;
     display: block;
-    width: 64px;
     overflow-x: hidden;
+    width: 64px;
+    flex-shrink: 0;
     @include bp-sm-up {
       width: auto;
     }
@@ -175,6 +175,7 @@ nav.nav-bar {
     justify-content: flex-end;
 
     .item {
+
       > a {
         color: #ffffff;
       }
@@ -183,31 +184,38 @@ nav.nav-bar {
 
   > .avatar-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    cursor: pointer;
+    justify-content: center;
     overflow: hidden;
+    cursor: pointer;
 
     > .member-name {
-      width: 100px;
-      color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: flex-end;
       margin-right: 0.5rem;
+      width: 100px;
+      color: #ffffff;
     }
   }
 }
 
 @media (max-width: 768px) {
+
   nav.nav-bar {
+
     > .nav-item {
+
       &.pc {
         display: none;
       }
 
       &.mobile {
         display: flex;
+
+        .color{
+          color: #ffffff;
+        }
       }
     }
   }
