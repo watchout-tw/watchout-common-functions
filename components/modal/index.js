@@ -3,6 +3,7 @@ import Emailer from './Emailer'
 import PersonaSwitcher from './PersonaSwitcher'
 import PrivateInfoRegistration from './PrivateInfoRegistration'
 import ResetPassword from './ResetPassword'
+import Reminder from './Reminder'
 import Share from './Share'
 import SiteMap from './SiteMap'
 import SwissKnife from './SwissKnife'
@@ -16,6 +17,7 @@ export const modals = {
   PersonaSwitcher,
   PrivateInfoRegistration,
   ResetPassword,
+  Reminder,
   Share,
   SiteMap,
   SwissKnife,
