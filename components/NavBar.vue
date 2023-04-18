@@ -213,7 +213,7 @@ nav.nav-bar {
       &.mobile {
         display: flex;
 
-        .color{
+        .color {
           color: #ffffff;
         }
       }

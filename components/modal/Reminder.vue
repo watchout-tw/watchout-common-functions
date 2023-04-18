@@ -37,13 +37,13 @@ export default {
 <style lang="scss">
 @import 'watchout-common-functions/assets/mapbox.scss';
 
-.modal.reminder{
+.modal.reminder {
 
-  .title{
+  .title {
     text-align : center;
   }
 
-  .button-block{
+  .button-block {
     display: flex;
     align-items: center;
     justify-content: space-around;
