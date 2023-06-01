@@ -1,5 +1,5 @@
 <template>
-<button class="submit-button input button" :class="internalClasses" :type="internalType">
+<button class="submit-button input button" :class="internalClasses" :type="internalType" :disabled="disabled">
   <div v-if="!state || state === STATES.DEFAULT" class="label">{{ label }}</div>
   <div v-else class="symbol-container" :style="symbolStyles">
     <div v-if="state === STATES.LOADING" class="symbol loading"></div>
@@ -17,7 +17,7 @@ const DEFAULT_FONT_SIZE = 16
 const DEFAULT_SYMBOL_SIZE = DEFAULT_FONT_SIZE * 1.5
 
 export default {
-  props: ['type', 'classes', 'label', 'state', 'message', 'once'],
+  props: ['type', 'classes', 'label', 'state', 'message', 'once', 'disabled'],
   data() {
     return {
       STATES,
@@ -36,7 +36,7 @@ export default {
       return this.type ? this.type : 'button'
     },
     internalClasses() {
-      return (Array.isArray(this.classes) ? this.classes : []).concat(this.once === true && this.hasBeenDone === true ? ['immutable'] : [])
+      return (Array.isArray(this.classes) ? this.classes : []).concat(this.once === true && this.hasBeenDone === true ? ['immutable'] : []).concat(this.disabled === true ? ['disabled'] : [])
     },
     symbolStyles() {
       return {
