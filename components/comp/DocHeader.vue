@@ -1,10 +1,10 @@
 <template>
 <div class="doc-header">
   <div class="title margin-top-bottom-8" :class="{ 'variable-font-size': variableFontSize }">
-    <h1 :class="titleClasses" v-html="spacingOptimizer(getTitle)" />
+    <h1 :class="titleClasses" v-html="spacingOptimizer(getTitle)"></h1>
   </div>
   <div class="description paragraphs margin-8" v-if="description" v-html="markdown(getDescription)"></div>
-  <div v-for="aType of authorTypes" :key="aType.valuePlural" class="authors-container" :class="[aType.valuePlural]" v-if="doc[aType.valuePlural] && doc[aType.valuePlural].length > 0">
+  <div v-for="aType of filteredAuthorType" :key="aType.valuePlural" class="authors-container" :class="[aType.valuePlural]">
     <div class="author-type section-title with-underline small"><span>{{ getAuthorTypeLabel(aType) }}</span></div>
     <div class="authors">
       <avatar v-for="(author, index) of doc[aType.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="false" :key="index" />
@@ -74,6 +74,9 @@ export default {
     // FIXME: workaround of i18n
     contentUpdatedAtLabel() {
       return this.language && contentUpdatedAt[`label${this.language}`] ? contentUpdatedAt[`label${this.language}`] : contentUpdatedAt.label
+    },
+    filteredAuthorType() {
+      return this.authorTypes.filter(aType => this.doc[aType.valuePlural] && this.doc[aType.valuePlural].length > 0)
     }
   },
   methods: {
