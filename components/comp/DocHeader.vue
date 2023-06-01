@@ -4,10 +4,10 @@
     <h1 :class="titleClasses" v-html="spacingOptimizer(getTitle)" />
   </div>
   <div class="description paragraphs margin-8" v-if="description" v-html="markdown(getDescription)"></div>
-  <div v-for="type of authorTypes" :key="type.valuePlural" class="authors-container" :class="[type.valuePlural]" v-if="doc[type.valuePlural] && doc[type.valuePlural].length > 0">
-    <div class="author-type section-title with-underline small"><span>{{ getAuthorTypeLabel(type) }}</span></div>
+  <div v-for="aType of authorTypes" :key="aType.valuePlural" class="authors-container" :class="[aType.valuePlural]" v-if="doc[aType.valuePlural] && doc[aType.valuePlural].length > 0">
+    <div class="author-type section-title with-underline small"><span>{{ getAuthorTypeLabel(aType) }}</span></div>
     <div class="authors">
-      <avatar v-for="(author, index) of doc[type.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="false" :key="index" />
+      <avatar v-for="(author, index) of doc[aType.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="false" :key="index" />
     </div>
   </div>
   <div class="dates secondary-text font-size-small margin-top-bottom-8">
@@ -81,8 +81,8 @@ export default {
       return this.cachedAuthors && this.cachedAuthors.find(author => author.id == personaID) ? this.cachedAuthors.find(author => author.id == personaID) : {}
     },
     // FIXME: workaround of i18n
-    getAuthorTypeLabel(type) {
-      return this.language && type[`label${this.language}`] ? type[`label${this.language}`] : type.label
+    getAuthorTypeLabel(aType) {
+      return this.language && aType[`label${this.language}`] ? aType[`label${this.language}`] : aType.label
     }
   },
   components: {
