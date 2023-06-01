@@ -41,7 +41,7 @@ export default {
       return this.hasLink ? 'a' : 'div'
     },
     internalLink() {
-      return typeof this.link === 'string' ? this.link : (this.link && this.personaIsValid ? this.getParkPersonaProfileURL(this.persona.id) : null)
+      return typeof this.link === 'string' ? this.link : (this.link && this.personaIsValid ? this.getPersonaProfileURL(this.persona.id) : null)
     },
     hasLink() {
       return !!(this.internalLink)
