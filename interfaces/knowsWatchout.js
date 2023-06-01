@@ -40,8 +40,8 @@ export default {
     getAskAnswerURL(gameSlug, answerID) {
       return this.getBaseURL('ask') + `games/${gameSlug}/answers/${answerID}`
     },
-    getParkPersonaProfileURL(personaID) {
-      return this.getBaseURL('park') + `personas/${personaID}`
+    getPersonaProfileURL(personaID) {
+      return this.getBaseURL('watchout') + `authors/${personaID}`
     },
     getParkSettingsURL() {
       return this.getBaseURL('park') + 'settings'

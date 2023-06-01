@@ -7,7 +7,7 @@
   <div v-for="aType of filteredAuthorType" :key="aType.valuePlural" class="authors-container" :class="[aType.valuePlural]">
     <div class="author-type section-title with-underline small"><span>{{ getAuthorTypeLabel(aType) }}</span></div>
     <div class="authors">
-      <avatar v-for="(author, index) of doc[aType.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="false" :key="index" />
+      <avatar v-for="(author, index) of doc[aType.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="index"></avatar>
     </div>
   </div>
   <div class="dates secondary-text font-size-small margin-top-bottom-8">
