@@ -7,7 +7,7 @@
   <div v-for="aType of filteredAuthorType" :key="aType.valuePlural" class="authors-container" :class="[aType.valuePlural]">
     <div class="author-type section-title with-underline small"><span>{{ getAuthorTypeLabel(aType) }}</span></div>
     <div class="authors">
-      <avatar v-for="(author, index) of doc[aType.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="true" :key="index"></avatar>
+      <avatar v-for="(author, index) of doc[aType.valuePlural]" :persona="cachedAuthorByPersona(author)" :show="['avatar', 'name']" :classes="['horizontal']" size="small" :link="visibilityOfAuthor(author)" :key="index"></avatar>
     </div>
   </div>
   <div class="dates secondary-text font-size-small margin-top-bottom-8">
@@ -86,6 +86,15 @@ export default {
     // FIXME: workaround of i18n
     getAuthorTypeLabel(aType) {
       return this.language && aType[`label${this.language}`] ? aType[`label${this.language}`] : aType.label
+    },
+    visibilityOfAuthor(personaID) {
+      let author = null
+      author = this.cachedAuthors && this.cachedAuthors.find(author => author.id == personaID) ? this.cachedAuthors.find(author => author.id == personaID) : {}
+      if(author.disableLink) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   components: {
