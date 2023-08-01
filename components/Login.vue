@@ -9,9 +9,6 @@
   <div class="form-field margin-top-8">
     <submit-button type="submit" :classes="['park']" label="登入" :state.sync="submitButton.state" :message.sync="submitButton.message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
   </div>
-  <div class="margin-top-8 margin-bottom-4 error-message" v-show="!!submitButton.message">
-    * {{ submitButton.message }}
-  </div>
 </form>
 </template>
 
@@ -69,13 +66,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-
-.error-message {
-  font-size: 0.5rem;
-  text-align: right;
-  color: #ff0000;
-}
-
-</style>
