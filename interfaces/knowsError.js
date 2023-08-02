@@ -1,4 +1,4 @@
-import { MAP } from 'watchout-common-functions/lib/errors'
+import { KEYWORD_MAP, MAP } from 'watchout-common-functions/lib/errors'
 
 export default {
   methods: {
@@ -7,6 +7,12 @@ export default {
       let humanMessage = '錯誤'
       if(MAP.hasOwnProperty(machineMessage)) {
         humanMessage = MAP[machineMessage]
+      } else {
+        KEYWORD_MAP.forEach(item => {
+          if(machineMessage.includes(item.keyword)) {
+            humanMessage = item.message
+          }
+        })
       }
       return humanMessage
     },

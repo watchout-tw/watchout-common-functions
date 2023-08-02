@@ -15,6 +15,8 @@ import * as STATES from 'watchout-common-functions/lib/states'
 
 const DEFAULT_FONT_SIZE = 16
 const DEFAULT_SYMBOL_SIZE = DEFAULT_FONT_SIZE * 1.5
+const SUCCESS_DURATION = 3000
+const FAILURE_DURATION = 6000
 
 export default {
   props: ['type', 'classes', 'label', 'state', 'message', 'once', 'disabled'],
@@ -27,7 +29,6 @@ export default {
       fontSize: DEFAULT_FONT_SIZE,
       symbolSize: DEFAULT_SYMBOL_SIZE,
       symbolAnimationDuration: 500, // FIXME: this is hard coded
-      finalizeAfter: 2000, // FIXME: this is hard coded
       hasBeenDone: false
     }
   },
@@ -63,7 +64,7 @@ export default {
         if(nextState === STATES.SUCCESS) {
           this.hasBeenDone = true
         }
-        setTimeout(this.finalize, this.finalizeAfter)
+        setTimeout(this.finalize, nextState === STATES.SUCCESS ? SUCCESS_DURATION : FAILURE_DURATION)
       }, this.symbolAnimationDuration)
     }
   },
