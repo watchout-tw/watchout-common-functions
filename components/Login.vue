@@ -9,6 +9,9 @@
   <div class="form-field margin-top-8">
     <submit-button type="submit" :classes="['park']" label="登入" :state.sync="submitButton.state" :message.sync="submitButton.message" @success="onSubmitSuccess" @failed="onSubmitFailed" />
   </div>
+  <div class="margin-top-8 margin-bottom-4 error-message text-color-musou text-align-right font-size-small" v-show="!!errorMessage">
+    {{ errorMessage }}
+  </div>
 </form>
 </template>
 
@@ -28,7 +31,8 @@ export default {
       submitButton: {
         state: STATES.DEFAULT,
         message: null
-      }
+      },
+      errorMessage: null
     }
   },
   methods: {
@@ -44,9 +48,12 @@ export default {
           this.setAuth(response.data)
           this.submitButton.state = STATES.SUCCESS
           this.submitButton.message = '歡迎回來'
+          this.errorMessage = null
         } catch(error) {
           this.submitButton.state = STATES.FAILED
-          this.submitButton.message = this.humanizeError(error)
+          const errorMsg = this.humanizeError(error)
+          this.submitButton.message = errorMsg
+          this.errorMessage = errorMsg
           this.handleError(error)
         }
       }
