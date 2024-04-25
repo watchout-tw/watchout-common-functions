@@ -30,7 +30,7 @@
     "marked": "^4.0.10",
     "project-name-generator": "^2.1.6",
     "query-string": "^6.3.0",
-    "sanitize-html": "^2.3.2"
+    "sanitize-html": "^2.12.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^10.0.0",
