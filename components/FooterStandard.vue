@@ -103,7 +103,7 @@ const linkGroups = [
     links: [
       {
         title: 'English',
-        url: getBaseURL('watchout') + '?lang=en',
+        url: getBaseURL() + '?lang=en',
         relative: false
       },
       {
