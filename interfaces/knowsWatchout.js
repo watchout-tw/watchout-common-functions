@@ -28,37 +28,21 @@ export default {
     getBaseURL,
     getCompDocURL,
     getCompVideoURL,
-    getLabRepURL(repID) {
-      return this.getBaseURL('lab') + `reps/${repID}`
-    },
-    getAskGameURL(gameSlug) {
-      return this.getBaseURL('ask') + `games/${gameSlug}`
-    },
-    getAskQuestionURL(gameSlug, questionID) {
-      return this.getBaseURL('ask') + `games/${gameSlug}/questions/${questionID}`
-    },
-    getAskAnswerURL(gameSlug, answerID) {
-      return this.getBaseURL('ask') + `games/${gameSlug}/answers/${answerID}`
-    },
     getPersonaProfileURL(personaID) {
-      return this.getBaseURL('watchout') + `authors/${personaID}`
-    },
-    getParkSettingsURL() {
-      return this.getBaseURL('park') + 'settings'
+      return this.getBaseURL() + `authors/${personaID}`
     },
     getWatchoutDocListURL() {
-      return this.getBaseURL('watchout') + 'docs'
+      return this.getBaseURL() + 'docs'
     },
     getWatchoutProjectURL,
     getWatchoutNewsletterURL(id) {
-      return this.getBaseURL('watchout') + 'news/' + id
+      return this.getBaseURL() + 'news/' + id
     },
     getWatchoutMemberInfoURL() {
-      return this.getBaseURL('watchout') + 'member'
+      return this.getBaseURL() + 'member'
     },
-    // TODO: Remove channelID
-    generateMeta(channelID, pageTitle, pageDescription, image) {
-      let baseURL = this.getBaseURL(channelID)
+    generateMeta(pageTitle, pageDescription, image) {
+      let baseURL = this.getBaseURL()
       if(!image) {
         image = defaultImage
       }
